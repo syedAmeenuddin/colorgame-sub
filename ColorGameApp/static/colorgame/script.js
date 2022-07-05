@@ -105,7 +105,9 @@ $(document).ready(function () {
 	function nowDate() {
 		let d = new Date();
 		let sec = d.getSeconds();
+		let month = d.getMonth()+1;
 		$('.realtime').html(d.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }));
+		$('.realdate').html(d.getDate()+"-"+month+"-"+d.getFullYear())
 		// $('.countdownforgame').html(sec);
 	}	
 	// create Period
@@ -113,7 +115,7 @@ $(document).ready(function () {
 		let dt = new Date();
 		let m = dt.getMinutes();
 		let s = dt.getSeconds();
-		m = s ? 14 - (m % 15) : 15 - (m % 15);
+		m = s ? 2 - (m % 3) : 3 - (m % 3);
 		if (s) {
 			s = 60 - s;
 		}
@@ -121,8 +123,20 @@ $(document).ready(function () {
 			s='0'+s;
 		}
 		$('#periodcountdown').html(m+":"+s);
+		if(parseInt(m)==3 || parseInt(s)==00){
+			location.reload();
+		}
+		if (parseInt(m)<1){
+			$('.winpage').addClass('noselect')
+			return false
+		}
+		else{
+			$('.winpage').removeClass('noselect')
+			return true
+		}
 		//   timer.innerHTML = `${m}:${s < 10 ? '0' + s : s} minutes`;
 		};
+		console.log(countdown());
 		setInterval(countdown, 1000);
 		function period(){
 			let d = new Date();

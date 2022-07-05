@@ -1,13 +1,54 @@
 {% extends 'lib/base.html' %} 
 {% block base %}
-<div class="row">
-    <form action="" method="POST">
+<div class="bankcard_pge">
+        <div class="showbankdetails">
+
+            {% for i in bank  %}
+            <div class="bcdetailscard flex_row">
+                <div class="label_bc">
+                    <span>Recipient Name</span>
+                </div>
+                <div class="displaybox_bc">
+                    <input type="text" name="ifsc" id="" placeholder="ENTER IFSC" value="{{ bank.recipientName }}" readonly>
+                </div>
+            </div>
+            <div class="bcdetailscard flex_row">
+                <div class="label_bc">
+                    <span>Account Number</span>
+                </div>
+                <div class="displaybox_bc">
+                    <input type="text" name="ifsc" id="" placeholder="ENTER IFSC" value="{bank.accountNumber}" readonly>
+                </div>
+            </div>
+            <div class="bcdetailscard flex_row">
+                <div class="label_bc">
+                    <span>IFSC</span>
+                </div>
+                <div class="displaybox_bc">
+                    <input type="text" name="ifsc" id="" placeholder="ENTER IFSC" value="{bank.ifsc}" readonly>
+                </div>
+            </div>
+            {% endfor %}
+
+            
+        </div>
+
+
+
+
+        <div class="bankcardbtn flex_row">
+            <div class="editbank"><span>Edit Bank Details</span></div>
+            <div class="addbank"><span>Add Bank Details</span></div>
+        </div>
+</div>
+
+    {% comment %} <form action="" method="POST">
         {% csrf_token %}
         <input type="text" name="ifsc" id="" placeholder="ENTER IFSC">
         <input type="text" name="accountnumber" id=""  placeholder="ENTER ACCOUNT NUMBER">
         <input type="text" name="recipientname" id="" placeholder="ENTER RECIPIENT NAME">
         <input type="text" name="upi" id="" placeholder="ENTER UPI">
         <input type="submit" value="Submit">
-    </form>
-</div>
+    </form> {% endcomment %}
+
 {% endblock base %}

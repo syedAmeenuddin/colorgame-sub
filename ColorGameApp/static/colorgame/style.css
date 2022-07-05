@@ -251,7 +251,14 @@ input {
 /* end` */
 /* bottomtabbar */
 
+.winpage{
 
+}
+.noselect{
+    pointer-events: none;
+    user-select: none;
+    opacity: 0.8;
+}
 .Maincontainer {
 
     display: flex;
@@ -811,7 +818,7 @@ footer {
     display: none;
 }
 .tabshow{
-    display: flex !important;
+    display: inline !important;
 }
 
 .play_details {
@@ -1208,3 +1215,30 @@ tr{
     align-content: center;
 }
 /* popen */
+
+/* bankcard style */
+.bankcard_pge{
+    color: white;
+}
+.editbank span,.addbank span{
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid crimson;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+}
+.bcdetailscard{
+    padding: 2px 0px;
+}
+.label_bc{
+    padding: 0px 5px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+.displaybox_bc input{
+font-size: 14px;
+}
+/* end */
