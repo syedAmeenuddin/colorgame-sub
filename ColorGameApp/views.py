@@ -73,7 +73,6 @@ def forgotpassword(request):
 def win(request):
     isloged = request.session.get('isloged',False)
     currentuser = request.user
-    print(currentuser)
     if isloged:
         Intz = pytz.timezone('Asia/Kolkata')
         now = datetime.now(Intz)

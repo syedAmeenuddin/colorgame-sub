@@ -178,19 +178,24 @@ $(document).ready(function () {
 			$('.btnSendOTP').addClass('disablediv');
 			if (otpcount==0 || otpcount==1){
 				otpcount+=1
-				setTimeout(resendOTP, 60000);
+				setTimeout(resendOTP, 1000);
 				Android.SendVerificationCode('+91'+$("#PhoneNumber").val());
 			}
 			else{
+				alert('try again after 24hrs!');
 				$('.btnSendOTP').addClass('disablediv');
 				$('.btnVerifyOTP').addClass('disablediv');
 			}
 			
 			
 			function resendOTP(){
+				if (otpcount==0 || otpcount==1){
 				$('.btnSendOTP').removeClass('disablediv');
 				$('.btnSendOTP').html('Resend OTP')
 				$('.btnVerifyOTP').removeClass('disablediv');
+				}else{
+					$('.btnSendOTP').addClass('disablediv');
+				}
 			}
 		}
 	});
@@ -198,8 +203,13 @@ $(document).ready(function () {
 	$('.btnVerifyOTP').on('click',function(){
 		if($("#otp").val() != "" && $("#otp").val().length == 6)
 		{
+			otpcount=2;
+			$('.btnSendOTP').addClass('disablediv');
 			$('.btnVerifyOTP').addClass('disablediv');
 			Android.verifyOTPCode($("#otp").val());
+		}else{
+			$('.btnVerifyOTP').removeClass('disablediv');
+			alert('check entered OTP!');
 		}
 	});
 });
@@ -212,6 +222,7 @@ function isVerified(val){
 	console.log(val);
 	if(val)
 	{
+		otpcount=2;
 		$('#txtpassword').prop('disabled',false);
 		$('#btnRegister').prop('disabled',false);
 		$('.btnVerifyOTP').addClass('disablediv');
@@ -219,6 +230,7 @@ function isVerified(val){
 	}
 	else
 	{
+		$('.btnVerifyOTP').removeClass('disablediv');
 		$('#txtpassword').prop('disabled',true);
 		$('#btnRegister').prop('disabled',true);
 		alert('Invalid OTP')
