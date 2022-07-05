@@ -115,7 +115,7 @@ $(document).ready(function () {
 		let dt = new Date();
 		let m = dt.getMinutes();
 		let s = dt.getSeconds();
-		m = s ? 2 - (m % 3) : 3 - (m % 3);
+		m = s ? 14 - (m % 15) : 15 - (m % 15);
 		if (s) {
 			s = 60 - s;
 		}
@@ -123,7 +123,7 @@ $(document).ready(function () {
 			s='0'+s;
 		}
 		$('#periodcountdown').html(m+":"+s);
-		if(parseInt(m)==3 || parseInt(s)==00){
+		if(parseInt(m)==15 || parseInt(s)==00){
 			location.reload();
 		}
 		if (parseInt(m)<1){
