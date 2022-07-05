@@ -75,26 +75,13 @@ def win(request):
     currentuser = request.user
     print(currentuser)
     if isloged:
-        # create code for period
         Intz = pytz.timezone('Asia/Kolkata')
         now = datetime.now(Intz)
         nowTime = now.strftime('%I:%M:%S %p')
         nowDate = now.strftime('%Y-%m-%d')
         fullDate = now.strftime('%d/%m/%Y %I:%M:%S %p')
-        #end
         authUser = user.objects.get(username=currentuser)
-        if request.method == "POST":
-			
-		
-			# console.log( gameperiod.length);
-			# if(gameperiod.length==1){
-			# 	gameperiod="00"+gameperiod;
-			# }
-			# if(gameperiod.length==2){
-			# 	gameperiod="0"+gameperiod;
-			# }
-			# let periodfulldate = `${year}${month}${date}${gameperiod}`;
-   
+        if request.method == "POST":   
             joingroup = request.POST['joingroup']
             joinnumber = request.POST['joinnumber']
             contractmoney = request.POST['contractmoney']
@@ -114,59 +101,84 @@ def win(request):
                 nowPeriod='0'+nowPeriod
             gamePeriod = nowDate+nowPeriod
             gamePeriod = gamePeriod.replace('-', '')
-            print(gamePeriod)
-            print(nowTime)
-            if int(totalcontractmoney)<=int(authUser.walletBalance):
-                creatgamedetails = gameDetails(
-                user = authUser, 
-                period = gamePeriod,
-                date = fullDate,
-                time = nowTime,
-                group = joingroup,
-                number = int(joinnumber),
-                contractMoney = int(contractmoney),
-                tickets = contractcount,
-                totalcontractMoney = int(totalcontractmoney),
-                )
+            wallet = authUser.walletBalance
+            if authUser.walletBalance ==None:
+                wallet = 0                
+            if int(totalcontractmoney)<=int(wallet):
+                try:
+                    creatgamedetails = gameDetails(
+                    user = authUser, 
+                    period = gamePeriod,
+                    date = fullDate,
+                    time = nowTime,
+                    group = joingroup,
+                    number = int(joinnumber),
+                    contractMoney = int(contractmoney),
+                    tickets = contractcount,
+                    totalcontractMoney = int(totalcontractmoney),
+                    )
 
-                creatgamedetails.save()
-                authUser.walletBalance=int(authUser.walletBalance)-int(totalcontractmoney)
-                authUser.save()
-                return redirect('win')
+                    creatgamedetails.save()
+                    authUser.walletBalance=int(authUser.walletBalance)-int(totalcontractmoney)
+                    authUser.save()
+                    return redirect('win')
+                except:
+                    messages.success(request,'something went wrong! please try again')
+                    return redirect('win')
             else:
                 return redirect('win')
             
-        # _gdA = gameDetails.objects.filter(user = authUser,group='A')
-        # _gdB = gameDetails.objects.filter(user = authUser,group='B')
-        # _gdC = gameDetails.objects.filter(user = authUser,group='C')
-        # _gdD = gameDetails.objects.filter(user = authUser,group='D')
+        _gdA = gameDetails.objects.filter(user = authUser,group='A')
+        _gdB = gameDetails.objects.filter(user = authUser,group='B')
+        _gdC = gameDetails.objects.filter(user = authUser,group='C')
+        _gdD = gameDetails.objects.filter(user = authUser,group='D')
         
         Lotteryimages = lotteryimages.objects.all()
         return render(request, 'lib/win.html',{'lotteryimages':Lotteryimages,'userid':currentuser
-        # ,'playedgameA':_gdA,'playedgameB':_gdB,'playedgameC':_gdC,'playedgameD':_gdD
-        ,'wallet':authUser.walletBalance
-            })
+        ,'playedgameA':_gdA
+        ,'playedgameB':_gdB
+        ,'playedgameC':_gdC
+        ,'playedgameD':_gdD
+        ,'wallet':0 if authUser.walletBalance==None else authUser.walletBalance
+        })
     else:
         messages.success(request,'First Login to access game !')
         return redirect('signin')
 def bankcard(request):
-    if request.method == "POST":
-        _ifsc = request.POST['ifsc']
-        _actnum = request.POST['accountnumber']
-        _recipientname = request.POST['recipientname']
-        _upi = request.POST['upi']    
-        if(_ifsc != '' and _actnum != '' and _recipientname !='' and _upi !=''):
-            authUser = user.objects.get(username=request.user)
-            createbankdetails = bankDetails(user=authUser,ifsc=_ifsc,accountNumber=_actnum,recipientName=_recipientname)
-            createupi = upiDetails(user = authUser,upi=_upi)
-            createbankdetails.save()
-            createupi.save()
-            messages.success(request,'saved successfully')
-            return redirect('bankcard')
-        else:
-            print('null')
-    return render(request, 'lib/manage_bankcard.html')
+    isloged = request.session.get('isloged',False)
+    if isloged:
+        authUser = user.objects.get(username=request.user)
+        if request.method == "POST":
+            _ifsc = request.POST['ifsc']
+            _actnum = request.POST['accountnumber']
+            _recipientname = request.POST['recipientname']
+            _upi = request.POST['upi']    
+            if(_ifsc != '' and _actnum != '' and _recipientname !='' and _upi !=''):
+                
+                createbankdetails = bankDetails(user=authUser,ifsc=_ifsc,accountNumber=_actnum,recipientName=_recipientname)
+                createupi = upiDetails(user = authUser,upi=_upi)
+                createbankdetails.save()
+                createupi.save()
+                messages.success(request,'saved successfully')
+                return redirect('bankcard')
+            else:
+                print('null')
+        
+        return render(request, 'lib/manage_bankcard.html',{'wallet':0 if authUser.walletBalance==None else authUser.walletBalance})
+    else:
+        messages.success(request,'First Login to access game !')
+        return redirect('signin')
 def mybet(request):
-    authUser = user.objects.get(username=request.user)
-    _gd = gameDetails.objects.filter(user = authUser)
-    return render(request, 'lib/mybet.html',{'playedgame':_gd})
+    isloged = request.session.get('isloged',False)
+    if isloged:
+        # try:
+        authUser = user.objects.get(username=request.user)
+        _gd = gameDetails.objects.filter(user = authUser)
+        return render(request, 'lib/mybet.html'
+                       ,{'playedgame':_gd
+                       ,'wallet': 0 if authUser.walletBalance==None else authUser.walletBalance})
+        # except:
+        #     return render(request, 'lib/mybet.html')
+    else:
+        messages.success(request,'First Login to access game !')
+        return redirect('signin')

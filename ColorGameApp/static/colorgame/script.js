@@ -142,7 +142,6 @@ $(document).ready(function () {
 			if([month].length<2){
 				month='0'+month;
 			}
-			console.log( gameperiod.length);
 			if(gameperiod.length==1){
 				gameperiod="00"+gameperiod;
 			}

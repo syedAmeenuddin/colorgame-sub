@@ -29,4 +29,4 @@ def pri():
 def start():
     scheduler = BackgroundScheduler()
     scheduler.add_job(pri,'interval',seconds = 59)
-    scheduler.start()
+    # scheduler.start()

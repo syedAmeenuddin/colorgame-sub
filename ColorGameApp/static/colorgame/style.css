@@ -17,10 +17,14 @@ html {
 }
 .mybet{
     color: white;
+    font-size: 12px !important;
 }
 .my_bet{
     color: white;
-    height: 100vh !important;
+    height: 70vh !important;
+}
+.my_bet div{
+    font-size: 10px !important;
 }
 input[type=submit]:disabled,
 button:disabled {
@@ -989,8 +993,9 @@ tr{
 .mybetSelect_game{
     display: flex;
     width: 100%;
-    height: 100vh;
+    height: 75vh;
 }
+
 .selectgame_main {
     display: flex;
     width: 100%;
