@@ -1,0 +1,165 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+    integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!-- <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script> -->
+    <link rel="stylesheet" href="{% static "colorgame/style.css" %}">
+    <link rel="stylesheet" href="{% static "colorgame/bootstrap.css" %}">
+    <script src="{% static "colorgame/script.js" %}"></script>
+    <script src="{% static "colorgame/jquery.js" %}"></script>
+    
+</head>
+
+<body>
+    <div class="Maincontainer">
+        <header>
+            <div class="row appBar_header col-md-12 col-12">
+                <div class="col-md-2 col-2 logo">
+                    <span>Rummy Lottery</span>
+                </div>
+                <div class="col-2">
+                    <div class="rechargebtn btn_effect">
+                        <a href="#">
+                            <span>
+                                Recharge
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-3 flex_row twb_main">
+                    <i class="fa fa-cc" aria-hidden="true"></i>
+                  <div class="total_wallet_balance"><span>Balance: ₹</span><span class="balanceamt">{{ wallet }}</span></div>
+                </div>
+                <div class="col-2">
+                    <div class="withdrawbtn btn_effect">
+                        <a href="#">
+                            <span>
+                                Withdrawal
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="col-md-3 col-3 logo">
+                    <span>Single Number Lottery</span>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% block base%}
+            {%  endblock %}
+            
+        </main>
+
+        <footer>
+            <div class="bottombar_option flex_row">
+                <a href="{% url 'win' %}">
+                    <div class="flex_column">
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                        <span>Home</span>
+                    </div>
+                </a>
+                <a href="">
+                    <div class="flex_column">
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                        <span>Result</span>
+                    </div>
+                </a>
+                <a href="{% url 'mybet' %}">
+                    <div class="flex_column">
+                        <i class="fa fa-money" aria-hidden="true"></i>
+                        <span>My Bet</span>
+                    </div>
+                </a>
+                <a href="{% url 'bankcard' %}">
+                    <div class="flex_column">
+                        <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
+                        <span>Bank Card</span>
+                    </div>
+                </a>
+            </div>
+        </footer>
+    </div>
+        <div id="joinpopup" class="joinpopup">
+            <form   method="post">
+                {% csrf_token %}
+                <div class="header_pop flex_row">
+                    <input type="text" value='' id="joinpopup_title" class="popup_title" name="joingroup">
+                    <input type="text" value='' id="joinpopup_title" class="popup_title" name="joinnumber">
+                </div>
+
+                <div class="contractbody">
+                    <div class="contractmoney flex_column">
+                        <div class="contracttitle">
+                            <span>Contract Money</span>
+                        </div>
+                        <div class="contractt_box flex_row">
+                            <!-- 12,120,1200,6000,12000 -->
+                            <input type="text" name="btn1" id="ctbtn1" class="ctbtn"
+                                id="" value="12" readonly>
+                            <input type="text" name="btn2" id="ctbtn2" class="ctbtn"
+                                id="" value="120" readonly>
+                            <input type="text" name="btn3" id="ctbtn3" class="ctbtn"
+                                id="" value="1200" readonly>
+                            <input type="text" name="btn4" id="ctbtn4" class="ctbtn"
+                                id="" value="6000" readonly>
+                            <input type="text" name="btn5" id="ctbtn5" class="ctbtn"
+                                id="" value="12000" readonly>
+                        </div>
+                    </div>
+                    <div class="contractcount flex_column">
+                        <div class="contracttitle">
+                            <span>No of Ticket</span>
+                        </div>
+                        <div class="contract_box_count flex_row">
+                            <input type="button" name="minusbtn" id=""
+                                value="-" class="minus contractbtn">
+                                <input type="text" value=''class='contractcount' id="contractcount" readonly name="contractcount">
+                            <input type="button"  name="plusbtn" id=""
+                                value="+" class="plus contractbtn">
+                        </div>
+                    </div>
+                    <div class="totalcontract flex_row">
+                        <span>Total contract money is </span>
+                        <input type="text" value=''class='totalcontract' id="totalcontract" readonly name="totalcontractmoney">
+                            
+                    </div>
+                    <div class="contract_cancel_confirm_btn flex_row">
+                        <input type="button" value="Cancel" class="cancel">
+                        <input type="submit" value="Confirm" class="confirm">
+                    </div>
+                </div>
+            </form>
+        </div>
+</body>
+
+</html>

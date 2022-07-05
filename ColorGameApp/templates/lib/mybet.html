@@ -1,0 +1,36 @@
+{% extends "lib/base.html" %}
+{% block base %}
+<div class="mybetSelect_game flex_column">
+                                    
+    <div class="dashboard_title row mybet ">
+        <span class="col">USER</span>
+        <span class="col">PERIOD</span>
+        <span class="col">TIME</span>
+        <span class="col">GROUP</span>
+        <span class="col">NUMBER</span>
+        <span class="col">CONT_NUMBER</span>
+        <span class="col">TICKETS</span>
+        <span class="col">TOT_CONTR</span>
+    </div>                
+
+    <div class=" my_bet dashboardwinnerstatus table-wrapper-scroll-y my-custom-scrollbar">
+        
+       {% for i in playedgame reversed %}
+       <div class="flex_row details_winner row ">
+        <span class="col">{{ i.user }}</span>
+        <span class="col">{{ i.period }}</span>
+        <span class="col">{{ i.time }}</span>
+        <span class="col">{{ i.group }}</span>
+        <span class="col">{{ i.number }}</span>
+        <span class="col">{{ i.contractMoney }}</span>
+        <span class="col">{{ i.tickets }}</span>
+        <span class="col">{{ i.totalcontractMoney }}</span>
+       </div>
+       {% endfor %}
+       
+    </div>
+
+   
+  
+</div>
+{% endblock base %}

@@ -1,0 +1,13 @@
+{% extends 'lib/base.html' %} 
+{% block base %}
+<div class="row">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <input type="text" name="ifsc" id="" placeholder="ENTER IFSC">
+        <input type="text" name="accountnumber" id=""  placeholder="ENTER ACCOUNT NUMBER">
+        <input type="text" name="recipientname" id="" placeholder="ENTER RECIPIENT NAME">
+        <input type="text" name="upi" id="" placeholder="ENTER UPI">
+        <input type="submit" value="Submit">
+    </form>
+</div>
+{% endblock base %}

@@ -1,0 +1,472 @@
+{% extends 'lib/base.html' %}
+{% block base %}
+
+        <main>
+            <div class="row ">
+                <div class="tabbar_main">
+                    <div class=" flex_row justify-content-around">
+                        <div class="tabbar_row ">
+                           
+                                <div class="tab tabselected "><span>A1</span></div>
+                            
+                        </div>
+                        <div class=" tabbar_row ">
+                            
+                                <div class="tab"><span>B1</span></div>
+                           
+                        </div>
+                        <div class=" tabbar_row ">
+                           
+                                <div class="tab"><span>C1</span></div>
+                           
+                        </div>
+                        <div class="tabbar_row ">
+                            
+                                <div class="tab"><span>D1</span></div>
+                        
+                        </div>
+                    </div>
+                </div>
+                    <div class="play_details" id="gameA">
+
+                        <div class="main_play A tabshow  flex_row">
+                            <div class="play">
+                                <div class="count_tab flex_row">
+                                    <div class="period flex_row">
+                                        <span>Period:</span>
+                                        <span id="currentperiod"></span>
+                                    </div>
+                                    <div class="period flex_row">
+                                        <span>Count Down:</span>
+                                        <span id="periodcountdown">15:00</span>
+                                    </div>
+                                    
+                                </div>
+                                {% for lotteryimages in lotteryimages %}
+                                <div class="playimage bannerimage">
+                                    <img src="/media/{{ lotteryimages.lotteryimagegif1 }}" alt="not found">
+                                    <img src="/media/{{ lotteryimages.lotteryimagegif2 }}" alt="not found">
+                                </div>
+                                <div class="playimage playimagegif">
+                                    <img src="/media/{{ lotteryimages.lotteryimage1 }}" alt="not found">
+                                    <img src="/media/{{ lotteryimages.lotteryimage2 }}" alt="not found">
+                                </div>
+                                {% endfor %}
+                                <div class="selectgame_main">
+                                    <div class="numberjoin_main">
+                                        <form action="" name="numberform" class="numberform row col-md-12">
+                                            <div class="col-md-12 number024 flex_row">
+                                                <input type="button" name="btn0" value="0"
+                                                    
+                                                    class=" col-md-2 btn_effect r number_button ">
+                                                <input type="button" name="btn1" value="1"
+                                                    
+                                                    class=" col-md-2 btn_effect g number_button ">
+                                                <input type="button" name="btn2" value="2"
+                                                  
+                                                    class="col-md-2  btn_effect r number_button ">
+                                                <input type="button" name="btn3" value="3"
+                                                    
+                                                    class=" col-md-2 btn_effect g number_button ">
+                                                <input type="button" name="btn4" value="4"
+                                                    
+                                                    class="col-md-2  btn_effect r number_button ">
+                                            </div>
+                                            <div class="col-md-12 number529 flex_row">
+                                                <input type="button" value="5" name="btn5"
+                                                   
+                                                    class="col-md-2 btn_effect g number_button ">
+                                                <input type="button" value="6" name="btn6"
+                                                   
+                                                    class="col-md-2 btn_effect r number_button ">
+                                                <input type="button" value="7" name="btn7"
+                                                  
+                                                    class="col-md-2 btn_effect g number_button ">
+                                                <input type="button" value="8" name="btn8"
+                                                   
+                                                    class="col-md-2 btn_effect r number_button ">
+                                                <input type="button" value="9" name="btn9"
+                                                    
+                                                    class="col-md-2 btn_effect g number_button ">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="recorddetails">
+                                <div class="count_tab flex_row">
+                                    <div class="period flex_row">
+                                        <span>Date:</span>
+                                        <span>25-05-2022</span>
+                                    </div>
+                                    <div class="period flex_row">
+                                        <span>Time:</span>
+                                        <span class="realtime">00:00</span>
+                                    </div>
+                                </div>
+                                {% for lotteryimages in lotteryimages %}
+                                <div class="playimage bannerimage">
+                                    <img src="/media/{{ lotteryimages.lotteryimagegif3 }}" alt="not found">
+                                    <img src="/media/{{ lotteryimages.lotteryimagegif4 }}" alt="not found">
+                                </div>
+                                <div class="playimage playimagegif">
+                                    <img src="/media/{{ lotteryimages.lotteryimage3 }}" alt="not found">
+                                    <img src="/media/{{ lotteryimages.lotteryimage4 }}" alt="not found">
+                                </div>
+                                {% endfor %}
+                                <div class="selectgame_main flex_column">
+                                    
+                                   
+                                    <div class="dashboard_title row ">
+                                        <span class="col">Period</span>
+                                        <span class="col">Draw Time</span>
+                                        <span class="col">Winnig Number</span>
+                                    </div>
+                                    <div class="dashboardwinnerstatus table-wrapper-scroll-y my-custom-scrollbar">
+                                        
+                                       {% for i in playedgameA reversed %}
+                                       <div class="flex_row details_winner row ">
+                                        <span class="col">{{ i.period }}</span>
+                                        <span class="col">{{ i.time }}</span>
+                                        <span class="col">{{ i.group }}</span>
+                                       </div>
+                                       {% endfor %}
+                                       
+                                    </div>
+                                
+                                   
+                                  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="main_play B   flex_row">
+                            <div class="play">
+                                <div class="count_tab flex_row">
+                                    <div class="period flex_row">
+                                        <span>Count Down:</span>
+                                        <span class="countdownforgame">15:00</span>
+                                    </div>
+                                    
+                                </div>
+                                {% for lotteryimages in lotteryimages %}
+                                <div class="playimage bannerimage">
+                                    <img src="/media/{{ lotteryimages.lotteryimagegif1 }}" alt="not found">
+                                    <img src="/media/{{ lotteryimages.lotteryimagegif2 }}" alt="not found">
+                                </div>
+                                <div class="playimage playimagegif">
+                                    <img src="/media/{{ lotteryimages.lotteryimage1 }}" alt="not found">
+                                    <img src="/media/{{ lotteryimages.lotteryimage2 }}" alt="not found">
+                                </div>
+                                {% endfor %}
+                                <div class="selectgame_main">
+                                    <div class="numberjoin_main">
+                                        <form action="" name="numberform" class="numberform row col-md-12">
+                                            <div class="col-md-12 number024 flex_row">
+                                                <input type="button" name="btn0" value="0"
+                                                    
+                                                    class=" col-md-2 btn_effect r number_button ">
+                                                <input type="button" name="btn1" value="1"
+                                                    
+                                                    class=" col-md-2 btn_effect g number_button ">
+                                                <input type="button" name="btn2" value="2"
+                                                  
+                                                    class="col-md-2  btn_effect r number_button ">
+                                                <input type="button" name="btn3" value="3"
+                                                    
+                                                    class=" col-md-2 btn_effect g number_button ">
+                                                <input type="button" name="btn4" value="4"
+                                                    
+                                                    class="col-md-2  btn_effect r number_button ">
+                                            </div>
+                                            <div class="col-md-12 number529 flex_row">
+                                                <input type="button" value="5" name="btn5"
+                                                   
+                                                    class="col-md-2 btn_effect g number_button ">
+                                                <input type="button" value="6" name="btn6"
+                                                   
+                                                    class="col-md-2 btn_effect r number_button ">
+                                                <input type="button" value="7" name="btn7"
+                                                  
+                                                    class="col-md-2 btn_effect g number_button ">
+                                                <input type="button" value="8" name="btn8"
+                                                   
+                                                    class="col-md-2 btn_effect r number_button ">
+                                                <input type="button" value="9" name="btn9"
+                                                    
+                                                    class="col-md-2 btn_effect g number_button ">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="recorddetails">
+                                <div class="count_tab flex_row">
+                                    <div class="period flex_row">
+                                        <span>Date:</span>
+                                        <span>25-05-2022</span>
+                                    </div>
+                                    <div class="period flex_row">
+                                        <span>Time:</span>
+                                        <span class="realtime">00:00</span>
+                                    </div>
+                                </div>
+                                {% for lotteryimages in lotteryimages %}
+                                <div class="playimage bannerimage">
+                                    <img src="/media/{{ lotteryimages.lotteryimagegif3 }}" alt="not found">
+                                    <img src="/media/{{ lotteryimages.lotteryimagegif4 }}" alt="not found">
+                                </div>
+                                <div class="playimage playimagegif">
+                                    <img src="/media/{{ lotteryimages.lotteryimage3 }}" alt="not found">
+                                    <img src="/media/{{ lotteryimages.lotteryimage4 }}" alt="not found">
+                                </div>
+                                {% endfor %}
+                                <div class="selectgame_main flex_column">
+                                    
+                                   
+                                    <div class="dashboard_title row ">
+                                        <span class="col">Period</span>
+                                        <span class="col">Draw Time</span>
+                                        <span class="col">Winnig Number</span>
+                                    </div>
+                                    <div class="dashboardwinnerstatus table-wrapper-scroll-y my-custom-scrollbar">
+                                        
+                                       {% for i in playedgameB reversed %}
+                                       <div class="flex_row details_winner row ">
+                                        <span class="col">{{ i.period }}</span>
+                                        <span class="col">{{ i.time }}</span>
+                                        <span class="col">{{ i.group }}</span>
+                                       </div>
+                                       {% endfor %}
+                                       
+                                    </div>
+                                
+                                   
+                                  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="main_play C   flex_row">
+                            <div class="play">
+                                <div class="count_tab flex_row">
+                                    <div class="period flex_row">
+                                        <span>Count Down:</span>
+                                        <span class="countdownforgame">15:00</span>
+                                    </div>
+                                    
+                                </div>
+                                {% for lotteryimages in lotteryimages %}
+                                <div class="playimage bannerimage">
+                                    <img src="/media/{{ lotteryimages.lotteryimagegif1 }}" alt="not found">
+                                    <img src="/media/{{ lotteryimages.lotteryimagegif2 }}" alt="not found">
+                                </div>
+                                <div class="playimage playimagegif">
+                                    <img src="/media/{{ lotteryimages.lotteryimage1 }}" alt="not found">
+                                    <img src="/media/{{ lotteryimages.lotteryimage2 }}" alt="not found">
+                                </div>
+                                {% endfor %}
+                                <div class="selectgame_main">
+                                    <div class="numberjoin_main">
+                                        <form action="" name="numberform" class="numberform row col-md-12">
+                                            <div class="col-md-12 number024 flex_row">
+                                                <input type="button" name="btn0" value="0"
+                                                    
+                                                    class=" col-md-2 btn_effect r number_button ">
+                                                <input type="button" name="btn1" value="1"
+                                                    
+                                                    class=" col-md-2 btn_effect g number_button ">
+                                                <input type="button" name="btn2" value="2"
+                                                  
+                                                    class="col-md-2  btn_effect r number_button ">
+                                                <input type="button" name="btn3" value="3"
+                                                    
+                                                    class=" col-md-2 btn_effect g number_button ">
+                                                <input type="button" name="btn4" value="4"
+                                                    
+                                                    class="col-md-2  btn_effect r number_button ">
+                                            </div>
+                                            <div class="col-md-12 number529 flex_row">
+                                                <input type="button" value="5" name="btn5"
+                                                   
+                                                    class="col-md-2 btn_effect g number_button ">
+                                                <input type="button" value="6" name="btn6"
+                                                   
+                                                    class="col-md-2 btn_effect r number_button ">
+                                                <input type="button" value="7" name="btn7"
+                                                  
+                                                    class="col-md-2 btn_effect g number_button ">
+                                                <input type="button" value="8" name="btn8"
+                                                   
+                                                    class="col-md-2 btn_effect r number_button ">
+                                                <input type="button" value="9" name="btn9"
+                                                    
+                                                    class="col-md-2 btn_effect g number_button ">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="recorddetails">
+                                <div class="count_tab flex_row">
+                                    <div class="period flex_row">
+                                        <span>Date:</span>
+                                        <span>25-05-2022</span>
+                                    </div>
+                                    <div class="period flex_row">
+                                        <span>Time:</span>
+                                        <span class="realtime">00:00</span>
+                                    </div>
+                                </div>
+                                {% for lotteryimages in lotteryimages %}
+                                <div class="playimage bannerimage">
+                                    <img src="/media/{{ lotteryimages.lotteryimagegif3 }}" alt="not found">
+                                    <img src="/media/{{ lotteryimages.lotteryimagegif4 }}" alt="not found">
+                                </div>
+                                <div class="playimage playimagegif">
+                                    <img src="/media/{{ lotteryimages.lotteryimage3 }}" alt="not found">
+                                    <img src="/media/{{ lotteryimages.lotteryimage4 }}" alt="not found">
+                                </div>
+                                {% endfor %}
+                                <div class="selectgame_main flex_column">
+                                    
+                                   
+                                    <div class="dashboard_title row ">
+                                        <span class="col">Period</span>
+                                        <span class="col">Draw Time</span>
+                                        <span class="col">Winnig Number</span>
+                                    </div>
+                                    <div class="dashboardwinnerstatus table-wrapper-scroll-y my-custom-scrollbar">
+                                        
+                                       {% for i in playedgameC reversed %}
+                                       <div class="flex_row details_winner row ">
+                                        <span class="col">{{ i.period }}</span>
+                                        <span class="col">{{ i.time }}</span>
+                                        <span class="col">{{ i.group }}</span>
+                                       </div>
+                                       {% endfor %}
+                                       
+                                    </div>
+                                
+                                   
+                                  
+                                </div>
+                            </div>
+                        </div>
+                        <div class="main_play D   flex_row">
+                            <div class="play">
+                                <div class="count_tab flex_row">
+                                    <div class="period flex_row">
+                                        <span>Count Down:</span>
+                                        <span id='periodcountdown'></span>
+                                    </div>
+                                    
+                                </div>
+                                {% for lotteryimages in lotteryimages %}
+                                <div class="playimage bannerimage">
+                                    <img src="/media/{{ lotteryimages.lotteryimagegif1 }}" alt="not found">
+                                    <img src="/media/{{ lotteryimages.lotteryimagegif2 }}" alt="not found">
+                                </div>
+                                <div class="playimage playimagegif">
+                                    <img src="/media/{{ lotteryimages.lotteryimage1 }}" alt="not found">
+                                    <img src="/media/{{ lotteryimages.lotteryimage2 }}" alt="not found">
+                                </div>
+                                {% endfor %}
+                                <div class="selectgame_main">
+                                    <div class="numberjoin_main">
+                                        <form action="" name="numberform" class="numberform row col-md-12">
+                                            <div class="col-md-12 number024 flex_row">
+                                                <input type="button" name="btn0" value="0"
+                                                    
+                                                    class=" col-md-2 btn_effect r number_button ">
+                                                <input type="button" name="btn1" value="1"
+                                                    
+                                                    class=" col-md-2 btn_effect g number_button ">
+                                                <input type="button" name="btn2" value="2"
+                                                  
+                                                    class="col-md-2  btn_effect r number_button ">
+                                                <input type="button" name="btn3" value="3"
+                                                    
+                                                    class=" col-md-2 btn_effect g number_button ">
+                                                <input type="button" name="btn4" value="4"
+                                                    
+                                                    class="col-md-2  btn_effect r number_button ">
+                                            </div>
+                                            <div class="col-md-12 number529 flex_row">
+                                                <input type="button" value="5" name="btn5"
+                                                   
+                                                    class="col-md-2 btn_effect g number_button ">
+                                                <input type="button" value="6" name="btn6"
+                                                   
+                                                    class="col-md-2 btn_effect r number_button ">
+                                                <input type="button" value="7" name="btn7"
+                                                  
+                                                    class="col-md-2 btn_effect g number_button ">
+                                                <input type="button" value="8" name="btn8"
+                                                   
+                                                    class="col-md-2 btn_effect r number_button ">
+                                                <input type="button" value="9" name="btn9"
+                                                    
+                                                    class="col-md-2 btn_effect g number_button ">
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="recorddetails">
+                                <div class="count_tab flex_row">
+                                    <div class="period flex_row">
+                                        <span>Date:</span>
+                                        <span>25-05-2022</span>
+                                    </div>
+                                    <div class="period flex_row">
+                                        <span>Time:</span>
+                                        <span class="realtime">00:00</span>
+                                    </div>
+                                </div>
+                                {% for lotteryimages in lotteryimages %}
+                                <div class="playimage bannerimage">
+                                    <img src="/media/{{ lotteryimages.lotteryimagegif3 }}" alt="not found">
+                                    <img src="/media/{{ lotteryimages.lotteryimagegif4 }}" alt="not found">
+                                </div>
+                                <div class="playimage playimagegif">
+                                    <img src="/media/{{ lotteryimages.lotteryimage3 }}" alt="not found">
+                                    <img src="/media/{{ lotteryimages.lotteryimage4 }}" alt="not found">
+                                </div>
+                                {% endfor %}
+                                <div class="selectgame_main flex_column">
+                                    
+                                   
+                                    <div class="dashboard_title row ">
+                                        <span class="col">Period</span>
+                                        <span class="col">Draw Time</span>
+                                        <span class="col">Winnig Number</span>
+                                    </div>
+                                    <div class="dashboardwinnerstatus table-wrapper-scroll-y my-custom-scrollbar">
+                                        
+                                       {% for i in playedgameD reversed %}
+                                       <div class="flex_row details_winner row ">
+                                        <span class="col">{{ i.period }}</span>
+                                        <span class="col">{{ i.time }}</span>
+                                        <span class="col">{{ i.group }}</span>
+                                       </div>
+                                       {% endfor %}
+                                       
+                                    </div>
+                                
+                                   
+                                  
+                                </div>
+                            </div>
+                        </div>
+                        
+                       
+                        
+                    </div>
+                    
+                
+                
+
+            </div>
+            
+        </main>
+        
+{% endblock base %}
