@@ -33,5 +33,7 @@ urlpatterns = [
     path('win/', views.win, name='win'),
     path('win/bankcard/',views.bankcard,name='bankcard'),
     path('win/mybet/',views.mybet,name='mybet'),
+    path('win/recharge/',views.recharge,name='recharge'),
+    path('win/withdraw/',views.withdraw,name='withdraw'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

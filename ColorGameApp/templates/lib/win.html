@@ -1,4 +1,6 @@
 {% extends 'lib/winbase.html' %}
+{% load static %}
+<script src="{% static "colorgame/winscript.js" %}"></script>
 {% block winbaseA %}
 {% for i in resultgroupA reversed %}
 <div class="flex_row details_winner row ">

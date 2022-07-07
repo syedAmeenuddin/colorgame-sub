@@ -486,7 +486,7 @@ footer {
 }
 
 .g {
-    background-color: #39B54A;
+    background-color: #1bff3b;
     color: #fff;
 }
 
@@ -496,10 +496,17 @@ footer {
 }
 
 .r {
-    background-color: #E54D42;
+    background-color: #ff0032;
     color: #fff;
 }
-
+.numberbtn input{
+    /* background-color: #c3c3c3 !important;
+    pointer-events: none; */
+}
+.hidenumberbtn input{
+    background-color: #e0e0e0 !important;
+    pointer-events: none;
+}
 .scolor::after {
     content: "";
     background-color: #39B54A !important;
@@ -810,10 +817,6 @@ footer {
     background-color: #8e0a24;
 }
 
-.tab:hover{
-    transition: 0.5s;
-    opacity: 0.7;
-}
 .tabhide,.main_play{
     display: none;
 }
@@ -1220,25 +1223,77 @@ tr{
 .bankcard_pge{
     color: white;
 }
+.addbank{
+    position: absolute;
+    bottom: 13vh;
+    right: 10px;
+}
+.submitbankdetails input{
+    
+    width: 20vw;
+    background: transparent;
+    color: white;
+    border: 1px solid crimson;
+    border-radius: 2px 10px;
+    padding: 5px;
+    font-size: 13px;
+    margin: 5px 0px;
+}
 .editbank span,.addbank span{
     margin: 5px;
     padding: 10px;
     border: 1px solid crimson;
-    border-radius: 15px;
+    border-radius: 2px 10px;
     display: flex;
+    width: 20vw;
     justify-content: center;
+    cursor: pointer;
     align-items: center;
     font-size: 13px;
+}
+.jc{
+    justify-content: center;
+}
+.alic{
+align-items: center;
 }
 .bcdetailscard{
     padding: 2px 0px;
 }
-.label_bc{
-    padding: 0px 5px;
+.title_bcd{
     font-weight: bold;
     letter-spacing: 2px;
+    font-size: 12px;
 }
-.displaybox_bc input{
-font-size: 14px;
+.label_bc{
+    padding: 5px 5px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    border: 1px solid crimson;
+    border-radius: 6px;
+    text-align: center;
+    width: 40vw;
 }
+input:focus, textarea:focus, select:focus{
+    outline: none;
+}
+.label_bc input{
+    font-size: 13px;
+    width: 40vw;
+    background: transparent;
+    color: white;
+    height: auto;
+    border: 0px solid transparent;
+    border-color: transparent;
+}
+.sbc_child{
+    display: flex;
+    flex-direction: column;
+    padding :2px 5px;
+}
+.displaybox_bc{}
 /* end */
+.recharge_pg{
+    color: white;
+}

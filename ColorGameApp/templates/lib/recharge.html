@@ -1,0 +1,22 @@
+{% extends 'lib/base.html' %}
+{% load static %}
+{% block base %}
+<script src="{% static "colorgame/winscript.js" %}"></script>
+<div class="recharge_pg">
+    <form action="" method="GET">
+        {% csrf_token %}
+    
+        <div class="flex_Column jc alic" >
+            <div class="sbc_child">
+                <span class="title_bcd">Enter Recharge Amount</span>
+                <span class="label_bc"><input type="text" name="rechargeamount" id=""></span>
+            </div>
+            <div class="submitbankdetails flex_row jc alic">
+                <input type="submit" value="Submit">
+              </div>
+        </div>
+    
+    </form>
+</div>
+{% endblock base %}
+

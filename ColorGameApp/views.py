@@ -5,19 +5,8 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from datetime import datetime
 import pytz
-def countdown():
-    Intz = pytz.timezone('Asia/Kolkata')
-    now = datetime.now(Intz)
-    m = now.strftime('%M')
-    s = now.strftime('%S')
-    m = 14-(int(m)%15)
-    s = 60-int(s)
-    if (int(s)<10):
-        s = '0'+str(s)
-    if int(m) <1:
-        return False
-    else:
-        return True
+from .scheduler import countdown, period, GameTime, ResultTime
+
 def register(request):
     if request.method == "POST":
         userid = request.POST['mobilenumber']
@@ -42,6 +31,10 @@ def register(request):
 
     return render(request, 'lib/register.html')
 
+
+
+
+
 def signin(request):
     if request.method == "POST":
         userid = request.POST['mobilenumber']
@@ -64,6 +57,11 @@ def signin(request):
             return redirect('signin')
 
     return render(request, 'lib/signin.html')
+
+
+
+
+
 def forgotpassword(request):
     if request.method == "POST":
         userid = request.POST['mobilenumber']
@@ -83,6 +81,10 @@ def forgotpassword(request):
             return redirect('forgotpassword')
 
     return render(request, 'lib/forgotpassword.html')
+
+
+
+
 def win(request):
     isloged = request.session.get('isloged',False)
     currentuser = request.user
@@ -90,7 +92,7 @@ def win(request):
         Intz = pytz.timezone('Asia/Kolkata')
         now = datetime.now(Intz)
         nowTime = now.strftime('%I:%M:%S %p')
-        nowDate = now.strftime('%Y-%m-%d')
+        nowDate = now.strftime('%d-%m-%Y')
         fullDate = now.strftime('%d/%m/%Y %I:%M:%S %p')
         authUser = user.objects.get(username=currentuser)
         if request.method == "POST":   
@@ -99,30 +101,15 @@ def win(request):
             contractmoney = request.POST['contractmoney']
             contractcount = request.POST['contractcount']
             totalcontractmoney = request.POST['totalcontractmoney']
-            hour= now.hour
-            tmin = now.minute
-            hor = int(hour) * 60
-            _ur =  int(hor) + int(tmin)
-            game = int(_ur)/15
-            game = int(game+1)
-            nowPeriod=str(game)
-            print(len(nowPeriod))
-            if(len(nowPeriod)==1):
-                nowPeriod='00'+nowPeriod
-            if(len(nowPeriod)==2):
-                nowPeriod='0'+nowPeriod
-            gamePeriod = nowDate+nowPeriod
-            gamePeriod = gamePeriod.replace('-', '')
             wallet = authUser.walletBalance
             joingroup = group.objects.get(groupName=joingroup)
-            print(joingroup)
             if authUser.walletBalance ==None:
                 wallet = 0          
             if int(totalcontractmoney)<=int(wallet) and countdown():
                 try:
                     creatgamedetails = gameDetails(
                     user = authUser, 
-                    period = gamePeriod,
+                    period = period(),
                     date = fullDate,
                     time = nowTime,
                     group = joingroup,
@@ -141,7 +128,6 @@ def win(request):
                     return redirect('win')
             else:
                 return redirect('win')
-            
         rA = results.objects.filter(group='1',date = nowDate)
         rB = results.objects.filter(group='2',date = nowDate)
         rC = results.objects.filter(group='3',date = nowDate)
@@ -162,6 +148,8 @@ def win(request):
             if counta==0:
                 counta+=1
                 tabAwinner = i.result
+                print('hello')
+                print(tabAwinner)
         for i in listB:
             if countb==0:
                 countb+=1
@@ -190,10 +178,16 @@ def win(request):
         ,'tab2name':groupname[2]
         ,'tab3name':groupname[3]
         ,'wallet':0 if authUser.walletBalance==None else authUser.walletBalance
+        ,'GameTime':GameTime
+        ,'ResultTime':ResultTime
         })
     else:
         messages.success(request,'First Login to access game !')
         return redirect('signin')
+    
+    
+    
+    
 def bankcard(request):
     isloged = request.session.get('isloged',False)
     if isloged:
@@ -212,16 +206,23 @@ def bankcard(request):
                 messages.success(request,'saved successfully')
                 return redirect('bankcard')
             else:
-                print('null')
+                messages.success(request,'enter all field correctly')
+                return redirect('bankcard')
         getbankdetails  = bankDetails.objects.filter(user =authUser )
+        getupidetails = upiDetails.objects.filter(user = authUser )
         return render(request, 'lib/manage_bankcard.html'
                       ,{'wallet':0 if authUser.walletBalance==None else authUser.walletBalance
                         ,'bank':getbankdetails
-                        
+                        ,'upi':getupidetails
+                        ,'addbank':True if len(getbankdetails)==0 else False
                         })
     else:
         messages.success(request,'First Login to access game !')
         return redirect('signin')
+    
+    
+    
+    
 def mybet(request):
     isloged = request.session.get('isloged',False)
     if isloged:
@@ -229,7 +230,8 @@ def mybet(request):
         Intz = pytz.timezone('Asia/Kolkata')
         now = datetime.now(Intz)
         nowTime = now.strftime('%I:%M:%S %p')
-        nowDate = now.strftime('%Y-%m-%d')
+        nowDate = now.strftime('%d-%m-%Y')
+        fullDate = now.strftime('%d/%m/%Y')
         authUser = user.objects.get(username=request.user)
         _gd = gameDetails.objects.filter(user = authUser)
         return render(request, 'lib/mybet.html'
@@ -240,3 +242,28 @@ def mybet(request):
     else:
         messages.success(request,'First Login to access game !')
         return redirect('signin')
+    
+    
+    
+    
+def recharge(request):
+    isloged = request.session.get('isloged',False)
+    if isloged:
+        authUser = user.objects.get(username=request.user)
+        return render(request, 'lib/recharge.html',{'wallet': 0 if authUser.walletBalance==None else authUser.walletBalance})
+    else:
+        messages.success(request,'First Login to access game !')
+        return redirect('signin')
+    
+    
+    
+    
+def withdraw(request):
+    isloged = request.session.get('isloged',False)
+    if isloged:
+        authUser = user.objects.get(username=request.user)
+        return render(request, 'lib/withdraw.html',{'wallet': 0 if authUser.walletBalance==None else authUser.walletBalance})
+    else:
+        messages.success(request,'First Login to access game !')
+        return redirect('signin')
+        

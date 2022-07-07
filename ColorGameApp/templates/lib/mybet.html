@@ -1,13 +1,15 @@
 {% extends "lib/base.html" %}
+{% load static %}
 {% block base %}
+<script src="{% static "colorgame/winscript.js" %}"></script>
 <div class="mybetSelect_game flex_column">
                                     
     <div class="dashboard_title row mybet ">
-        <span class="col">USER</span>
         <span class="col">PERIOD</span>
         <span class="col">TIME</span>
         <span class="col">GROUP</span>
-        <span class="col">NUMBER</span>
+        <span class="col">BET NUMBER</span>
+        <span class="col">RESULT NUMBER</span>
         <span class="col">CONT_NUMBER</span>
         <span class="col">TICKETS</span>
         <span class="col">TOT_CONTR</span>
@@ -17,11 +19,11 @@
         
        {% for i in playedgame reversed %}
        <div class="flex_row details_winner row ">
-        <span class="col">{{ i.user }}</span>
         <span class="col">{{ i.period }}</span>
         <span class="col">{{ i.time }}</span>
         <span class="col">{{ i.group }}</span>
         <span class="col">{{ i.number }}</span>
+        <span class="col">{{ i.resultId }}</span>
         <span class="col">{{ i.contractMoney }}</span>
         <span class="col">{{ i.tickets }}</span>
         <span class="col">{{ i.totalcontractMoney }}</span>

@@ -26,7 +26,8 @@ SECRET_KEY = 'django-insecure-f^si@3if8q_j(4)pjy+(@j!5&jqi8huvh5s0=6l-!h(197afkb
 DEBUG = True
 
 ALLOWED_HOSTS = ['djangocolorwiz.azurewebsites.net','*']
-
+GAMETIME = 15
+RESULTTIME = 60 # ONLY IN SECONDS (eg: 2 MINUTES IS EQUAL TO 120 SECONDS)
 CSRF_TRUSTED_ORIGINS = ['https://djangocolorwiz.azurewebsites.net','djangocolorwiz.azurewebsites.net','*']
 # Application definition
 

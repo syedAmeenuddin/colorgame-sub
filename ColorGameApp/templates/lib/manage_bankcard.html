@@ -1,54 +1,92 @@
 {% extends 'lib/base.html' %} 
+{% load static %}
 {% block base %}
+<script src="{% static "colorgame/winscript.js" %}"></script>
 <div class="bankcard_pge">
-        <div class="showbankdetails">
-
-            {% for i in bank  %}
-            <div class="bcdetailscard flex_row">
-                <div class="label_bc">
-                    <span>Recipient Name</span>
+    {% for i in bank  %}
+    <div class="showbankdetails">
+        <div class="shwbakdet_card">
+            <div class="flex_row jc alic" >
+                <div class="sbc_child">
+                    <span class="title_bcd">Card Holder Name</span>
+                    <span class="label_bc">{{ i.recipientName }}</span>
                 </div>
-                <div class="displaybox_bc">
-                    <input type="text" name="ifsc" id="" placeholder="ENTER IFSC" value="{{ bank.recipientName }}" readonly>
-                </div>
-            </div>
-            <div class="bcdetailscard flex_row">
-                <div class="label_bc">
-                    <span>Account Number</span>
-                </div>
-                <div class="displaybox_bc">
-                    <input type="text" name="ifsc" id="" placeholder="ENTER IFSC" value="{bank.accountNumber}" readonly>
+                <div class="sbc_child">
+                    <span class="title_bcd">Account Number</span>
+                    <span class="label_bc">{{ i.accountNumber }}</span>
                 </div>
             </div>
-            <div class="bcdetailscard flex_row">
-                <div class="label_bc">
-                    <span>IFSC</span>
+            <div class="flex_row jc" >
+                <div class="sbc_child">
+                    <span class="title_bcd">IFSC Number</span>
+                    <span class="label_bc">{{ i.ifsc }}</span>
                 </div>
-                <div class="displaybox_bc">
-                    <input type="text" name="ifsc" id="" placeholder="ENTER IFSC" value="{bank.ifsc}" readonly>
+                
+                <div class="upi_card">
+                    {% for i in upi %}
+                    <div class="sbc_child">
+                        <span class="title_bcd">Upi</span>
+                        <span class="label_bc">{{ i.upi }}</span>
+                    </div>
+                    {% endfor %}
                 </div>
+                
+                
             </div>
-            {% endfor %}
-
-            
+            <div class="bankcardbtn flex_row jc alic">
+                <div class="editbank"><span>Edit ?</span></div>
+            </div>
         </div>
+    
+</div>
+    
+    {% endfor %}
+        
+        
+             <form action="" method="POST">
+        {% csrf_token %}
+        <div class="addbakdet_card tabhide">
+            <div class="flex_row jc alic" >
+                <div class="sbc_child">
+                    <span class="title_bcd">Enter Card Holder Name</span>
+                    <span class="label_bc"><input type="text" name="recipientname" id=""></span>
+                </div>
+                <div class="sbc_child">
+                    <span class="title_bcd">Enter Account Number</span>
+                    <span class="label_bc"><input type="text" name="accountnumber" id=""></span>
+                </div>
+            </div>
+            <div class="flex_row jc alic" >
+                <div class="sbc_child">
+                    <span class="title_bcd">Enter IFSC Number</span>
+                    <span class="label_bc"><input type="text" name="ifsc" id=""></span>
+                </div>
+                <div class="sbc_child">
+                    <span class="title_bcd">Enter UPI ID</span>
+                    <span class="label_bc"><input type="text" name="upi" id=""></span>
+                </div>
+            </div>
+            <div class="submitbankdetails flex_row jc alic">
 
-
-
-
-        <div class="bankcardbtn flex_row">
-            <div class="editbank"><span>Edit Bank Details</span></div>
-            <div class="addbank"><span>Add Bank Details</span></div>
+        
+                <input type="submit" value="Submit">
+              </div>
         </div>
+        
+        
+    </form> 
+
+    
+    {% if addbank %}
+    <div class="bankcardbtn flex_row center">
+        <div class="addbank"><span>Add Bank Details</span></div>
+    </div>
+    {% endif %}
+        
+        
+      
 </div>
 
-    {% comment %} <form action="" method="POST">
-        {% csrf_token %}
-        <input type="text" name="ifsc" id="" placeholder="ENTER IFSC">
-        <input type="text" name="accountnumber" id=""  placeholder="ENTER ACCOUNT NUMBER">
-        <input type="text" name="recipientname" id="" placeholder="ENTER RECIPIENT NAME">
-        <input type="text" name="upi" id="" placeholder="ENTER UPI">
-        <input type="submit" value="Submit">
-    </form> {% endcomment %}
+    
 
 {% endblock base %}

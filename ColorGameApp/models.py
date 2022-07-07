@@ -43,13 +43,13 @@ class group(models.Model):
         return str(self.groupName)
 class results(models.Model):
     resultId =  models.AutoField(primary_key=True,blank=False)
+    group = models.ForeignKey(group,blank=True,on_delete=models.CASCADE)
     result = models.CharField(blank=True,max_length=100)
     period =models.CharField(blank=True,max_length=50)
     date = models.CharField(blank=True,max_length=100)
     time = models.CharField(blank=True,max_length=100)
-    group = models.ForeignKey(group,blank=True,on_delete=models.CASCADE)
     def __str__(self):
-        return str(self.resultId)
+        return str(self.result)
 class gameDetails(models.Model):
     gameId = models.AutoField(primary_key=True,blank=True)
     resultId = models.ForeignKey(results,blank=True,on_delete=models.CASCADE,null=True)

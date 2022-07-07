@@ -1,5 +1,63 @@
 {% extends 'lib/base.html' %}
+{% load static %}
 {% block base %}
+<script src="{% static "colorgame/winscript.js" %}"></script>
+<script>
+    function period(){
+        let d = new Date();
+        let hour = d.getHours();
+        let min = d.getMinutes();
+        let year = d.getFullYear();
+        let month = d.getMonth()+1;
+        let date = d.getDate();
+        let hor = hour * 60;
+        let ur =  hor + min;
+        let game = ur/{{ GameTime }};
+        game = parseInt(game+1);
+        let gameperiod = game.toString();
+        if ([date].length<2){
+            date = '0'+date;
+        }
+        if([month].length<2){
+            month='0'+month;
+        }
+        if(gameperiod.length==1){
+            gameperiod="00"+gameperiod;
+        }
+        if(gameperiod.length==2){
+            gameperiod="0"+gameperiod;
+        }
+        let periodfulldate = `${year}${month}${date}${gameperiod}`;
+        // document.getElementById("game").innerHTML = parseInt(game+1);
+        $('#currentperiod').html(periodfulldate);
+    }
+    setInterval(period, 1000);
+    function countdown(){
+		let dt = new Date();
+		let m = dt.getMinutes();
+		let s = dt.getSeconds();
+		m = s ? ({{GameTime}} - 1) - (m % {{ GameTime }}) : {{ GameTime }} - (m % {{ GameTime }});
+		if (s) {
+			s = 60 - s;
+		}
+		if (s<10){
+			s='0'+s;
+		}
+		$('#periodcountdown').html(m+":"+s);
+        let mintsInSecs = m * 60;
+        let total_secs = mintsInSecs + parseInt(s);
+        if (total_secs < {{ ResultTime }}){
+            $('.numberbtn').addClass('hidenumberbtn');
+        }else{
+			$('.numberbtn').removeClass('hidenumberbtn');
+		}
+		if(parseInt(m)==0 && parseInt(s)==1){
+			location.reload();
+		}
+		};
+		setInterval(countdown, 1000);
+
+    </script>
 <main class='winpage'>
             <div class="row ">
                     <div class="tabbar_main">
@@ -37,7 +95,7 @@
                                     </div>
                                     <div class="period flex_row">
                                         <span>Count Down:</span>
-                                        <span id="periodcountdown">15:00</span>
+                                        <span id="periodcountdown"></span>
                                     </div>
                                     
                                 </div>
@@ -54,7 +112,7 @@
                                 <div class="selectgame_main">
                                     <div class="numberjoin_main">
                                         <form action="" name="numberform" class="numberform row col-md-12">
-                                            <div class="col-md-12 number024 flex_row">
+                                            <div class="col-md-12 number024 flex_row numberbtn">
                                                 <input type="button" name="btn0" value="0"
                                                     
                                                     class=" col-md-2 btn_effect r number_button ">
@@ -71,7 +129,7 @@
                                                     
                                                     class="col-md-2  btn_effect r number_button ">
                                             </div>
-                                            <div class="col-md-12 number529 flex_row">
+                                            <div class="col-md-12 number529 flex_row numberbtn">
                                                 <input type="button" value="5" name="btn5"
                                                    
                                                     class="col-md-2 btn_effect g number_button ">
