@@ -58,36 +58,34 @@
                 </div>
                 {% endfor %}
         {% endif %}
-        <form name="form" method="get" autocomplete="off" id="register_form">
+        <form name="form" method="POST" autocomplete="off" id="register_form">
            {% csrf_token %}
             <div class="input_icon_textB">
                 <i class="fa fa-mobile" aria-hidden="true" ></i>
                 <input class="inputformbox DigitsOnly"  type="tel" name="mobilenumber" id="PhoneNumber" value="{{ userid }}"placeholder="Mobile Number" maxlength="10">
-                {% comment %} <div class="login_button btnOTP btnSendOTP" > {% endcomment %}
                    <input class="login_button btnOTP btnSendOTP" type="submit" name="sendotp" id="" value="SendOTP">
-            {% comment %} </div> {% endcomment %}
             </div>
+
             <div class="input_icon_textB">
                 <i class="fa fa-key" aria-hidden="true"></i>
                 <input type="tel"  id="otp" name="otp" class="inputformbox DigitsOnly"  maxlength="6"  placeholder="OTP"  >
                 <div class="login_button btnOTP btnVerifyOTP disablediv" >
                         Verify OTP
                 </div>
-              </div>
+              
+            </div>
+
             <div class="input_icon_textB">
             <i class="fa fa-lock" aria-hidden="true"></i>
             <input class="inputformbox" type="password" name="password" id="txtpassword" placeholder="Password" disabled>
              </div>
+
         <div class="loginButtonForm">
             <div class="">
                 <input class="login_button" type="submit" id="btnRegister" value="Register" disabled>
             </div>
         </div>
-        <!-- <div class="flex_row register_forgot">
-             <div >
-            <a href="login/"><input class="registerbtn"  type="button" value="Login ?"></a>
-         </div>  -->
-        </div>
+        
         </form>
 
     </div>
