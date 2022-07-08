@@ -14,7 +14,11 @@ let getlocalstoragetTabName = localStorage.getItem("tabName");
 let hello;
 // let otpcount = 0;
 $(document).ready(function () {
-	$('.loader').hide();
+	function hideLoader()
+        {
+            $('.loader').hide();
+        }
+        setTimeout(hideLoader, 1000);
 	// add default selected tab
 	if(getlocalstoragetTabName!=null){
 		tabname = getlocalstoragetTabName[0]
