@@ -32,6 +32,12 @@
 </head>
 
 <body>
+<div class="loader">
+    <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
     <div class="Maincontainer">
         <header>
             <div class="row appBar_header col-md-12 col-12">
@@ -69,11 +75,16 @@
 
         <main>
             {% if messages %}
-                <ul class="messages">
-                    {% for message in messages %}
-                    <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
-                    {% endfor %}
-                </ul>
+                {% for message in messages %}
+                    <div class="message_info">
+                    <div class="alert alert-dismissible alert-success">
+                    <button type="button" class="close" data-dismiss="alert">
+                    ×
+                    </button>
+                    <strong>{{ message }}</strong>
+                    </div>
+                </div>
+                {% endfor %}
             {% endif %}
             {% block base%}
 
@@ -173,6 +184,7 @@
                 </div>
             </form>
         </div>
+    
 </body>
 
 </html>

@@ -1,5 +1,16 @@
 let otpcount = 0;
 $(document).ready(function () {
+	$('.loader').hide();
+	$('.login_button').on('click',function(){
+		$('.loader').show();
+	})
+	$('.registerbtn').on('click',function(){
+		$('.loader').show();
+	})
+	$('.forgotbtn').on('click',function(){
+		$('.loader').show();
+	})
+	
 	$('.DigitsOnly').keyup(function(){
 		this.value = this.value.replace(/[^\d]/g,'');
 	})
@@ -23,6 +34,7 @@ $(document).ready(function () {
 		if($("#PhoneNumber").val() != "" && $("#PhoneNumber").val().length == 10)
 		{
 			$('.btnVerifyOTP').removeClass('disablediv');
+			$('.btnSendOTP').prop('disabled',true);
 			$('.btnSendOTP').addClass('disablediv');
 			if (otpcount==0 || otpcount==1){
 				otpcount+=1
@@ -34,8 +46,10 @@ $(document).ready(function () {
 				$('.btnSendOTP').addClass('disablediv');
 				$('.btnVerifyOTP').addClass('disablediv');
 			}
-			
-			
+		}
+		else {
+			alert('enter mobile number and mobile number should have 10 digits');
+		 }
 			function resendOTP(){
 				if (otpcount==0 || otpcount==1){
 				$('.btnSendOTP').removeClass('disablediv');
@@ -45,7 +59,7 @@ $(document).ready(function () {
 					$('.btnSendOTP').addClass('disablediv');
 				}
 			}
-		}
+		
 	});
 
 	$('.btnVerifyOTP').on('click',function(){
@@ -60,6 +74,11 @@ $(document).ready(function () {
 			alert('check entered OTP!');
 		}
 	});
+	
+	
+
+
+
 })
 function isVerified(val){
 	console.log(val);
@@ -79,3 +98,11 @@ function isVerified(val){
 		alert('Invalid OTP')
 	}
 }
+// function LoginValidateForm(){
+// let _form = document.forms["form"];
+// console.log(_form.mobilenumber.value.length)
+// if (_form.mobilenumber.value.length!=10 || _form.password.value.length<8){
+// 	alert('mobile number should have 10 digits and password should have more than 8 characters');
+// 	// return true;
+// }
+// }

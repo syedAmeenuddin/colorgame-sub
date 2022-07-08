@@ -24,6 +24,11 @@
         <script src="{% static "colorgame/script.js" %}"></script>
     </head>
     <body>
+        <div class="loader">
+            <div class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
         <div class="login">
 <div class="navbar">
     <div class="flex_row">
@@ -42,20 +47,25 @@
 <div class="login_body">
     <div class="loginform">
         {% if messages %}
-            <ul class="messages">
                 {% for message in messages %}
-                <li  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> {{ message }} </li>
+                    <div class="message_info">
+                    <div class="alert alert-dismissible alert-success">
+                    <button type="button" class="close" data-dismiss="alert">
+                    ×
+                    </button>
+                    <strong>{{ message }}</strong>
+                    </div>
+                </div>
                 {% endfor %}
-            </ul>
         {% endif %}
-        <form name="form" method="post" autocomplete="off" id="register_form">
+        <form name="form" method="POST" autocomplete="off" id="register_form">
            {% csrf_token %}
             <div class="input_icon_textB">
                 <i class="fa fa-mobile" aria-hidden="true" ></i>
                 <input class="inputformbox DigitsOnly"  type="tel" name="mobilenumber" id="PhoneNumber" value="{{ userid }}"placeholder="Mobile Number" maxlength="10">
-                <div class="login_button btnOTP btnSendOTP" >
-                   Send OTP
-            </div>
+                {% comment %} <div class="login_button btnOTP btnSendOTP" > {% endcomment %}
+                   <input class="login_button btnOTP btnSendOTP" type="submit" name="sendotp" id="" value="SendOTP">
+            {% comment %} </div> {% endcomment %}
             </div>
             <div class="input_icon_textB">
                 <i class="fa fa-key" aria-hidden="true"></i>

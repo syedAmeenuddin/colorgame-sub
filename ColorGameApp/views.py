@@ -9,23 +9,29 @@ from .scheduler import countdown, period, GameTime, ResultTime
 
 def register(request):
     if request.method == "POST":
-        userid = request.POST['mobilenumber']
-        password = request.POST['password']
-        if len(userid)==10 and len(password)>=8:
-            try:
-                registeruser = User.objects.create_user(userid,None,password)
-                registeruser.save()
-                messages.success(request,'successfully registered')
-                # moving auth User to user model
-                authUser = User.objects.get(username=userid)
-                moveusertomodeluser = user(username = authUser)
-                moveusertomodeluser.save()
-                # end
-                return redirect('signin')
-            except:
-                messages.success(request,'entered mobile number is already registered !')
+        try:
+            userid = request.POST['mobilenumber']
+            password = request.POST['password']
+            sendotpcheck = request.POST['sendotp']
+            print(sendotpcheck)
+            if len(userid)==10 and len(password)>=8:
+                try:
+                    registeruser = User.objects.create_user(userid,None,password)
+                    registeruser.save()
+                    messages.success(request,'successfully registered')
+                    # moving auth User to user model
+                    authUser = User.objects.get(username=userid)
+                    moveusertomodeluser = user(username = authUser)
+                    moveusertomodeluser.save()
+                    # end
+                    return redirect('signin')
+                except:
+                    messages.success(request,'entered mobile number is already registered !')
+                    return redirect('register')
+            else:
+                messages.success(request,'enter mobileNumber with 10 digit | password should be above 8 char')
                 return redirect('register')
-        else:
+        except:
             messages.success(request,'enter mobileNumber with 10 digit | password should be above 8 char')
             return redirect('register')
 
@@ -40,20 +46,23 @@ def signin(request):
         userid = request.POST['mobilenumber']
         password = request.POST['password'] 
         if len(userid)==10 and len(password)>=8:
-            user = authenticate(username=userid, password=password)
-            if user is not None:
-                login(request,user)
-                isloged = True
-                request.session['userid'] = userid
-                request.session['isloged'] = isloged
-                return redirect('win')
-
-            else:
-                messages.success(request,'entered mobile number or password was incorrect !')
+            try:
+                User.objects.get(username =userid )
+                user = authenticate(username=userid, password=password)
+                if user is not None:
+                    login(request,user)
+                    isloged = True
+                    request.session['userid'] = userid
+                    request.session['isloged'] = isloged
+                    return redirect('win')
+                else:
+                    messages.success(request,'entered password is incorrect !')
+                    return render(request, 'lib/signin.html',{'mobilenumber':userid})
+            except:
+                messages.success(request,'entered mobile number is not exist! please register or check ur number again')
                 return redirect('signin')
-        
         else:
-            messages.success(request,'entered mobile number and password ! to login')
+            messages.success(request,'mobile number 10 digits and password more than 8 characters should be entered')
             return redirect('signin')
 
     return render(request, 'lib/signin.html')

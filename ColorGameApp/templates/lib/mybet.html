@@ -2,8 +2,19 @@
 {% load static %}
 {% block base %}
 <script src="{% static "colorgame/winscript.js" %}"></script>
+<script>
+    function countdown(){
+		let dt = new Date();
+		let m = dt.getMinutes();
+		let s = dt.getSeconds();
+        if(parseInt(m)==0 && parseInt(s)==1){
+			location.reload();
+		}
+    }
+setInterval(countdown, 1000);
+
+</script>
 <div class="mybetSelect_game flex_column">
-                                    
     <div class="dashboard_title row mybet ">
         <span class="col">PERIOD</span>
         <span class="col">TIME</span>
@@ -14,7 +25,6 @@
         <span class="col">TICKETS</span>
         <span class="col">TOT_CONTR</span>
     </div>                
-
     <div class=" my_bet dashboardwinnerstatus table-wrapper-scroll-y my-custom-scrollbar">
         
        {% for i in playedgame reversed %}
@@ -35,4 +45,8 @@
    
   
 </div>
+
+
+
+
 {% endblock base %}

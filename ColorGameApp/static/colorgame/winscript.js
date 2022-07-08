@@ -10,8 +10,21 @@ var curentminutes;
 var curentseconds;
 var currentacctbalance=$('.balanceamt').text();
 var cab=currentacctbalance;
+let getlocalstoragetTabName = localStorage.getItem("tabName");
+let hello;
 // let otpcount = 0;
 $(document).ready(function () {
+	$('.loader').hide();
+	// add default selected tab
+	if(getlocalstoragetTabName!=null){
+		tabname = getlocalstoragetTabName[0]
+		current_tabbar = tabname[0]
+		$('.tab').removeClass('tabselected');
+		$('.'+tabname+'tab').addClass('tabselected');
+		$('.main_play').removeClass('tabshow');
+		$('.' + tabname).addClass('tabshow');
+	}
+	// end 
 	$('.DigitsOnly').keyup(function(){
 		this.value = this.value.replace(/[^\d]/g,'');
 	})
@@ -96,6 +109,7 @@ $(document).ready(function () {
 		$('.tab').removeClass('tabselected');
 		$(this).addClass('tabselected');
 		let tabbar = $(this).text();
+		localStorage.setItem("tabName", $(this).text());
 		current_tabbar = tabbar[0];
 		$('.main_play').removeClass('tabshow');
 		$('.' + current_tabbar).addClass('tabshow');
