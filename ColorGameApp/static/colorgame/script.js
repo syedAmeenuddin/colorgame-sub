@@ -40,7 +40,7 @@ $(document).ready(function () {
 				otpcount+=1
 				setTimeout(resendOTP, 60000);
 				alert('OTP Sent');
-				Android.SendVerificationCode('+91'+$("#PhoneNumber").val());
+				// Android.SendVerificationCode('+91'+$("#PhoneNumber").val());
 			}
 			else{
 				alert('try again after 24hrs!');

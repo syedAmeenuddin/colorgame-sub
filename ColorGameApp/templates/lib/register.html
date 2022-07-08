@@ -29,68 +29,78 @@
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
-        <div class="login">
-<div class="navbar">
-    <div class="flex_row">
-        <div class="back_icon">
-            <!-- <a onclick="goBack()"> -->
-                <a href="{% url 'signin' %}">
-                <i class="fa fa-arrow-left"></i>
-            </a>
-        </div>
-        <div class="title_banner">
-            <span>Register</span>
-        </div>
-    </div>
-</div>
 
-<div class="login_body">
-    <div class="loginform">
-        {% if messages %}
-                {% for message in messages %}
-                    <div class="message_info">
-                    <div class="alert alert-dismissible alert-success">
-                    <button type="button" class="close" data-dismiss="alert">
-                    ×
-                    </button>
-                    <strong>{{ message }}</strong>
+<div class="login">
+            <div class="navbar">
+                <div class="flex_row">
+                    <div class="back_icon">
+                        <!-- <a onclick="goBack()"> -->
+                            <a href="{% url 'signin' %}">
+                            <i class="fa fa-arrow-left"></i>
+                        </a>
+                    </div>
+                    <div class="title_banner">
+                        <span>Register</span>
                     </div>
                 </div>
-                {% endfor %}
-        {% endif %}
-        <form name="form" method="POST" autocomplete="off" id="register_form">
-           {% csrf_token %}
-            <div class="input_icon_textB">
-                <i class="fa fa-mobile" aria-hidden="true" ></i>
-                <input class="inputformbox DigitsOnly"  type="tel" name="mobilenumber" id="PhoneNumber" value="{{ userid }}"placeholder="Mobile Number" maxlength="10">
-                   <input class="login_button btnOTP btnSendOTP" type="submit" name="sendotp" id="" value="SendOTP">
             </div>
 
-            <div class="input_icon_textB">
-                <i class="fa fa-key" aria-hidden="true"></i>
-                <input type="tel"  id="otp" name="otp" class="inputformbox DigitsOnly"  maxlength="6"  placeholder="OTP"  >
-                <div class="login_button btnOTP btnVerifyOTP disablediv" >
-                        Verify OTP
-                </div>
-              
-            </div>
+        <div class="login_body">
+            <div class="loginform">
+                
+                {% if messages %}
+                        {% for message in messages %}
+                            <div class="message_info">
+                            <div class="alert alert-dismissible alert-success">
+                            <button type="button" class="close" data-dismiss="alert">
+                            ×
+                            </button>
+                            <strong>{{ message }}</strong>
+                            </div>
+                        </div>
+                        {% endfor %}
+                {% endif %}
 
-            <div class="input_icon_textB">
-            <i class="fa fa-lock" aria-hidden="true"></i>
-            <input class="inputformbox" type="password" name="password" id="txtpassword" placeholder="Password" disabled>
-             </div>
 
-        <div class="loginButtonForm">
-            <div class="">
-                <input class="login_button" type="submit" id="btnRegister" value="Register" disabled>
+
+                            <form name="form" method="get" autocomplete="off" id="register_form">
+                            {% csrf_token %}
+                                    <div class="input_icon_textB">
+                                        <i class="fa fa-mobile" aria-hidden="true" ></i>
+                                        <input class="inputformbox DigitsOnly"  type="tel" name="mobilenumber" id="PhoneNumber" value="{{ userid }}"placeholder="Mobile Number" maxlength="10">
+                                        <input  type="submit" name="sendotp" id="" value="SendOTP" class="login_button btnOTP btnSendOTP">
+                                        
+                                    </div>
+                            </form>
+
+
+                            <form name="form" method="POST" autocomplete="off" id="register_form">
+                                    <div class="input_icon_textB">
+                                        <i class="fa fa-key" aria-hidden="true"></i>
+                                        <input type="tel"  id="otp" name="otp" class="inputformbox DigitsOnly"  maxlength="6"  placeholder="OTP"  >
+                                        <div class="login_button btnOTP btnVerifyOTP disablediv" >
+                                                Verify OTP
+                                        </div>
+                                    
+                                    </div>
+
+                                    <div class="input_icon_textB">
+                                        <i class="fa fa-lock" aria-hidden="true"></i>
+                                        <input class="inputformbox" type="password" name="password" id="txtpassword" placeholder="Password" disabled>
+                                    </div>
+
+                                    <div class="loginButtonForm">
+                                        <div class="">
+                                            <input class="login_button" type="submit" id="btnRegister" value="Register" disabled>
+                                        </div>
+                                    </div>
+                            </form>
+
+
+
             </div>
         </div>
-        
-        </form>
 
-    </div>
 </div>
-
-        </div>
     </body>
     </html>
