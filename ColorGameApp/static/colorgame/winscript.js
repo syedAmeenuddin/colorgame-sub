@@ -66,7 +66,6 @@ $(document).ready(function () {
 			alert('insufficient Balance !');
 		}else{
 		confirmedcontract[joinednumber] =parseInt(finalcontractmoney);
-		alert( current_tabbar+ " " + joinednumber + " ," + "Contract Amount" + " " + finalcontractmoney);
 	    }
 		fnClear();
 	});

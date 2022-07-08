@@ -28,7 +28,8 @@ DEBUG = True
 ALLOWED_HOSTS = ['djangocolorwiz.azurewebsites.net','*']
 GAMETIME = 15
 RESULTTIME = 60 # ONLY IN SECONDS (eg: 2 MINUTES IS EQUAL TO 120 SECONDS)
-CSRF_TRUSTED_ORIGINS = ['https://djangocolorwiz.azurewebsites.net','djangocolorwiz.azurewebsites.net','*']
+CSRF_TRUSTED_ORIGINS = ['https://djangocolorwiz.azurewebsites.net']
+# CSRF_TRUSTED_ORIGINS = ['*']
 # Application definition
 
 INSTALLED_APPS = [

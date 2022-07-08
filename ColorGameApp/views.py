@@ -4,23 +4,28 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from datetime import datetime
+
 import pytz
 from .scheduler import countdown, period, GameTime, ResultTime
 
 def register(request):
     if request.method == "POST":
+        
         try:
+            _userid = request.session.get('userid')
             userid = request.POST['mobilenumber']
+            request.session['userid'] = userid
+        except:
+            pass
+        try:
             password = request.POST['password']
-            sendotpcheck = request.POST['sendotp']
-            print(sendotpcheck)
-            if len(userid)==10 and len(password)>=8:
+            if len(_userid)==10 and len(password)>=8:
                 try:
-                    registeruser = User.objects.create_user(userid,None,password)
+                    registeruser = User.objects.create_user(_userid,None,password)
                     registeruser.save()
                     messages.success(request,'successfully registered')
                     # moving auth User to user model
-                    authUser = User.objects.get(username=userid)
+                    authUser = User.objects.get(username=_userid)
                     moveusertomodeluser = user(username = authUser)
                     moveusertomodeluser.save()
                     # end
@@ -32,9 +37,25 @@ def register(request):
                 messages.success(request,'enter mobileNumber with 10 digit | password should be above 8 char')
                 return redirect('register')
         except:
-            messages.success(request,'enter mobileNumber with 10 digit | password should be above 8 char')
-            return redirect('register')
+            try:
+                if len(userid)==10:
+                    userid = request.POST['mobilenumber']
+                    User.objects.get(username =userid )
+                    #already an user
+                    messages.success(request,'entered mobile number is already exists!!. try new number')
+                    #0 = false
+                    return render(request, 'lib/register.html',{'otpsign':0})
+                else:
+                    messages.success(request,'mobileNumber should have 10 digit')
+                    return redirect('register')
+            except:
+                #new user
+                # 1 = true
+                messages.success(request,'OTP has Sent')
+                return render(request, 'lib/register.html',{'mobilenumber':userid,'otpsign':1})
 
+        
+     
     return render(request, 'lib/register.html')
 
 
@@ -73,21 +94,46 @@ def signin(request):
 
 def forgotpassword(request):
     if request.method == "POST":
-        userid = request.POST['mobilenumber']
-        newpassword = request.POST['password'] 
-        if len(userid)==10 and len(newpassword)>=8:
-            try:
-                changepass = User.objects.get(username=userid)
-                changepass.set_password(newpassword)
-                changepass.save()
-                messages.success(request,'password updated successfully')
-                return redirect('signin')
-            except:
-                messages.success(request,'enter registered moobile number!!! and change password')
+        
+        try:
+            _userid = request.session.get('userid')
+            userid = request.POST['mobilenumber']
+            request.session['userid'] = userid
+        except:
+            pass
+        try:
+            newpassword = request.POST['password']
+            if len(_userid)==10 and len(newpassword)>=8:
+                try:
+                    changepass = User.objects.get(username=_userid)
+                    changepass.set_password(newpassword)
+                    changepass.save()
+                    messages.success(request,'password updated successfully')
+                    # end
+                    return redirect('signin')
+                except:
+                    messages.success(request,'Something went wrong try again!!')
+                    return redirect('forgotpassword')
+            else:
+                messages.success(request,'enter mobileNumber with 10 digit | password should be above 8 char')
                 return redirect('forgotpassword')
-        else:
-            messages.success(request,'entered mobile number and new password ! to reset password')
-            return redirect('forgotpassword')
+        except:
+            try:
+                if len(userid)==10:
+                    userid = request.POST['mobilenumber']
+                    User.objects.get(username =userid )
+                    #already an user
+                    messages.success(request,'OTP has sent')
+                    #1 = true
+                    return render(request, 'lib/forgotpassword.html',{'mobilenumber':userid,'otpsign':1})
+                else:
+                    messages.success(request,'mobileNumber should have 10 digit')
+                    return redirect('forgotpassword')
+            except:
+                #new user
+                # 1 = false
+                messages.success(request,'please enter register mobile number')
+                return render(request, 'lib/forgotpassword.html',{'otpsign':0})
 
     return render(request, 'lib/forgotpassword.html')
 
@@ -131,6 +177,8 @@ def win(request):
                     creatgamedetails.save()
                     authUser.walletBalance=int(authUser.walletBalance)-int(totalcontractmoney)
                     authUser.save()
+                    sucessbetmessage = 'Successfully bet on number:'+' '+joinnumber
+                    messages.success(request,sucessbetmessage)
                     return redirect('win')
                 except:
                     messages.success(request,'something went wrong! please try again')
@@ -157,8 +205,6 @@ def win(request):
             if counta==0:
                 counta+=1
                 tabAwinner = i.result
-                print('hello')
-                print(tabAwinner)
         for i in listB:
             if countb==0:
                 countb+=1

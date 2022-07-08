@@ -187,7 +187,19 @@ input {
     border: 0;
     color: #1B2C42 !important;
 }
-
+.sendotp_btn input{
+    padding: 25px;
+    cursor: pointer;
+    margin-left: 10px;
+    line-height: 0px;
+    width: 23vw !important;
+    background-image: linear-gradient(#009688, #009688);
+    color: white;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+}
 .loginButtonForm {
     display: flex;
     width: 100%;
