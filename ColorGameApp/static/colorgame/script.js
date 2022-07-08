@@ -90,7 +90,9 @@ $(document).ready(function () {
 
 	
 	
-	
+function showloader(){
+	$('.loader').show();
+}
 
 function isVerified(val){
 	if(val)

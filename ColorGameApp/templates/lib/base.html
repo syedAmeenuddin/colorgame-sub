@@ -30,6 +30,11 @@
     <script src="{% static "colorgame/jquery.js" %}"></script>
     
 </head>
+<script>
+    function showloader(){
+        $('.loader').show();
+    }
+</script>
 
 <body>
 <div class="loader">
@@ -106,25 +111,25 @@
 
         <footer>
             <div class="bottombar_option flex_row">
-                <a href="{% url 'win' %}">
+                <a href="{% url 'win' %}" onclick="showloader()">
                     <div class="flex_column">
                         <i class="fa fa-home" aria-hidden="true"></i>
                         <span>Home</span>
                     </div>
                 </a>
-                <a href="">
+                <a href="" >
                     <div class="flex_column">
                         <i class="fa fa-file-text-o" aria-hidden="true"></i>
                         <span>Result</span>
                     </div>
                 </a>
-                <a href="{% url 'mybet' %}">
+                <a href="{% url 'mybet' %}"  onclick="showloader()">
                     <div class="flex_column">
                         <i class="fa fa-money" aria-hidden="true"></i>
                         <span>My Bet</span>
                     </div>
                 </a>
-                <a href="{% url 'bankcard' %}">
+                <a href="{% url 'bankcard' %}"  onclick="showloader()">
                     <div class="flex_column">
                         <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
                         <span>Bank Card</span>
