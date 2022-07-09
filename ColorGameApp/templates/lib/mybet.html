@@ -7,11 +7,18 @@
 		let dt = new Date();
 		let m = dt.getMinutes();
 		let s = dt.getSeconds();
-        if(parseInt(m)==0 && parseInt(s)==1){
+		m = s ? ({{GameTime}} - 1) - (m % {{ GameTime }}) : {{ GameTime }} - (m % {{ GameTime }});
+		if (s) {
+			s = 60 - s;
+		}
+		if (s<10){
+			s='0'+s;
+		}
+		if(parseInt(m)==0 && parseInt(s)==1){
 			location.reload();
 		}
-    }
-setInterval(countdown, 1000);
+		};
+		setInterval(countdown, 1000);
 
 </script>
 <div class="mybetSelect_game flex_column">

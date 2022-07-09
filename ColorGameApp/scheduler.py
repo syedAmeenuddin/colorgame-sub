@@ -28,18 +28,26 @@ def period():
     nowPeriod = perioddate+nowPeriod
     return nowPeriod
 def countdown():
+    print("function Count down triggered")
     Intz = pytz.timezone('Asia/Kolkata')
     now = datetime.now(Intz)
-    m = now.strftime('%M')
-    s = now.strftime('%S')
-    m = int(GameTime-1)-(int(m)%int(GameTime))
+    m = now.minute
+    s = now.second
+    if(s>0):
+        m =  (GameTime - 1) - (m % GameTime)
+    else:
+        m = GameTime - (m % GameTime)
     mintsInSecs = m * 60
-    total_secs = mintsInSecs + int(s)
+    if(s>0):
+        s = 60 - s
+    total_secs = mintsInSecs + s
     print("total Seconds")
     print(total_secs)
     if total_secs < ResultTime:
+        print(False)
         return False
     else:
+        print(True)
         return True
 def pri():
     contract_money=[12,120]

@@ -282,15 +282,12 @@ def mybet(request):
     isloged = request.session.get('isloged',False)
     if isloged:
         # try:
-        Intz = pytz.timezone('Asia/Kolkata')
-        now = datetime.now(Intz)
-        nowTime = now.strftime('%I:%M:%S %p')
-        nowDate = now.strftime('%d-%m-%Y')
-        fullDate = now.strftime('%d/%m/%Y')
         authUser = user.objects.get(username=request.user)
         _gd = gameDetails.objects.filter(user = authUser)
         return render(request, 'lib/mybet.html'
                        ,{'playedgame':_gd
+                       ,'GameTime':GameTime
+                       ,'ResultTime':ResultTime
                        ,'wallet': 0 if authUser.walletBalance==None else authUser.walletBalance})
         # except:
         #     return render(request, 'lib/mybet.html')
