@@ -2,25 +2,40 @@
 {% load static %}
 {% block base %}
 <script src="{% static "colorgame/winscript.js" %}"></script>
+<script>
 
+    function showloader(){
+        $('.loader').show();
+    }
 
-<div class="recharge_pg">
+</script>
+
+<div class="recharge_pg" >
     {% if amount %}
-        <div class="submitbankdetails flex_row jc alic">
-            <button id="rzp-button1">Pay</button>
+    
+    <div class="paypage">
+        <div class="sbc_child">
+            <span class="rechtitle flex_row jc alic">Entered Recharge Amount is {{amount}}</span>
         </div>
+        <div class="submitbankdetails flex_row jc alic">
+                <input type="submit" id="rzp-button1" value="Pay">
+        </div>
+    </div>
+
     {% else %}
+
         <form action="" method="POST">
             {% csrf_token %}
         
             <div class="flex_Column jc alic" >
                 <div class="sbc_child">
-                    <span class="title_bcd">Enter Recharge Amount</span>
-                    <span class="label_bc"><input type="text" name="amount" id=""></span>
+                    <span class="rechtitle">Enter Recharge Amount</span>
+                    <span class="rechlabel"><input type="text" name="amount" id=""></span>
                 </div>
-                <div class="submitbankdetails flex_row jc alic">
-                    <input type="submit" value="Submit">
-                </div>
+                
+            </div>
+            <div class="submitbankdetails flex_row jc alic">
+                <input type="submit" value="Submit" onclick="showloader()">
             </div>
         
         </form>
@@ -29,8 +44,17 @@
 </div>
 
 
-{% if amount %}
 
+
+
+
+
+
+
+
+
+
+{% if amount %}
 
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 <script>

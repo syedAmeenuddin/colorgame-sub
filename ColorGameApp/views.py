@@ -342,22 +342,25 @@ def recharge(request):
     if isloged:
         authUser = user.objects.get(username=request.user)
         userWallet = wallet.objects.get(user = authUser)
-        if request.method == "POST":   
-            amount = request.POST['amount']
-            DATA = {
-                "amount": amount,
-                "currency": "INR",
-                "receipt": "receipt#1",
-            }
-            payment = client.order.create(data=DATA)
-            order_id = payment["id"]
-            print(order_id)
-            return render(request, 'lib/recharge.html',{
-                'wallet':userWallet.walletBalance
-                ,"amount":amount,
-                "api_key":config.API_KEY,
-                "order_id":order_id
-                })
+        if request.method == "POST": 
+            amount = request.POST['amount']  
+            if amount!='':
+                DATA = {
+                    "amount": amount,
+                    "currency": "INR",
+                    "receipt": "receipt#1",
+                }
+                payment = client.order.create(data=DATA)
+                order_id = payment["id"]
+                return render(request, 'lib/recharge.html',{
+                    'wallet':userWallet.walletBalance
+                    ,"amount":amount,
+                    "api_key":config.API_KEY,
+                    "order_id":order_id
+                    })
+            else:
+                messages.success(request,'enter amount to recharge!')
+                return redirect('recharge')
         else:
             return render(request, 'lib/recharge.html',{'wallet':userWallet.walletBalance})
     else:
@@ -383,6 +386,20 @@ def withdraw(request):
     if isloged:
         authUser = user.objects.get(username=request.user)
         userWallet = wallet.objects.get(user = authUser)
+        if request.method =="POST":
+            amount = request.POST['amount']
+            if amount!='':
+                if int(amount) > int(userWallet.walletBalance):
+                    messages.success(request,'enter valid wallet amount to withdraw !')
+                    return redirect('withdraw')
+                else:
+                    userWallet.walletBalance=int(userWallet.walletBalance)-int(amount)
+                    userWallet.save()
+                    messages.success(request,'Amount has *withdrew successfully*')
+                    return redirect('withdraw')
+            else:
+                messages.success(request,'enter amount to withdraw!')
+                return redirect('withdraw')
         return render(request, 'lib/withdraw.html',{
             'wallet':userWallet.walletBalance
             })

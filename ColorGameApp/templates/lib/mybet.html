@@ -26,11 +26,10 @@
         <span class="col">PERIOD</span>
         <span class="col">TIME</span>
         <span class="col">GROUP</span>
-        <span class="col">BET NUMBER</span>
-        <span class="col">RESULT NUMBER</span>
-        <span class="col">CONT_NUMBER</span>
+        <span class="col">RESULT</span>
+        <span class="col">AMOUNT</span>
         <span class="col">TICKETS</span>
-        <span class="col">TOT_CONTR</span>
+        <span class="col">TOTAL AMOUNT</span>
     </div>                
     <div class=" my_bet dashboardwinnerstatus table-wrapper-scroll-y my-custom-scrollbar">
         
@@ -38,8 +37,7 @@
        <div class="flex_row details_winner row ">
         <span class="col">{{ i.period }}</span>
         <span class="col">{{ i.time }}</span>
-        <span class="col">{{ i.group }}</span>
-        <span class="col">{{ i.number }}</span>
+        <span class="col">{{ i.group }}{{ i.number }}</span>
         <span class="col">{{ i.resultId }}</span>
         <span class="col">{{ i.contractMoney }}</span>
         <span class="col">{{ i.tickets }}</span>

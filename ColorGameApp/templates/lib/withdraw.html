@@ -2,6 +2,29 @@
 {% load static %}
 {% block base %}
 <script src="{% static "colorgame/winscript.js" %}"></script>
-widthraw
+<script>
+    function showloader(){
+        $('.loader').show();
+    }
+</script>
+<div class="recharge_pg">
+    
+        <form action="" method="POST">
+            {% csrf_token %}
+        
+            <div class="flex_Column jc alic" >
+                <div class="sbc_child">
+                    <span class="rechtitle">Enter Amount To Withdraw</span>
+                    <span class="rechlabel"><input type="text" name="amount" id=""></span>
+                </div>
+                
+            </div>
+            <div class="submitbankdetails flex_row jc alic">
+                <input type="submit" value="Submit" onclick="showloader()">
+            </div>
+        
+        </form>
+
+</div>
 
 {% endblock base %}
