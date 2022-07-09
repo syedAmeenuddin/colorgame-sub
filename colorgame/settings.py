@@ -30,8 +30,8 @@ GAMETIME = 3
 RESULTTIME = 30 # ONLY IN SECONDS (eg: 2 MINUTES IS EQUAL TO 120 SECONDS)
 
 #RAZOR PAY PI KEYS
-API_KEY = "rzp_test_learuHjt4yD4Y0"
-SECRET_KEY = "8GWkWFfirPup5cbBowt8cyz5"
+API_KEY = "rzp_live_61nCSVZchF7ZBQ"
+_SECRET_KEY = "2Mt9oIbhCdfnbDs5Ap5U0Jod"
 
 
 CSRF_TRUSTED_ORIGINS = ['https://djangocolorwiz.azurewebsites.net']

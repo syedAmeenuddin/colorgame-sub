@@ -10,7 +10,7 @@ import pytz
 
 from .scheduler import countdown, period, GameTime, ResultTime
 
-client = razorpay.Client(auth=(config.API_KEY, config.SECRET_KEY))
+client = razorpay.Client(auth=(config.API_KEY, config._SECRET_KEY))
 
 def register(request):
     if request.method == "POST":
@@ -247,8 +247,9 @@ def win(request):
     
 def bankcard(request):
     isloged = request.session.get('isloged',False)
+    currentuser = request.user
     if isloged:
-        authUser = user.objects.get(username=request.user)
+        authUser = user.objects.get(username=currentuser)
         if request.method == "POST":
             _ifsc = request.POST['ifsc']
             _actnum = request.POST['accountnumber']
