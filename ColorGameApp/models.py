@@ -16,51 +16,56 @@ class lotteryimages(models.Model):
 
 
 class user(models.Model):
-    userId = models.AutoField(primary_key=True,blank=True)
-    username =  models.ForeignKey(User,on_delete=models.CASCADE,blank=True,max_length=10,null=True)
-    walletBalance = models.CharField(max_length = 7,blank=True,null=True)
+    userId = models.AutoField(primary_key=True,blank=False,null=False)
+    username =  models.ForeignKey(User,on_delete=models.CASCADE,blank=False,null=False,max_length=10)
     
     def __str__(self):
         return str(self.username)
+class wallet(models.Model):
+    walletId =models.AutoField(primary_key=True,blank=False,null=False)
+    user = models.ForeignKey(user,on_delete=models.CASCADE,blank=False,null=False)
+    walletBalance = models.CharField(max_length = 7,blank=False,null=False)
+    def __str__(self):
+        return str(self.user)
 class bankDetails(models.Model):
-    bankId = models.AutoField(primary_key=True,blank=True)
-    user = models.ForeignKey(user,on_delete=models.CASCADE,blank=True,max_length=10,null=True)
-    ifsc = models.CharField(blank=True,max_length=20)
-    accountNumber = models.CharField(blank=True,max_length=20)
-    recipientName = models.CharField(blank=True,max_length=50)
+    bankId = models.AutoField(primary_key=True,blank=False,null=False)
+    user =  models.ForeignKey(User,on_delete=models.CASCADE,blank=False,null=False,max_length=10)
+    ifsc = models.CharField(blank=False,null=False,max_length=20)
+    accountNumber = models.CharField(blank=False,null=False,max_length=20)
+    recipientName = models.CharField(blank=False,null=False,max_length=50)
     def __str__(self):
         return str(self.user)
 class upiDetails(models.Model):
-    upiId = models.AutoField(primary_key=True,blank=True)
-    user = models.ForeignKey(user,on_delete=models.CASCADE,blank=True,max_length=10,null=True)
-    upi = models.CharField(blank=True,max_length=50)
+    upiId = models.AutoField(primary_key=True,blank=False,null=False)
+    user =  models.ForeignKey(User,on_delete=models.CASCADE,blank=False,null=False,max_length=10)
+    upi = models.CharField(blank=False,null=False,max_length=50)
     def __str__(self):
         return str(self.user)
 class group(models.Model):
-    groupId = models.AutoField(primary_key=True,blank=False)
-    groupName = models.CharField(max_length=10, blank=False)
+    groupId = models.AutoField(primary_key=True,blank=False,null=False)
+    groupName = models.CharField(max_length=10, blank=False,null=False)
     def __str__(self):
         return str(self.groupName)
 class results(models.Model):
-    resultId =  models.AutoField(primary_key=True,blank=False)
-    group = models.ForeignKey(group,blank=True,on_delete=models.CASCADE)
-    result = models.CharField(blank=True,max_length=100)
-    period =models.CharField(blank=True,max_length=50)
-    date = models.CharField(blank=True,max_length=100)
-    time = models.CharField(blank=True,max_length=100)
+    resultId =  models.AutoField(primary_key=True,blank=False,null=False)
+    group = models.ForeignKey(group,blank=False,null=False,on_delete=models.CASCADE)
+    result = models.CharField(blank=False,null=False,max_length=100)
+    period =models.CharField(blank=False,null=False,max_length=100)
+    date = models.CharField(blank=False,null=False,max_length=100)
+    time = models.CharField(blank=False,null=False,max_length=100)
     def __str__(self):
         return str(self.result)
 class gameDetails(models.Model):
-    gameId = models.AutoField(primary_key=True,blank=True)
+    gameId = models.AutoField(primary_key=True,blank=False,null=False)
     resultId = models.ForeignKey(results,blank=True,on_delete=models.CASCADE,null=True)
-    user = models.ForeignKey(user,on_delete=models.CASCADE,blank=True,max_length=10)
-    period =models.CharField(blank=True,max_length=50)
-    date = models.CharField(blank=True,max_length=100)
-    time = models.CharField(blank=True,max_length=100)
-    group = models.ForeignKey(group,blank=True,on_delete=models.CASCADE,null=True)
-    number = models.CharField(blank=True,max_length=5)
-    contractMoney = models.CharField(blank=True,max_length=7)
-    tickets = models.CharField(blank=True,max_length=5)
-    totalcontractMoney = models.CharField(blank=True,max_length=7)
+    user = models.ForeignKey(user,on_delete=models.CASCADE,blank=False,null=False,max_length=10)
+    period =models.CharField(blank=False,null=False,max_length=50)
+    date = models.CharField(blank=False,null=False,max_length=100)
+    time = models.CharField(blank=False,null=False,max_length=100)
+    group = models.ForeignKey(group,blank=False,null=False,on_delete=models.CASCADE)
+    number = models.CharField(blank=False,null=False,max_length=5)
+    contractMoney = models.CharField(blank=False,null=False,max_length=7)
+    tickets = models.CharField(blank=False,null=False,max_length=5)
+    totalcontractMoney = models.CharField(blank=False,null=False,max_length=7)
     def __str__(self):
         return str(self.period)

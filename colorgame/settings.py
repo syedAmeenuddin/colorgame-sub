@@ -28,6 +28,12 @@ DEBUG = True
 ALLOWED_HOSTS = ['djangocolorwiz.azurewebsites.net','*']
 GAMETIME = 3
 RESULTTIME = 30 # ONLY IN SECONDS (eg: 2 MINUTES IS EQUAL TO 120 SECONDS)
+
+#RAZOR PAY PI KEYS
+API_KEY = "rzp_test_learuHjt4yD4Y0"
+SECRET_KEY = "8GWkWFfirPup5cbBowt8cyz5"
+
+
 CSRF_TRUSTED_ORIGINS = ['https://djangocolorwiz.azurewebsites.net']
 # CSRF_TRUSTED_ORIGINS = ['*']
 # Application definition

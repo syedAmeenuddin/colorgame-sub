@@ -116,10 +116,7 @@ def calculateResult():
                                ,time=nowTime
                                )  
         createResult.save()
-        getallgames = gameDetails.objects.filter(group = _group,period=currentperiod)
-        for game in getallgames:
-            game.resultId=createResult
-            game.save()
+        gameDetails.objects.filter(group = _group,period=currentperiod).update(resultId=createResult)
     print("Full Map")
     print(bet_map)
     now = datetime.now(Intz)
@@ -149,5 +146,5 @@ def start():
     gameTimeInSeconds = GameTime * 60
     print("Start method TRIGGERD")
     # calculateResult()
-    scheduler.add_job(calculateResult, 'interval',seconds = gameTimeInSeconds ,start_date=startJobMin(), end_date='2040-08-05 23:47:05')
-    scheduler.start()
+    # scheduler.add_job(calculateResult, 'interval',seconds = gameTimeInSeconds ,start_date=startJobMin(), end_date='2040-08-05 23:47:05')
+    # scheduler.start()

@@ -1,12 +1,16 @@
 from django.shortcuts import redirect, render
-from .models import lotteryimages, user, bankDetails, upiDetails, gameDetails, group, results
+from .models import lotteryimages, user, bankDetails, upiDetails, gameDetails, group, results, wallet
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from datetime import datetime
-
+from django.conf import settings as config
+import razorpay
 import pytz
+
 from .scheduler import countdown, period, GameTime, ResultTime
+
+client = razorpay.Client(auth=(config.API_KEY, config.SECRET_KEY))
 
 def register(request):
     if request.method == "POST":
@@ -28,6 +32,7 @@ def register(request):
                     authUser = User.objects.get(username=_userid)
                     moveusertomodeluser = user(username = authUser)
                     moveusertomodeluser.save()
+                    
                     # end
                     return redirect('signin')
                 except:
@@ -60,8 +65,6 @@ def register(request):
 
 
 
-
-
 def signin(request):
     if request.method == "POST":
         userid = request.POST['mobilenumber']
@@ -87,8 +90,6 @@ def signin(request):
             return redirect('signin')
 
     return render(request, 'lib/signin.html')
-
-
 
 
 
@@ -139,7 +140,6 @@ def forgotpassword(request):
 
 
 
-
 def win(request):
     isloged = request.session.get('isloged',False)
     currentuser = request.user
@@ -150,16 +150,18 @@ def win(request):
         nowDate = now.strftime('%d-%m-%Y')
         fullDate = now.strftime('%d/%m/%Y %I:%M:%S %p')
         authUser = user.objects.get(username=currentuser)
+        # userWallet = wallet.objects.get(user = currentuser)
+        # print(userWallet.walletBalance)
         if request.method == "POST":   
             joingroup = request.POST['joingroup']
             joinnumber = request.POST['joinnumber']
             contractmoney = request.POST['contractmoney']
             contractcount = request.POST['contractcount']
             totalcontractmoney = request.POST['totalcontractmoney']
-            wallet = authUser.walletBalance
+            # wallet = authUser.walletBalance
             joingroup = group.objects.get(groupName=joingroup)
-            if authUser.walletBalance ==None:
-                wallet = 0          
+            # if authUser.walletBalance ==None:
+            #     wallet = 0          
             if int(totalcontractmoney)<=int(wallet) and countdown():
                 try:
                     creatgamedetails = gameDetails(
@@ -193,7 +195,7 @@ def win(request):
         tabBwinner = 0
         tabCwinner = 0
         tabDwinner = 0
-        listA  = rA[::-1]
+        listA  = rA[::-1]    
         listB  = rB[::-1]
         listC  = rC[::-1]
         listD  = rD[::-1]
@@ -232,7 +234,7 @@ def win(request):
         ,'tab1name':groupname[1]
         ,'tab2name':groupname[2]
         ,'tab3name':groupname[3]
-        ,'wallet':0 if authUser.walletBalance==None else authUser.walletBalance
+        # ,'wallet':0 if authUser.walletBalance==None else authUser.walletBalance
         ,'GameTime':GameTime
         ,'ResultTime':ResultTime
         })
@@ -266,8 +268,9 @@ def bankcard(request):
         getbankdetails  = bankDetails.objects.filter(user =authUser )
         getupidetails = upiDetails.objects.filter(user = authUser )
         return render(request, 'lib/manage_bankcard.html'
-                      ,{'wallet':0 if authUser.walletBalance==None else authUser.walletBalance
-                        ,'bank':getbankdetails
+                      ,{
+                        # 'wallet':0 if authUser.walletBalance==None else authUser.walletBalance,
+                        'bank':getbankdetails
                         ,'upi':getupidetails
                         ,'addbank':True if len(getbankdetails)==0 else False
                         })
@@ -288,7 +291,8 @@ def mybet(request):
                        ,{'playedgame':_gd
                        ,'GameTime':GameTime
                        ,'ResultTime':ResultTime
-                       ,'wallet': 0 if authUser.walletBalance==None else authUser.walletBalance})
+                    #    ,'wallet': 0 if authUser.walletBalance==None else authUser.walletBalance
+                        })
         # except:
         #     return render(request, 'lib/mybet.html')
     else:
@@ -297,17 +301,44 @@ def mybet(request):
     
     
     
-    
 def recharge(request):
     isloged = request.session.get('isloged',False)
     if isloged:
         authUser = user.objects.get(username=request.user)
-        return render(request, 'lib/recharge.html',{'wallet': 0 if authUser.walletBalance==None else authUser.walletBalance})
+        if request.method == "POST":   
+            amount = request.POST['amount']
+            DATA = {
+                "amount": amount,
+                "currency": "INR",
+                "receipt": "receipt#1",
+            }
+            payment = client.order.create(data=DATA)
+            order_id = payment["id"]
+            print(order_id)
+            return render(request, 'lib/recharge.html',{
+                # 'wallet': 0 if authUser.walletBalance==None else authUser.walletBalance,
+                "amount":amount,
+                "api_key":config.API_KEY,
+                "order_id":order_id
+                })
+        else:
+            return render(request, 'lib/recharge.html')
     else:
         messages.success(request,'First Login to access game !')
         return redirect('signin')
     
     
+def rechargeMoney(request):
+    if request.method == "POST":   
+        amount = request.POST['amount']
+        client = razorpay.Client(auth=("YOUR_ID", "YOUR_SECRET"))
+        DATA = {
+            "amount": amount,
+            "currency": "INR",
+            "receipt": "receipt#1",
+        }
+        client.order.create(data=DATA)
+    pass
     
     
 def withdraw(request):

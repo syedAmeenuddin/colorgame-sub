@@ -81,12 +81,14 @@
         <main>
             {% if messages %}
                 {% for message in messages %}
-                    <div class="message_info">
+                <div class="message_info">
                     <div class="alert alert-dismissible alert-success">
-                    <button type="button" class="close" data-dismiss="alert">
-                    ×
-                    </button>
-                    <strong>{{ message }}</strong>
+
+                        <button type="button" class="close" data-dismiss="alert">
+                        ×
+                        </button>
+
+                        <strong>{{ message }}</strong>
                     </div>
                 </div>
                 {% endfor %}

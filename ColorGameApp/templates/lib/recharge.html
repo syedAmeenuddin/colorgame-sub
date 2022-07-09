@@ -2,21 +2,83 @@
 {% load static %}
 {% block base %}
 <script src="{% static "colorgame/winscript.js" %}"></script>
+
+
 <div class="recharge_pg">
-    <form action="" method="GET">
-        {% csrf_token %}
-    
-        <div class="flex_Column jc alic" >
-            <div class="sbc_child">
-                <span class="title_bcd">Enter Recharge Amount</span>
-                <span class="label_bc"><input type="text" name="rechargeamount" id=""></span>
-            </div>
-            <div class="submitbankdetails flex_row jc alic">
-                <input type="submit" value="Submit">
-              </div>
+    {% if amount %}
+        <div class="submitbankdetails flex_row jc alic">
+            <button id="rzp-button1">Pay</button>
         </div>
-    
-    </form>
+    {% else %}
+        <form action="" method="POST">
+            {% csrf_token %}
+        
+            <div class="flex_Column jc alic" >
+                <div class="sbc_child">
+                    <span class="title_bcd">Enter Recharge Amount</span>
+                    <span class="label_bc"><input type="text" name="amount" id=""></span>
+                </div>
+                <div class="submitbankdetails flex_row jc alic">
+                    <input type="submit" value="Submit">
+                </div>
+            </div>
+        
+        </form>
+    {% endif %}
+
 </div>
+
+
+{% if amount %}
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "{{api_key}}", 
+    "amount": "{{amount}}",
+    "currency": "INR",
+    "name": "ColorWiz",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id":"{{order_id}}", 
+    "handler": function (response){
+        alert(response.razorpay_payment_id);
+        alert(response.razorpay_order_id);
+        alert(response.razorpay_signature)
+    },
+    "prefill": {
+        "name": "Gaurav Kumar",
+        "email": "gaurav.kumar@example.com",
+        "contact": "9999999999"
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+rzp1.on('payment.failed', function (response){
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+});
+document.getElementById('rzp-button1').onclick = function(e){
+    rzp1.open();
+    e.preventDefault();
+}
+</script>
+
+{% endif %}
+
+
+
+
 {% endblock base %}
 
