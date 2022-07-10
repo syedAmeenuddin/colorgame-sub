@@ -95,7 +95,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'colorgame',
         'USER': 'colorgame',
-        'PASSWORD': 'cgame@123',
+        'PASSWORD': 'cgame@321',
         'HOST': 'djangocolorwiz.postgres.database.azure.com',
         'PORT': '5432',
         'OPTIONS' :{'sslmode' : 'require'},

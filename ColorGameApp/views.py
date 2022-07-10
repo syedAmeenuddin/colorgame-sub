@@ -187,6 +187,7 @@ def win(request):
                     messages.success(request,'something went wrong! please try again')
                     return redirect('win')
             else:
+                messages.success(request,'Bet failed')
                 return redirect('win')
         try:
             rA = results.objects.filter(group='1',date = nowDate)
