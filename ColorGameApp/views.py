@@ -61,7 +61,7 @@ def register(request):
             except:
                 #new user
                 # 1 = true
-                messages.success(request,'OTP has Sent')
+                messages.success(request,'OTP has initiated')
                 return render(request, 'lib/register.html',{'mobilenumber':userid,'otpsign':1})
 
         
