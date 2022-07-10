@@ -43,7 +43,7 @@ def countdown():
     total_secs = mintsInSecs + s
     print("total Seconds")
     print(total_secs)
-    if total_secs < ResultTime:
+    if total_secs <= ResultTime:
         print(False)
         return False
     else:
