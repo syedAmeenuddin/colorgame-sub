@@ -145,6 +145,5 @@ def start():
     scheduler = BackgroundScheduler()
     gameTimeInSeconds = GameTime * 60
     print("Start method TRIGGERD")
-    # calculateResult()
     scheduler.add_job(calculateResult, 'interval',seconds = gameTimeInSeconds ,start_date=startJobMin(), end_date='2040-08-05 23:47:05')
     scheduler.start()
