@@ -105,10 +105,26 @@ def calculateResult():
             prevvalue=int(prevvalue)+int(games.totalcontractMoney)
             grp[int(games.number)]=prevvalue
         _sortValue = sorted(bet_map[_group.groupName].items(), key=lambda x: x[1])
-        res = _sortValue[0]
-        print("Group"+_group.groupName)
-        print("result of Group")
-        print(res)
+        minValue = _sortValue[0]
+        #minValue = [1,0]
+        
+        # program for random result generate according to the minvalue
+        finalresult = []
+        for i in _sortValue:
+            # i = [1,0] next loop i=[2,0]
+            
+            if i[1] == minValue[1]:
+            # if 0 == 0
+            #if minvalue amount 12 == _sortvalue amonut 12
+                finalresult.append(i)
+                
+        # now generating the the res using random method
+        res = random.choice(finalresult)       
+        #end 
+        print(f'group : {_group.groupName}..wonNUMBER {res[0]}... amount: {res[1]}')
+        # print("Group"+_group.groupName)
+        # print("result of Group")
+        # print(res)
         createResult = results(result = res[0]
                                ,group=_group
                                ,period=currentperiod
@@ -145,5 +161,6 @@ def start():
     scheduler = BackgroundScheduler()
     gameTimeInSeconds = GameTime * 60
     print("Start method TRIGGERD")
+    # calculateResult()
     scheduler.add_job(calculateResult, 'interval',seconds = gameTimeInSeconds ,start_date=startJobMin(), end_date='2040-08-05 23:47:05')
     scheduler.start()
