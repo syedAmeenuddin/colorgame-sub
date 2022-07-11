@@ -339,7 +339,7 @@ def mybet(request):
             try:
                 _gd = gameDetails.objects.filter(user = user.objects.get(username=request.user))
                 return render(request, 'lib/mybet.html'
-                            ,{'playedgame':_gd
+                            ,{'playedgame':_gd.reverse()
                             ,'GameTime':GameTime
                             ,'ResultTime':ResultTime
                             ,'wallet':userWallet.walletBalance
