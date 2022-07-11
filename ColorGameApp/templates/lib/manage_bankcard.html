@@ -33,6 +33,12 @@
                 
                 
             </div>
+            {% comment %} <form method="POST" name="editbankdetails">
+                {% csrf_token %}
+            <div class="submitbankdetails flex_row jc alic">
+                <input name="editbank" type="submit" value="Edit">
+            </div>
+            </form> {% endcomment %}
             {% comment %} <div class="bankcardbtn flex_row jc alic">
                 <div class="editbank"><span>Edit ?</span></div>
             </div> {% endcomment %}
@@ -53,7 +59,7 @@
                 </div>
                 <div class="sbc_child">
                     <span class="title_bcd">Enter Account Number</span>
-                    <span class="label_bc"><input type="text" name="accountnumber" id=""></span>
+                    <span class="label_bc"><input type="tel" class="DigitsOnly" name="accountnumber" id=""></span>
                 </div>
             </div>
             <div class="flex_row jc alic" >

@@ -147,14 +147,14 @@ def forgotpassword(request):
 
 def win(request):
     isloged = request.session.get('isloged',False)
-    currentuser = request.user
+    
     if isloged:
         Intz = pytz.timezone('Asia/Kolkata')
         now = datetime.now(Intz)
         nowTime = now.strftime('%I:%M:%S %p')
         nowDate = now.strftime('%d-%m-%Y')
         fullDate = now.strftime('%d/%m/%Y %I:%M:%S %p')
-        authUser = user.objects.get(username=currentuser)
+        authUser = user.objects.get(username=request.user)
         userWallet = wallet.objects.get(user = authUser)
         if request.method == "POST":   
             joingroup = request.POST['joingroup']
@@ -166,7 +166,7 @@ def win(request):
             if int(totalcontractmoney)<=int(userWallet.walletBalance) and countdown():
                 try:
                     creatgamedetails = gameDetails(
-                    user = authUser, 
+                    user = user.objects.get(username=request.user), 
                     period = period(),
                     date = fullDate,
                     time = nowTime,
@@ -224,7 +224,7 @@ def win(request):
                     tabDwinner = i.result
             groupname = group.objects.all()
             Lotteryimages = lotteryimages.objects.all()
-            return render(request, 'lib/win.html',{'lotteryimages':Lotteryimages,'userid':currentuser
+            return render(request, 'lib/win.html',{'lotteryimages':Lotteryimages,'userid':request.user
             ,'resultgroupA':rA
             ,'resultgroupB':rB
             ,'resultgroupC':rC
@@ -248,7 +248,7 @@ def win(request):
             tabDwinner = 0
             groupname = group.objects.all()
             Lotteryimages = lotteryimages.objects.all()
-            return render(request, 'lib/win.html',{'lotteryimages':Lotteryimages,'userid':currentuser
+            return render(request, 'lib/win.html',{'lotteryimages':Lotteryimages,'userid':request.user
             ,'tab0name':groupname[0]
             ,'tab1name':groupname[1]
             ,'tab2name':groupname[2]
@@ -268,50 +268,53 @@ def win(request):
     
 def bankcard(request):
     isloged = request.session.get('isloged',False)
-    currentuser = request.user
     if isloged:
-        authUser = user.objects.get(username=currentuser)
+        authUser = user.objects.get(username=request.user)
         userWallet = wallet.objects.get(user = authUser)
         if request.method == "POST":
-            _ifsc = request.POST['ifsc']
-            _actnum = request.POST['accountnumber']
-            _recipientname = request.POST['recipientname']
-            _upi = request.POST['upi']    
-            if(_ifsc != '' and _actnum != '' and _recipientname !='' and _upi !=''):
-                try:
-                    createbankdetails = bankDetails(
-                    user=authUser
-                    ,ifsc=_ifsc
-                    ,accountNumber=_actnum
-                    ,recipientName=_recipientname
-                    )
-                    
-                    createupi = upiDetails(user = authUser,upi=_upi)
-                    createbankdetails.save()
-                    createupi.save()
-                    messages.success(request,'saved successfully')
+            try:
+                editbank = request.POST['editbank']
+                
+            except:
+                _ifsc = request.POST['ifsc']
+                _actnum = request.POST['accountnumber']
+                _recipientname = request.POST['recipientname']
+                _upi = request.POST['upi']    
+                if(_ifsc != '' and _actnum != '' and _recipientname !='' and _upi !=''):
+                    try:
+                        createbankdetails = bankDetails(
+                        user=authUser
+                        ,ifsc=_ifsc
+                        ,accountNumber=_actnum
+                        ,recipientName=_recipientname
+                        )
+                        
+                        createupi = upiDetails(user = authUser,upi=_upi)
+                        createbankdetails.save()
+                        createupi.save()
+                        messages.success(request,'saved successfully')
+                        return redirect('bankcard')
+                    except:
+                        messages.success(request,'something went wrong while saving your information. try again')
+                        return redirect('bankcard')
+                else:
+                    messages.success(request,'enter all field correctly')
                     return redirect('bankcard')
-                except:
-                    messages.success(request,'something went wrong while saving your information. try again')
-                    return redirect('bankcard')
-            else:
-                messages.success(request,'enter all field correctly')
-                return redirect('bankcard')
-        try:
-            getbankdetails  = bankDetails.objects.filter(user =authUser )
-            getupidetails = upiDetails.objects.filter(user = authUser )
-            return render(request, 'lib/manage_bankcard.html',
-                      {
-                        'wallet':userWallet.walletBalance
-                        ,'bank':getbankdetails
-                        ,'upi':getupidetails
-                        ,'addbank':True if len(getbankdetails)==0 else False
-                        })
-        except:
-            return render(request, 'lib/manage_bankcard.html',{'wallet':userWallet.walletBalance
-            ,'addbank':True
-            })
-        
+        else:            
+            try:
+                getbankdetails  = bankDetails.objects.filter(user =authUser )
+                getupidetails = upiDetails.objects.filter(user = authUser )
+                return render(request, 'lib/manage_bankcard.html',
+                        {
+                            'wallet':userWallet.walletBalance
+                            ,'bank':getbankdetails
+                            ,'upi':getupidetails
+                            ,'addbank':True if len(getbankdetails)==0 else False
+                            })
+            except:
+                return render(request, 'lib/manage_bankcard.html',{'wallet':userWallet.walletBalance
+                ,'addbank':True
+                })   
     else:
         messages.success(request,'First Login to access game !')
         return redirect('signin')

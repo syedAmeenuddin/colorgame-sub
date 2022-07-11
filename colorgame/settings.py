@@ -90,6 +90,7 @@ WSGI_APPLICATION = 'colorgame.wsgi.application'
 #         'NAME': str(BASE_DIR / 'db.sqlite3'),
 #     }
 # }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
