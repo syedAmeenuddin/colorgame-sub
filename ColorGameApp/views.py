@@ -147,120 +147,123 @@ def forgotpassword(request):
 
 def win(request):
     isloged = request.session.get('isloged',False)
-    
     if isloged:
-        Intz = pytz.timezone('Asia/Kolkata')
-        now = datetime.now(Intz)
-        nowTime = now.strftime('%I:%M:%S %p')
-        nowDate = now.strftime('%d-%m-%Y')
-        fullDate = now.strftime('%d/%m/%Y %I:%M:%S %p')
-        authUser = user.objects.get(username=request.user)
-        userWallet = wallet.objects.get(user = authUser)
-        if request.method == "POST":   
-            joingroup = request.POST['joingroup']
-            joinnumber = request.POST['joinnumber']
-            contractmoney = request.POST['contractmoney']
-            contractcount = request.POST['contractcount']
-            totalcontractmoney = request.POST['totalcontractmoney']
-            joingroup = group.objects.get(groupName=joingroup)
-            if int(totalcontractmoney)<=int(userWallet.walletBalance) and countdown():
-                try:
-                    creatgamedetails = gameDetails(
-                    user = user.objects.get(username=request.user), 
-                    period = period(),
-                    date = fullDate,
-                    time = nowTime,
-                    group = joingroup,
-                    number = int(joinnumber),
-                    contractMoney = int(contractmoney),
-                    tickets = contractcount,
-                    totalcontractMoney = int(totalcontractmoney),
-                    )
-
-                    creatgamedetails.save()
-                    userWallet.walletBalance=int(userWallet.walletBalance)-int(totalcontractmoney)
-                    userWallet.save()
-                    sucessbetmessage = 'Successfully bet on number:'+' '+joinnumber
-                    messages.success(request,sucessbetmessage)
-                    return redirect('win')
-                except:
-                    messages.success(request,'something went wrong! please try again')
-                    return redirect('win')
-            else:
-                messages.success(request,'Bet failed')
-                return redirect('win')
         try:
-            rA = results.objects.filter(group='1',date = nowDate)
-            rB = results.objects.filter(group='2',date = nowDate)
-            rC = results.objects.filter(group='3',date = nowDate)
-            rD = results.objects.filter(group='4',date = nowDate)
-            tabAwinner = 0
-            tabBwinner = 0
-            tabCwinner = 0
-            tabDwinner = 0
-            listA  = rA[::-1]    
-            listB  = rB[::-1]
-            listC  = rC[::-1]
-            listD  = rD[::-1]
-            counta=0
-            countb=0
-            countc=0
-            countd=0
-            for i in listA:
-                if counta==0:
-                    counta+=1
-                    tabAwinner = i.result
-            for i in listB:
-                if countb==0:
-                    countb+=1
-                    tabBwinner = i.result
-            for i in listC:
-                if countc==0:
-                    countc+=1
-                    tabCwinner = i.result
-            for i in listD:
-                if countd==0:
-                    countd+=1
-                    tabDwinner = i.result
-            groupname = group.objects.all()
-            Lotteryimages = lotteryimages.objects.all()
-            return render(request, 'lib/win.html',{'lotteryimages':Lotteryimages,'userid':request.user
-            ,'resultgroupA':rA
-            ,'resultgroupB':rB
-            ,'resultgroupC':rC
-            ,'resultgroupD':rD
-            ,'tabA':tabAwinner
-            ,'tabB':tabBwinner
-            ,'tabC':tabCwinner
-            ,'tabD':tabDwinner
-            ,'tab0name':groupname[0]
-            ,'tab1name':groupname[1]
-            ,'tab2name':groupname[2]
-            ,'tab3name':groupname[3]
-            ,'wallet':userWallet.walletBalance
-            ,'GameTime':GameTime
-            ,'ResultTime':ResultTime
-            })
+            Intz = pytz.timezone('Asia/Kolkata')
+            now = datetime.now(Intz)
+            nowTime = now.strftime('%I:%M:%S %p')
+            nowDate = now.strftime('%d-%m-%Y')
+            fullDate = now.strftime('%d/%m/%Y %I:%M:%S %p')
+            authUser = user.objects.get(username=request.user)
+            userWallet = wallet.objects.get(user = authUser)
+            if request.method == "POST":   
+                joingroup = request.POST['joingroup']
+                joinnumber = request.POST['joinnumber']
+                contractmoney = request.POST['contractmoney']
+                contractcount = request.POST['contractcount']
+                totalcontractmoney = request.POST['totalcontractmoney']
+                joingroup = group.objects.get(groupName=joingroup)
+                if int(totalcontractmoney)<=int(userWallet.walletBalance) and countdown():
+                    try:
+                        creatgamedetails = gameDetails(
+                        user = user.objects.get(username=request.user), 
+                        period = period(),
+                        date = fullDate,
+                        time = nowTime,
+                        group = joingroup,
+                        number = int(joinnumber),
+                        contractMoney = int(contractmoney),
+                        tickets = contractcount,
+                        totalcontractMoney = int(totalcontractmoney),
+                        )
+
+                        creatgamedetails.save()
+                        userWallet.walletBalance=int(userWallet.walletBalance)-int(totalcontractmoney)
+                        userWallet.save()
+                        sucessbetmessage = 'Successfully bet on number:'+' '+joinnumber
+                        messages.success(request,sucessbetmessage)
+                        return redirect('win')
+                    except:
+                        messages.success(request,'something went wrong! please try again')
+                        return redirect('win')
+                else:
+                    messages.success(request,'Bet failed')
+                    return redirect('win')
+            try:
+                rA = results.objects.filter(group='1',date = nowDate)
+                rB = results.objects.filter(group='2',date = nowDate)
+                rC = results.objects.filter(group='3',date = nowDate)
+                rD = results.objects.filter(group='4',date = nowDate)
+                tabAwinner = 0
+                tabBwinner = 0
+                tabCwinner = 0
+                tabDwinner = 0
+                listA  = rA[::-1]    
+                listB  = rB[::-1]
+                listC  = rC[::-1]
+                listD  = rD[::-1]
+                counta=0
+                countb=0
+                countc=0
+                countd=0
+                for i in listA:
+                    if counta==0:
+                        counta+=1
+                        tabAwinner = i.result
+                for i in listB:
+                    if countb==0:
+                        countb+=1
+                        tabBwinner = i.result
+                for i in listC:
+                    if countc==0:
+                        countc+=1
+                        tabCwinner = i.result
+                for i in listD:
+                    if countd==0:
+                        countd+=1
+                        tabDwinner = i.result
+                groupname = group.objects.all()
+                Lotteryimages = lotteryimages.objects.all()
+                return render(request, 'lib/win.html',{'lotteryimages':Lotteryimages,'userid':request.user
+                ,'resultgroupA':rA
+                ,'resultgroupB':rB
+                ,'resultgroupC':rC
+                ,'resultgroupD':rD
+                ,'tabA':tabAwinner
+                ,'tabB':tabBwinner
+                ,'tabC':tabCwinner
+                ,'tabD':tabDwinner
+                ,'tab0name':groupname[0]
+                ,'tab1name':groupname[1]
+                ,'tab2name':groupname[2]
+                ,'tab3name':groupname[3]
+                ,'wallet':userWallet.walletBalance
+                ,'GameTime':GameTime
+                ,'ResultTime':ResultTime
+                })
+            except:
+                tabAwinner = 0
+                tabBwinner = 0
+                tabCwinner = 0
+                tabDwinner = 0
+                groupname = group.objects.all()
+                Lotteryimages = lotteryimages.objects.all()
+                return render(request, 'lib/win.html',{'lotteryimages':Lotteryimages,'userid':request.user
+                ,'tab0name':groupname[0]
+                ,'tab1name':groupname[1]
+                ,'tab2name':groupname[2]
+                ,'tab3name':groupname[3]
+                ,'wallet':userWallet.walletBalance
+                ,'tabA':tabAwinner
+                ,'tabB':tabBwinner
+                ,'tabC':tabCwinner
+                ,'tabD':tabDwinner
+                ,'GameTime':GameTime
+                ,'ResultTime':ResultTime
+                })
         except:
-            tabAwinner = 0
-            tabBwinner = 0
-            tabCwinner = 0
-            tabDwinner = 0
-            groupname = group.objects.all()
-            Lotteryimages = lotteryimages.objects.all()
-            return render(request, 'lib/win.html',{'lotteryimages':Lotteryimages,'userid':request.user
-            ,'tab0name':groupname[0]
-            ,'tab1name':groupname[1]
-            ,'tab2name':groupname[2]
-            ,'tab3name':groupname[3]
-            ,'wallet':userWallet.walletBalance
-            ,'tabA':tabAwinner
-            ,'tabB':tabBwinner
-            ,'tabC':tabCwinner
-            ,'tabD':tabDwinner
-            ,'GameTime':GameTime
-            ,'ResultTime':ResultTime
-            })
+            messages.success(request,'something went wrong. please login')
+            return redirect('signin')    
     else:
         messages.success(request,'First Login to access game !')
         return redirect('signin')

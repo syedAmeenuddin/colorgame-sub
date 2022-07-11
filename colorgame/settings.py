@@ -40,12 +40,12 @@ CSRF_TRUSTED_ORIGINS = ['https://djangocolorwiz.azurewebsites.net']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
-    'django_apscheduler',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_apscheduler',
     'ColorGameApp',
 ]
 MIDDLEWARE = [
