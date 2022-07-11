@@ -54,7 +54,7 @@ class results(models.Model):
     date = models.CharField(blank=False,max_length=100)
     time = models.CharField(blank=False,max_length=100)
     def __str__(self):
-        return str(self.result)
+        return str(self.period)
 class gameDetails(models.Model):
     gameId = models.AutoField(primary_key=True)
     resultId = models.ForeignKey(results,blank=True,on_delete=models.CASCADE,null=True)

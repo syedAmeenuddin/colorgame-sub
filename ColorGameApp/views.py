@@ -326,7 +326,7 @@ def mybet(request):
         authUser = user.objects.get(username=request.user)
         userWallet = wallet.objects.get(user = authUser)
         try:
-            _gd = gameDetails.objects.filter(user = authUser)
+            _gd = gameDetails.objects.filter(user = user.objects.get(username=request.user))
             return render(request, 'lib/mybet.html'
                         ,{'playedgame':_gd
                         ,'GameTime':GameTime
@@ -345,7 +345,7 @@ def recharge(request):
     isloged = request.session.get('isloged',False)
     if isloged:
         authUser = user.objects.get(username=request.user)
-        userWallet = wallet.objects.get(user = authUser)
+        userWallet = wallet.objects.get(user = user.objects.get(username=request.user))
         if request.method == "POST": 
             amount = request.POST['amount']  
             if amount!='':
