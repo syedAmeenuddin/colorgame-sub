@@ -21,77 +21,86 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- CSS only -->
         <link rel="stylesheet" href="{% static "colorgame/style.css" %}">
+
+        {% if apptype %}
         <script src="{% static "colorgame/script.js" %}"></script>
+        {% endif %}
+
+
+       
     </head>
     <body>
+
+        {% if apptype %}
         <script>
- let mobilenumber = {{ mobilenumber }}+'';
- 
-        </script>
-        <div class="loader">
-            <div class="spinner-border" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
-        </div>
-        <div class="login">
-<div class="navbar">
-    <div class="flex_row">
-        {% comment %} <div class="back_icon">
-            <a href="#">
-                <i class="fa fa-arrow-left"></i>
-            </a>
-        </div> {% endcomment %}
-        <div class="title_banner">
-            <span>Login</span>
-        </div>
-    </div>
-</div>
-
-<div class="login_body">
-    <div class="loginform">
-            {% if messages %}
-                {% for message in messages %}
-                    <div class="message_info">
-                    <div class="alert alert-dismissible alert-success">
-                    <button type="button" class="close" data-dismiss="alert">
-                    ×
-                    </button>
-                    <strong>{{ message }}</strong>
-                    </div>
-                </div>
-                {% endfor %}
-                {% endif %}
-        <form name="form" method="post" >
-           {% csrf_token %}
-            <div class="input_icon_textB">
-                <i class="fa fa-mobile" aria-hidden="true" onclick="goBack()"></i>
-                <input class="inputformbox" type="tel" name="mobilenumber" id="mobilenumber" placeholder="Mobile Number" maxlength="10" value="">
-            </div>
-            <div class="input_icon_textB">
-            <i class="fa fa-lock" aria-hidden="true"></i>
-            <input class="inputformbox" type="password" name="password" id="password" placeholder="Password">
-             </div>
-        <div class="loginButtonForm">
-            <div class="">
-                <input class="login_button" type="submit" value="Login" >
-            </div>
-        </div>
-        <div class="flex_row register_forgot">
-          <div >
-           <a href="{% url 'register' %}"> <input class="registerbtn"  type="button" value="Register ?"></a>
-         </div> 
-         <div class=" ">
-            <a href="forgotpassword/"><input name="register" class="forgotbtn" type="button" value="Forgot Password ?" ></a>
+            let mobilenumber = {{ mobilenumber }}+'';
             
-         </div>
-        </div>
-        </form>
-
-    </div>
-</div>
-
-        </div>
-
+                   </script>
+                   <div class="loader">
+                       <div class="spinner-border" role="status">
+                           <span class="sr-only">Loading...</span>
+                       </div>
+                   </div>
+                   <div class="login">
+           <div class="navbar">
+               <div class="flex_row">
+                   {% comment %} <div class="back_icon">
+                       <a href="#">
+                           <i class="fa fa-arrow-left"></i>
+                       </a>
+                   </div> {% endcomment %}
+                   <div class="title_banner">
+                       <span>Login</span>
+                   </div>
+               </div>
+           </div>
+           
+           <div class="login_body">
+               <div class="loginform">
+                       {% if messages %}
+                           {% for message in messages %}
+                               <div class="message_info">
+                               <div class="alert alert-dismissible alert-success">
+                               <button type="button" class="close" data-dismiss="alert">
+                               ×
+                               </button>
+                               <strong>{{ message }}</strong>
+                               </div>
+                           </div>
+                           {% endfor %}
+                           {% endif %}
+                   <form name="form" method="post" >
+                      {% csrf_token %}
+                       <div class="input_icon_textB">
+                           <i class="fa fa-mobile" aria-hidden="true" onclick="goBack()"></i>
+                           <input class="inputformbox" type="tel" name="mobilenumber" id="mobilenumber" placeholder="Mobile Number" maxlength="10" value="">
+                       </div>
+                       <div class="input_icon_textB">
+                       <i class="fa fa-lock" aria-hidden="true"></i>
+                       <input class="inputformbox" type="password" name="password" id="password" placeholder="Password">
+                        </div>
+                   <div class="loginButtonForm">
+                       <div class="">
+                           <input class="login_button" type="submit" value="Login" >
+                       </div>
+                   </div>
+                   <div class="flex_row register_forgot">
+                     <div >
+                      <a href="/register/?apptype={{apptype}}"> <input class="registerbtn"  type="button" value="Register ?"></a>
+                    </div> 
+                    <div class=" ">
+                       <a href="/forgotpassword/?apptype={{apptype}}"><input name="register" class="forgotbtn" type="button" value="Forgot Password ?" ></a>
+                       
+                    </div>
+                   </div>
+                   </form>
+           
+               </div>
+           </div>
+           
+                   </div>
+           
+        {% endif %}
 
         
         <!-- <div class="bottom_tabbar">

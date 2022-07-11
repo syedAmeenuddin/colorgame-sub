@@ -63,14 +63,18 @@ def register(request):
                 # 1 = true
                 messages.success(request,'OTP has initiated')
                 return render(request, 'lib/register.html',{'mobilenumber':userid,'otpsign':1})
-
-        
-     
-    return render(request, 'lib/register.html')
+    else:
+        apptype = request.GET.get('apptype','')
+        if apptype.lower() == 'android':
+            return render(request, 'lib/register.html',{"apptype":apptype})
+        else:
+            return render(request, 'lib/signin.html')
 
 
 
 def signin(request):
+   
+
     if request.method == "POST":
         userid = request.POST['mobilenumber']
         password = request.POST['password'] 
@@ -93,10 +97,12 @@ def signin(request):
         else:
             messages.success(request,'mobile number 10 digits and password more than 8 characters should be entered')
             return redirect('signin')
-
-    return render(request, 'lib/signin.html')
-
-
+    else:
+        apptype = request.GET.get('apptype','')
+        if apptype.lower() == 'android':
+            return render(request, 'lib/signin.html',{"apptype":apptype})
+        else:
+            return render(request, 'lib/signin.html')
 
 def forgotpassword(request):
     if request.method == "POST":
@@ -140,8 +146,13 @@ def forgotpassword(request):
                 # 1 = false
                 messages.success(request,'please enter register mobile number')
                 return render(request, 'lib/forgotpassword.html',{'otpsign':0})
-
-    return render(request, 'lib/forgotpassword.html')
+    else:
+        apptype = request.GET.get('apptype','')
+        if apptype.lower() == 'android':
+            return render(request, 'lib/forgotpassword.html',{"apptype":apptype})
+        else:
+            return render(request, 'lib/signin.html')
+    
 
 
 

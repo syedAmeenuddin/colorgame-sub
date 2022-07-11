@@ -93,7 +93,9 @@ $(document).ready(function () {
 function showloader(){
 	$('.loader').show();
 }
-
+function goBack() { 
+	window.history.back();
+  }
 function isVerified(val){
 	if(val)
 	{
