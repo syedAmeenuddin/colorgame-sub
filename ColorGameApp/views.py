@@ -63,17 +63,15 @@ def register(request):
                 # 1 = true
                 messages.success(request,'OTP has initiated')
                 return render(request, 'lib/register.html',{'mobilenumber':userid,'otpsign':1})
-    else:
-        apptype = request.GET.get('apptype','')
-        if apptype.lower() == 'android':
-            return render(request, 'lib/register.html',{"apptype":apptype})
-        else:
-            return render(request, 'lib/signin.html')
+
+        
+     
+    return render(request, 'lib/register.html')
 
 
 
 def signin(request):
-   
+    apptype = request.GET.get('apptype','')
 
     if request.method == "POST":
         userid = request.POST['mobilenumber']
@@ -90,15 +88,15 @@ def signin(request):
                     return redirect('win')
                 else:
                     messages.success(request,'entered password is incorrect !')
-                    return render(request, 'lib/signin.html',{'mobilenumber':userid})
+                    return render(request, 'lib/signin.html',{"apptype":apptype,'mobilenumber':userid})
             except:
                 messages.success(request,'entered mobile number is not exist! please register or check ur number again')
-                return redirect('signin')
+                return render(request, 'lib/signin.html',{"apptype":apptype})
         else:
             messages.success(request,'mobile number 10 digits and password more than 8 characters should be entered')
-            return redirect('signin')
+            return render(request, 'lib/signin.html',{"apptype":apptype})
     else:
-        apptype = request.GET.get('apptype','')
+        
         if apptype.lower() == 'android':
             return render(request, 'lib/signin.html',{"apptype":apptype})
         else:
@@ -146,13 +144,8 @@ def forgotpassword(request):
                 # 1 = false
                 messages.success(request,'please enter register mobile number')
                 return render(request, 'lib/forgotpassword.html',{'otpsign':0})
-    else:
-        apptype = request.GET.get('apptype','')
-        if apptype.lower() == 'android':
-            return render(request, 'lib/forgotpassword.html',{"apptype":apptype})
-        else:
-            return render(request, 'lib/signin.html')
-    
+
+    return render(request, 'lib/forgotpassword.html')
 
 
 
