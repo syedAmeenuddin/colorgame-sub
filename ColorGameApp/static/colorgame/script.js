@@ -97,6 +97,7 @@ function showloader(){
 function isVerified(val){
 	if(val)
 	{
+		$('.loader').hide();
 		otpcount=2;
 		$('#txtpassword').prop('disabled',false);
 		$('#btnRegister').prop('disabled',false);
@@ -105,6 +106,7 @@ function isVerified(val){
 	}
 	else
 	{
+		$('.loader').hide();
 		$('.btnVerifyOTP').removeClass('disablediv');
 		$('#txtpassword').prop('disabled',true);
 		$('#btnRegister').prop('disabled',true);
