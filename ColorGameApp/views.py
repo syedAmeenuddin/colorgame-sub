@@ -272,52 +272,56 @@ def win(request):
 def bankcard(request):
     isloged = request.session.get('isloged',False)
     if isloged:
-        authUser = user.objects.get(username=request.user)
-        userWallet = wallet.objects.get(user = authUser)
-        if request.method == "POST":
-            try:
-                editbank = request.POST['editbank']
-                
-            except:
-                _ifsc = request.POST['ifsc']
-                _actnum = request.POST['accountnumber']
-                _recipientname = request.POST['recipientname']
-                _upi = request.POST['upi']    
-                if(_ifsc != '' and _actnum != '' and _recipientname !='' and _upi !=''):
-                    try:
-                        createbankdetails = bankDetails(
-                        user=authUser
-                        ,ifsc=_ifsc
-                        ,accountNumber=_actnum
-                        ,recipientName=_recipientname
-                        )
-                        
-                        createupi = upiDetails(user = authUser,upi=_upi)
-                        createbankdetails.save()
-                        createupi.save()
-                        messages.success(request,'saved successfully')
+        try:
+            authUser = user.objects.get(username=request.user)
+            userWallet = wallet.objects.get(user = authUser)
+            if request.method == "POST":
+                try:
+                    editbank = request.POST['editbank']
+                    
+                except:
+                    _ifsc = request.POST['ifsc']
+                    _actnum = request.POST['accountnumber']
+                    _recipientname = request.POST['recipientname']
+                    _upi = request.POST['upi']    
+                    if(_ifsc != '' and _actnum != '' and _recipientname !='' and _upi !=''):
+                        try:
+                            createbankdetails = bankDetails(
+                            user=authUser
+                            ,ifsc=_ifsc
+                            ,accountNumber=_actnum
+                            ,recipientName=_recipientname
+                            )
+                            
+                            createupi = upiDetails(user = authUser,upi=_upi)
+                            createbankdetails.save()
+                            createupi.save()
+                            messages.success(request,'saved successfully')
+                            return redirect('bankcard')
+                        except:
+                            messages.success(request,'something went wrong while saving your information. try again')
+                            return redirect('bankcard')
+                    else:
+                        messages.success(request,'enter all field correctly')
                         return redirect('bankcard')
-                    except:
-                        messages.success(request,'something went wrong while saving your information. try again')
-                        return redirect('bankcard')
-                else:
-                    messages.success(request,'enter all field correctly')
-                    return redirect('bankcard')
-        else:            
-            try:
-                getbankdetails  = bankDetails.objects.filter(user =authUser )
-                getupidetails = upiDetails.objects.filter(user = authUser )
-                return render(request, 'lib/manage_bankcard.html',
-                        {
-                            'wallet':userWallet.walletBalance
-                            ,'bank':getbankdetails
-                            ,'upi':getupidetails
-                            ,'addbank':True if len(getbankdetails)==0 else False
-                            })
-            except:
-                return render(request, 'lib/manage_bankcard.html',{'wallet':userWallet.walletBalance
-                ,'addbank':True
-                })   
+            else:            
+                try:
+                    getbankdetails  = bankDetails.objects.filter(user =authUser )
+                    getupidetails = upiDetails.objects.filter(user = authUser )
+                    return render(request, 'lib/manage_bankcard.html',
+                            {
+                                'wallet':userWallet.walletBalance
+                                ,'bank':getbankdetails
+                                ,'upi':getupidetails
+                                ,'addbank':True if len(getbankdetails)==0 else False
+                                })
+                except:
+                    return render(request, 'lib/manage_bankcard.html',{'wallet':userWallet.walletBalance
+                    ,'addbank':True
+                    }) 
+        except:
+            messages.success(request,'something went wrong. please login!')
+            return redirect('signin') 
     else:
         messages.success(request,'First Login to access game !')
         return redirect('signin')
@@ -325,19 +329,23 @@ def bankcard(request):
 def mybet(request):
     isloged = request.session.get('isloged',False)
     if isloged:
-        # try:
-        authUser = user.objects.get(username=request.user)
-        userWallet = wallet.objects.get(user = authUser)
         try:
-            _gd = gameDetails.objects.filter(user = user.objects.get(username=request.user))
-            return render(request, 'lib/mybet.html'
-                        ,{'playedgame':_gd
-                        ,'GameTime':GameTime
-                        ,'ResultTime':ResultTime
-                        ,'wallet':userWallet.walletBalance
-                            })
+            authUser = user.objects.get(username=request.user)
+            userWallet = wallet.objects.get(user = authUser)
+            try:
+                _gd = gameDetails.objects.filter(user = user.objects.get(username=request.user))
+                return render(request, 'lib/mybet.html'
+                            ,{'playedgame':_gd
+                            ,'GameTime':GameTime
+                            ,'ResultTime':ResultTime
+                            ,'wallet':userWallet.walletBalance
+                                })
+            except:
+                return render(request, 'lib/mybet.html',{'wallet':userWallet.walletBalance})
         except:
-            return render(request, 'lib/mybet.html',{'wallet':userWallet.walletBalance})
+            messages.success(request,'something went wrong. please login!')
+            return redirect('signin')
+        
     else:
         messages.success(request,'First Login to access game !')
         return redirect('signin')
