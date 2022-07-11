@@ -39,7 +39,7 @@ def register(request):
                     adduserwallet.save()
                     
                     # end
-                    return redirect('signin')
+                    return render(request, 'lib/signin.html',{"apptype":"android"})
                 except:
                     messages.success(request,'entered mobile number is already registered !')
                     return redirect('register')
