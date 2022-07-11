@@ -120,7 +120,7 @@ def forgotpassword(request):
                     changepass.save()
                     messages.success(request,'password updated successfully')
                     # end
-                    return redirect('signin')
+                    return render(request, 'lib/signin.html',{"apptype":"android"})
                 except:
                     messages.success(request,'Something went wrong try again!!')
                     return redirect('forgotpassword')
