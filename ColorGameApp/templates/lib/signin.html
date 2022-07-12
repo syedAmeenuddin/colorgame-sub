@@ -86,10 +86,10 @@
                    </div>
                    <div class="flex_row register_forgot">
                      <div >
-                      <a href="/register/?apptype={{apptype}}"> <input class="registerbtn"  type="button" value="Register ?"></a>
+                      <a href="{% url 'register' %}"> <input class="registerbtn"  type="button" value="Register ?"></a>
                     </div> 
                     <div class=" ">
-                       <a href="/forgotpassword/?apptype={{apptype}}"><input name="register" class="forgotbtn" type="button" value="Forgot Password ?" ></a>
+                       <a href="{% url 'forgotpassword' %}"><input name="register" class="forgotbtn" type="button" value="Forgot Password ?" ></a>
                        
                     </div>
                    </div>

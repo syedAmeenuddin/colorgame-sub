@@ -56,7 +56,7 @@ class results(models.Model):
     def __str__(self):
         return str(self.period)
 class gameDetails(models.Model):
-    gameId = models.AutoField(primary_key=True)
+    gameId = models.AutoField(primary_key=True,blank=True)
     resultId = models.ForeignKey(results,blank=True,on_delete=models.CASCADE,null=True)
     user = models.ForeignKey(user,on_delete=models.CASCADE,blank=False,null=False,max_length=10)
     period =models.CharField(blank=False,max_length=50)
@@ -68,4 +68,4 @@ class gameDetails(models.Model):
     tickets = models.CharField(blank=False,max_length=5)
     totalcontractMoney = models.CharField(blank=False,max_length=7)
     def __str__(self):
-        return str(self.period)
+        return str(self.gameId)

@@ -133,7 +133,7 @@ def forgotpassword(request):
                     userid = request.POST['mobilenumber']
                     User.objects.get(username =userid )
                     #already an user
-                    messages.success(request,'OTP has sent')
+                    messages.success(request,'OTP has initiated')
                     #1 = true
                     return render(request, 'lib/forgotpassword.html',{'mobilenumber':userid,'otpsign':1})
                 else:
@@ -267,10 +267,10 @@ def win(request):
                 })
         except:
             messages.success(request,'something went wrong. please login')
-            return redirect('signin')    
+            return render(request, 'lib/signin.html',{"apptype":"android"})    
     else:
         messages.success(request,'First Login to access game !')
-        return redirect('signin')
+        return render(request, 'lib/signin.html',{"apptype":"android"})
     
     
 def bankcard(request):
@@ -325,10 +325,10 @@ def bankcard(request):
                     }) 
         except:
             messages.success(request,'something went wrong. please login!')
-            return redirect('signin') 
+            return render(request, 'lib/signin.html',{"apptype":"android"})
     else:
         messages.success(request,'First Login to access game !')
-        return redirect('signin')
+        return render(request, 'lib/signin.html',{"apptype":"android"})
        
 def mybet(request):
     isloged = request.session.get('isloged',False)
@@ -338,8 +338,9 @@ def mybet(request):
             userWallet = wallet.objects.get(user = authUser)
             try:
                 _gd = gameDetails.objects.filter(user = user.objects.get(username=request.user))
+            
                 return render(request, 'lib/mybet.html'
-                            ,{'playedgame':_gd.reverse()
+                            ,{'playedgame':list(reversed(_gd))
                             ,'GameTime':GameTime
                             ,'ResultTime':ResultTime
                             ,'wallet':userWallet.walletBalance
@@ -348,11 +349,11 @@ def mybet(request):
                 return render(request, 'lib/mybet.html',{'wallet':userWallet.walletBalance})
         except:
             messages.success(request,'something went wrong. please login!')
-            return redirect('signin')
+            return render(request, 'lib/signin.html',{"apptype":"android"})
         
     else:
         messages.success(request,'First Login to access game !')
-        return redirect('signin')
+        return render(request, 'lib/signin.html',{"apptype":"android"})
     
     
     
@@ -384,7 +385,7 @@ def recharge(request):
             return render(request, 'lib/recharge.html',{'wallet':userWallet.walletBalance})
     else:
         messages.success(request,'First Login to access game !')
-        return redirect('signin')
+        return render(request, 'lib/signin.html',{"apptype":"android"})
     
     
 def rechargeMoney(request):
@@ -424,5 +425,5 @@ def withdraw(request):
             })
     else:
         messages.success(request,'First Login to access game !')
-        return redirect('signin')
+        return render(request, 'lib/signin.html',{"apptype":"android"})
         
