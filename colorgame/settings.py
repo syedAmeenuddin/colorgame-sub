@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_apscheduler',
-    'ColorGameApp',
+    'ColorGameApp.apps.ColorgameappConfig',
+    'paywix',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -148,3 +149,11 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+PAYU_CONFIG = {
+    "merchant_key": "3o6jgxhp",
+    "merchant_salt": "67bAgZX1B3",
+    "mode": "test",
+    "success_url": "http://127.0.0.1:8000/win/recharge/success",
+    "failure_url": "http://127.0.0.1:8000/win/recharge/failure"
+}

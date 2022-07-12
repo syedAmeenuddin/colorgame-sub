@@ -1,3 +1,4 @@
+from xml.dom.minidom import parseString
 from django.shortcuts import redirect, render
 from .models import lotteryimages, user, bankDetails, upiDetails, gameDetails, group, results, wallet
 from django.contrib.auth.models import User
@@ -5,12 +6,29 @@ from django.contrib.auth import authenticate, login
 from django.contrib import messages
 from datetime import datetime
 from django.conf import settings as config
-import razorpay
+# import razorpay
 import pytz
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.conf import settings
+from django.contrib.auth.decorators import login_required
+
+# Import Payu from Paywix
+from paywix.payu import Payu
+payu_config = settings.PAYU_CONFIG
+merchant_key = payu_config.get('merchant_key')
+merchant_salt = payu_config.get('merchant_salt')
+surl = payu_config.get('success_url')
+furl = payu_config.get('failure_url')
+mode = payu_config.get('mode')
+
+# Create Payu Object for making transaction
+# The given arguments are mandatory
+payu = Payu(merchant_key, merchant_salt, surl, furl, mode)
 
 from .scheduler import countdown, period, GameTime, ResultTime
 
-client = razorpay.Client(auth=(config.API_KEY, config._SECRET_KEY))
+# client = razorpay.Client(auth=(config.API_KEY, config._SECRET_KEY))
 
 def register(request):
     if request.method == "POST":
@@ -265,8 +283,8 @@ def win(request):
                 ,'GameTime':GameTime
                 ,'ResultTime':ResultTime
                 })
-        except:
-            messages.success(request,'something went wrong. please login')
+        except Exception as e:
+            messages.success(request,e)
             return render(request, 'lib/signin.html',{"apptype":"android"})    
     else:
         messages.success(request,'First Login to access game !')
@@ -337,15 +355,16 @@ def mybet(request):
             authUser = user.objects.get(username=request.user)
             userWallet = wallet.objects.get(user = authUser)
             try:
-                _gd = gameDetails.objects.filter(user = user.objects.get(username=request.user))
-            
+                # _gd = gameDetails.objects.filter(user = user.objects.get(username=request.user)).order_by('-group_id').reverse()
+                _gd = gameDetails.objects.all().reverse()
                 return render(request, 'lib/mybet.html'
-                            ,{'playedgame':list(reversed(_gd))
+                            ,{'playedgame':_gd
                             ,'GameTime':GameTime
                             ,'ResultTime':ResultTime
                             ,'wallet':userWallet.walletBalance
                                 })
-            except:
+            except Exception as e:
+                messages.success(request,e)
                 return render(request, 'lib/mybet.html',{'wallet':userWallet.walletBalance})
         except:
             messages.success(request,'something went wrong. please login!')
@@ -357,50 +376,116 @@ def mybet(request):
     
     
     
+# def recharge(request):
+#     isloged = request.session.get('isloged',False)
+#     if isloged:
+#         authUser = user.objects.get(username=request.user)
+#         userWallet = wallet.objects.get(user = user.objects.get(username=request.user))
+#         if request.method == "POST": 
+#             amount = request.POST['amount']  
+#             if amount!='':
+#                 DATA = {
+#                     "amount": amount,
+#                     "currency": "INR",
+#                     "receipt": "receipt#1",
+#                 }
+#                 payment = client.order.create(data=DATA)
+#                 order_id = payment["id"]
+#                 return render(request, 'lib/recharge.html',{
+#                     'wallet':userWallet.walletBalance
+#                     ,"amount":amount,
+#                     "api_key":config.API_KEY,
+#                     "order_id":order_id
+#                     })
+#             else:
+#                 messages.success(request,'enter amount to recharge!')
+#                 return redirect('recharge')
+    #     else:
+    #         return render(request, 'lib/recharge.html',{'wallet':userWallet.walletBalance})
+    # else:
+    #     messages.success(request,'First Login to access game !')
+    #     return render(request, 'lib/signin.html',{"apptype":"android"})
 def recharge(request):
     isloged = request.session.get('isloged',False)
     if isloged:
         authUser = user.objects.get(username=request.user)
         userWallet = wallet.objects.get(user = user.objects.get(username=request.user))
-        if request.method == "POST": 
-            amount = request.POST['amount']  
-            if amount!='':
-                DATA = {
-                    "amount": amount,
-                    "currency": "INR",
-                    "receipt": "receipt#1",
-                }
-                payment = client.order.create(data=DATA)
-                order_id = payment["id"]
-                return render(request, 'lib/recharge.html',{
-                    'wallet':userWallet.walletBalance
-                    ,"amount":amount,
-                    "api_key":config.API_KEY,
-                    "order_id":order_id
-                    })
-            else:
-                messages.success(request,'enter amount to recharge!')
-                return redirect('recharge')
+        if request.method == "POST":
+            amount = request.POST['amount']
+            data = {
+            'amount': amount, 
+            'firstname': 'ColorGame',
+            'email': 'ColorGame@gmail.com',
+            'phone': request.user,
+            'productinfo': 'ColorGame', 
+            'lastname': 'ColorGame',
+            'address1': 'ColorGame',
+            'address2': 'ColorGame',
+            'city': 'ColorGame',  
+            'state': 'ColorGame', 
+            'country': 'ColorGame',
+            'zipcode': 'ColorGame', 
+            'udf1': '', 
+            'udf2': '', 
+            'udf3': '', 
+            'udf4': '', 
+            'udf5': ''        
+            }
+            data.update({"txnid": "123456789"})
+            payu_data = payu.transaction(**data)
+            return render(request, 'lib/payment_processing.html',{"posted":payu_data})
         else:
             return render(request, 'lib/recharge.html',{'wallet':userWallet.walletBalance})
+
     else:
         messages.success(request,'First Login to access game !')
         return render(request, 'lib/signin.html',{"apptype":"android"})
-    
-    
-def rechargeMoney(request):
-    if request.method == "POST":   
-        amount = request.POST['amount']
-        client = razorpay.Client(auth=("YOUR_ID", "YOUR_SECRET"))
-        DATA = {
-            "amount": amount,
-            "currency": "INR",
-            "receipt": "receipt#1",
-        }
-        client.order.create(data=DATA)
-    pass
-    
-    
+@csrf_exempt
+def recharge_success(request):
+    data = {k: v[0] for k, v in dict(request.POST).items()}
+    response = payu.verify_transaction(data)
+    return JsonResponse(response)
+@csrf_exempt
+def recharge_failure(request):
+    data = {k: v[0] for k, v in dict(request.POST).items()}
+    response = payu.verify_transaction(data)
+    return JsonResponse(response)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def withdraw(request):
     isloged = request.session.get('isloged',False)
     if isloged:
@@ -426,4 +511,28 @@ def withdraw(request):
     else:
         messages.success(request,'First Login to access game !')
         return render(request, 'lib/signin.html',{"apptype":"android"})
-        
+
+
+
+
+
+
+
+
+
+
+
+
+# def rechargeMoney(request):
+#     if request.method == "POST":   
+#         amount = request.POST['amount']
+#         client = razorpay.Client(auth=("YOUR_ID", "YOUR_SECRET"))
+#         DATA = {
+#             "amount": amount,
+#             "currency": "INR",
+#             "receipt": "receipt#1",
+#         }
+#         client.order.create(data=DATA)
+#     pass
+    
+  

@@ -23,6 +23,7 @@
 </script>
 <div class="mybetSelect_game flex_column">
     <div class="dashboard_title row mybet ">
+        <span class="col">ID</span>
         <span class="col">PERIOD</span>
         <span class="col">TIME</span>
         <span class="col">GROUP</span>
@@ -33,8 +34,9 @@
     </div>                
     <div class=" my_bet dashboardwinnerstatus table-wrapper-scroll-y my-custom-scrollbar">
         
-       {% for i in playedgame %}
+       {% for i in playedgame reversed %}
        <div class="flex_row details_winner row ">
+        <span class="col">{{ i.gameId }}</span>
         <span class="col">{{ i.period }}</span>
         <span class="col">{{ i.time }}</span>
         <span class="col">{{ i.group }}{{ i.number }}</span>

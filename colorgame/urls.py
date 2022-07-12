@@ -35,5 +35,8 @@ urlpatterns = [
     path('win/mybet/',views.mybet,name='mybet'),
     path('win/recharge/',views.recharge,name='recharge'),
     path('win/withdraw/',views.withdraw,name='withdraw'),
+    path('win/recharge/success', views.recharge_success, name='recharge_success'),
+    path('win/recharge/failure', views.recharge_failure, name='recharge_failure'),
+    # path('win/payment_processing/',views.payment_processing,name='payment_processing'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
