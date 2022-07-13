@@ -1261,12 +1261,17 @@ tr{
 .bankcard_pge{
     color: white;
 }
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .addbank{
     position: absolute;
     bottom: 13vh;
     right: 10px;
 }
-.submitbankdetails input{
+.submitbankdetails input,.submitupiIddetails input{
     
     width: 20vw;
     background: transparent;
@@ -1326,6 +1331,7 @@ align-items: center;
     border: 1px solid yellow;
     border-radius: 6px;
     text-align: center;
+
 }
 .label_bc{
     padding: 5px 5px;
@@ -1335,7 +1341,6 @@ align-items: center;
     border: 1px solid yellow;
     border-radius: 6px;
     text-align: center;
-    width: 40vw;
 }
 input:focus, textarea:focus, select:focus{
     outline: none;
@@ -1350,13 +1355,13 @@ input:focus, textarea:focus, select:focus{
     width: 100%;
 }
 .label_bc input{
-    font-size: 13px;
-    width: 40vw;
     background: transparent;
     color: white;
     height: auto;
     border: 0px solid transparent;
     border-color: transparent;
+    font-size: 13px;
+    width: 100%;
 }
 .sbc_child{
     display: flex;
@@ -1367,4 +1372,12 @@ input:focus, textarea:focus, select:focus{
 /* end */
 .recharge_pg{
     color: white;
+}
+.VerifyUPIID{
+    padding: 3px;
+    margin-top: 12px;
+    align-items: end !important;
+    justify-content: end !important;
+    border-radius: 8px;
+    border: 1px solid yellow;
 }

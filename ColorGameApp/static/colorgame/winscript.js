@@ -47,6 +47,7 @@ $(document).ready(function () {
 	$('.AlphaNumericOnly').keydown(function(){
 		this.value = this.value.replace(/[^0-9a-zA-Z \.]/g,'');
 	})
+	// [a-zA-Z0-9.\-_]{2,256}@[a-zA-Z]{2,64}
 	$('.number_button').on('click', function () {
 		$('input[name="joinnumber"]').val($(this).val());
 		$('input[name="joingroup"]').val(current_tabbar);
@@ -244,20 +245,43 @@ $(document).ready(function () {
 	// });
 
 
-	$('.addbank').on('click',function(){
+	$('.bankcardbtn').on('click',function(){
 		// show addbakdet_card
 		$('.addbakdet_card').removeClass('tabhide');
 
 		// hide showbankdetails showbankdetails
 		$('.showbankdetails').addClass('tabhide');
+		$('.addbank').addClass('tabhide');
+		
 		
 	})
+	$('.upiidbtn').on('click',function(){
+		// show addbakdet_card
+		$('.addupiId').removeClass('tabhide');
 
+		// hide showbankdetails showbankdetails
+		$('.showbankdetails').addClass('tabhide');
+		$('.addbank').addClass('tabhide');
+		
+	})
+	$('.VerifyUPIID').on('click',function(){
+		if($('#upi').val()!=''){
+			var upi = $('#upi').val();
+			var match = /[a-zA-Z0-9_]{3,}@[a-zA-Z]{3,}/;
+			if(match.test(upi)){
+				$('#upi').prop('disabled',true);
+				$('#upisubmit').prop('disabled',false);
 
+			}else{
+				alert('entered upi is incorrect! please check again')
+			}
+			
 
-
-
-
+		}else{
+			alert('enter upi to verify');
+			$('#upisubmit').prop('disabled',true);
+		}
+	})
 
 
 

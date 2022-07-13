@@ -49,43 +49,71 @@
     {% endfor %}
         
         
-             <form action="" method="POST">
+    <form action="" method="post">
         {% csrf_token %}
         <div class="addbakdet_card tabhide">
-            <div class="flex_row jc alic" >
+
+            <div class="flex_Column jc alic" >
                 <div class="sbc_child">
                     <span class="title_bcd">Enter Card Holder Name</span>
                     <span class="label_bc"><input type="text" name="recipientname" id=""></span>
                 </div>
+            </div>
+
+            <div class="flex_Column jc alic" >
                 <div class="sbc_child">
                     <span class="title_bcd">Enter Account Number</span>
                     <span class="label_bc"><input type="tel" class="DigitsOnly" name="accountnumber" id=""></span>
                 </div>
             </div>
-            <div class="flex_row jc alic" >
+
+            <div class="flex_Column jc alic" >
                 <div class="sbc_child">
                     <span class="title_bcd">Enter IFSC Number</span>
                     <span class="label_bc"><input type="text" name="ifsc" id=""></span>
                 </div>
-                <div class="sbc_child">
-                    <span class="title_bcd">Enter UPI ID</span>
-                    <span class="label_bc"><input type="text" name="upi" id=""></span>
-                </div>
             </div>
             <div class="submitbankdetails flex_row jc alic">
-
-        
                 <input type="submit" value="Submit">
-              </div>
+            </div>
         </div>
+            <div class="addupiId tabhide">
+                <div class="flex_row jc alic" >
+                    <div class="sbc_child" style="
+                    width: 70vw;
+                ">
+                        <span class="title_bcd">Enter UPI ID</span>
+                        <span class="label_bc"><input type="text" name="upi" id="upi"></span>
+                    </div>
+                    <div class="VerifyUPIID">
+                        <span class="upi">Verify UPI</span>
+                    </div>
+                </div>
+                <div class="submitupiIddetails flex_row jc alic">
+                    <input type="submit" value="Submit" id="upisubmit" disabled>
+                </div>
+            </div>
+
+            
+
         
         
     </form> 
 
     
     {% if addbank %}
-    <div class="bankcardbtn flex_row center">
-        <div class="addbank"><span>Add Bank Details</span></div>
+    <div class="addbank">
+
+            <div class="bankcardbtn flex_row center">
+                <div class=""><span>Add Bank Details</span></div>
+            </div>
+
+            <div class="flex_row center">OR</div>
+            
+            <div class="upiidbtn flex_row center">
+                <div class=""><span>Add UPI ID</span></div>
+            </div>
+
     </div>
     {% endif %}
         

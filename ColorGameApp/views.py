@@ -96,7 +96,7 @@ def signin(request):
         password = request.POST['password'] 
         if len(userid)==10 and len(password)>=8:
             try:
-                User.objects.get(username =userid )
+                User.objects.get(username =userid)
                 user = authenticate(username=userid, password=password)
                 if user is not None:
                     login(request,user)
@@ -187,27 +187,31 @@ def win(request):
                 joingroup = group.objects.get(groupName=joingroup)
                 if int(totalcontractmoney)<=int(userWallet.walletBalance) and countdown():
                     try:
-                        creatgamedetails = gameDetails(
-                        user = user.objects.get(username=request.user), 
-                        period = period(),
-                        date = fullDate,
-                        time = nowTime,
-                        group = joingroup,
-                        number = int(joinnumber),
-                        contractMoney = int(contractmoney),
-                        tickets = contractcount,
-                        totalcontractMoney = int(totalcontractmoney),
-                        )
+                        if(authUser != None):
+                            gameDetails.objects.create( 
+                                user = authUser, 
+                                period = period(),
+                                date = fullDate,
+                                time = nowTime,
+                                group = joingroup,
+                                number = int(joinnumber),
+                                contractMoney = int(contractmoney),
+                                tickets = contractcount,
+                                totalcontractMoney = int(totalcontractmoney))
+                        else:
+                            messages.success(request,'Session Expired')
+                            return render(request, 'lib/signin.html',{"apptype":"android"})
+                    except Exception as e:
+                        print(request,e)
+                        messages.success(request,e)
+                        return redirect('win')
 
-                        creatgamedetails.save()
-                        userWallet.walletBalance=int(userWallet.walletBalance)-int(totalcontractmoney)
-                        userWallet.save()
-                        sucessbetmessage = 'Successfully bet on number:'+' '+joinnumber
-                        messages.success(request,sucessbetmessage)
-                        return redirect('win')
-                    except:
-                        messages.success(request,'something went wrong! please try again')
-                        return redirect('win')
+                    userWallet.walletBalance=int(userWallet.walletBalance)-int(totalcontractmoney)
+                    userWallet.save()
+                    sucessbetmessage = 'Successfully bet on number:'+' '+joinnumber
+                    messages.success(request,sucessbetmessage)
+                    return redirect('win')   
+
                 else:
                     messages.success(request,'Bet failed')
                     return redirect('win')
@@ -246,7 +250,9 @@ def win(request):
                         tabDwinner = i.result
                 groupname = group.objects.all()
                 Lotteryimages = lotteryimages.objects.all()
-                return render(request, 'lib/win.html',{'lotteryimages':Lotteryimages,'userid':request.user
+                return render(request
+                , 'lib/win.html'
+                ,{'lotteryimages':Lotteryimages,'userid':request.user
                 ,'resultgroupA':rA
                 ,'resultgroupB':rB
                 ,'resultgroupC':rC
@@ -302,41 +308,62 @@ def bankcard(request):
                     editbank = request.POST['editbank']
                     
                 except:
-                    _ifsc = request.POST['ifsc']
-                    _actnum = request.POST['accountnumber']
-                    _recipientname = request.POST['recipientname']
-                    _upi = request.POST['upi']    
-                    if(_ifsc != '' and _actnum != '' and _recipientname !='' and _upi !=''):
-                        try:
-                            createbankdetails = bankDetails(
-                            user=authUser
-                            ,ifsc=_ifsc
-                            ,accountNumber=_actnum
-                            ,recipientName=_recipientname
-                            )
-                            
-                            createupi = upiDetails(user = authUser,upi=_upi)
-                            createbankdetails.save()
-                            createupi.save()
-                            messages.success(request,'saved successfully')
+                    try:
+                        _upi = request.POST['upi']
+                        if(_upi !=''):
+                            try:
+                                upiDetails.objects.create(user = authUser,upi=_upi)
+                                messages.success(request,'saved successfully')
+                                return redirect('bankcard')
+                            except:
+                                messages.success(request,'something went wrong while saving your information. try again')
+                                return redirect('bankcard')
+                        else:
+                            messages.success(request,'enter Upi field correctly')
                             return redirect('bankcard')
-                        except:
-                            messages.success(request,'something went wrong while saving your information. try again')
+                    except:
+                        _ifsc = request.POST['ifsc']
+                        _actnum = request.POST['accountnumber']
+                        _recipientname = request.POST['recipientname']
+                        if(_ifsc != '' and _actnum != '' and _recipientname !=''):
+                            try:
+                                bankDetails.objects.create(
+                                user=authUser
+                                ,ifsc=_ifsc 
+                                ,accountNumber=_actnum
+                                ,recipientName=_recipientname
+                                )
+                                messages.success(request,'saved successfully')
+                                return redirect('bankcard')
+                            except:
+                                messages.success(request,'something went wrong while saving your information. try again')
+                                return redirect('bankcard')
+                        else:
+                            messages.success(request,'enter all field correctly')
                             return redirect('bankcard')
-                    else:
-                        messages.success(request,'enter all field correctly')
-                        return redirect('bankcard')
+
+                    ## # check for anyone things UPI or Bank Details both are NOT Mandatory 
+                    ## # check and insert which is provided with null
+                    # validate UPI with regex in client Side (search in internet to validate UPI ID)
+                    # change the UI to fill anyone bank details or UPI or create a seprate page for both
             else:            
                 try:
-                    getbankdetails  = bankDetails.objects.filter(user =authUser )
-                    getupidetails = upiDetails.objects.filter(user = authUser )
-                    return render(request, 'lib/manage_bankcard.html',
-                            {
-                                'wallet':userWallet.walletBalance
-                                ,'bank':getbankdetails
-                                ,'upi':getupidetails
-                                ,'addbank':True if len(getbankdetails)==0 else False
-                                })
+                    try:
+                        getbankdetails  = bankDetails.objects.filter(user =authUser )
+                        return render(request, 'lib/manage_bankcard.html',
+                                {
+                                    'wallet':userWallet.walletBalance
+                                    ,'bank':getbankdetails
+                                    ,'addbank':True if len(getbankdetails)==0 else False
+                                    })
+                    except:
+                        getupidetails = upiDetails.objects.filter(user = authUser )
+                        return render(request, 'lib/manage_bankcard.html',
+                                {
+                                    'wallet':userWallet.walletBalance
+                                    ,'upi':getupidetails
+                                    ,'addbank':True if len(getupidetails)==0 else False
+                                    })
                 except:
                     return render(request, 'lib/manage_bankcard.html',{'wallet':userWallet.walletBalance
                     ,'addbank':True
@@ -355,8 +382,8 @@ def mybet(request):
             authUser = user.objects.get(username=request.user)
             userWallet = wallet.objects.get(user = authUser)
             try:
-                # _gd = gameDetails.objects.filter(user = user.objects.get(username=request.user)).order_by('-group_id').reverse()
-                _gd = gameDetails.objects.all().reverse()
+                _gd = gameDetails.objects.filter(user = user.objects.get(username=request.user)).order_by('-group_id').reverse()
+                # _gd = gameDetails.objects.all().reverse()
                 return render(request, 'lib/mybet.html'
                             ,{'playedgame':_gd
                             ,'GameTime':GameTime
@@ -430,8 +457,15 @@ def recharge(request):
             'udf3': '', 
             'udf4': '', 
             'udf5': ''        
-            }
-            data.update({"txnid": "123456789"})
+            } 
+            # need to generate and add tanx id as date time now (eg:20220712093056)
+            # need to create method for widthraw money (payout with payu gateway)
+            # need to razor recharge and withdraw method 
+            # in Scheduler page need to implement this Logic --> after updating the result in gamedetails filter the gamedetails with current result 
+            # and get the user who has won add x10 (10 is configurable) to the total contract amount eg (12 x 10) 120 plus in wallet 
+            # and add withdraw with minum amount to withdraw logic (configurable) eg(user should have min 1000 rupees to withdraw in wallet) 
+            # and initiate the trigger withdraw with payu and razor (for backup) 
+            data.update({"txnid": "20220712093056"})
             payu_data = payu.transaction(**data)
             return render(request, 'lib/payment_processing.html',{"posted":payu_data})
         else:
@@ -442,11 +476,21 @@ def recharge(request):
         return render(request, 'lib/signin.html',{"apptype":"android"})
 @csrf_exempt
 def recharge_success(request):
+    # allow only post method else redirect to win page 
+    # 20220712093056 cross check the tranx id and redirect to success html page with recharged amount 
+    # and add the rechargesd amount in the user wallet
+    # else if transx id didnt match redirect to win page 
+
     data = {k: v[0] for k, v in dict(request.POST).items()}
     response = payu.verify_transaction(data)
     return JsonResponse(response)
 @csrf_exempt
 def recharge_failure(request):
+
+    # allow only post method else redirect to win page 
+    # 20220712093056 cross check the tranx id and redirect to failed html page with tried to recharge amount 
+    # else if transx id didnt match redirect to win page 
+
     data = {k: v[0] for k, v in dict(request.POST).items()}
     response = payu.verify_transaction(data)
     return JsonResponse(response)
@@ -454,7 +498,12 @@ def recharge_failure(request):
 
 
 
+# implement a dummy method to keep the session trigger method using ajax in win 
+ 
+# design a new ecommerce page for payu and razor pay bank verfication 
+# with dummy logic and pay button.
 
+# please checkout all the comment in this and scheduler py page and method s
 
 
 

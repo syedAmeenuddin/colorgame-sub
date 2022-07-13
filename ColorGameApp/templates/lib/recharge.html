@@ -11,7 +11,7 @@
 </script>
 
 <div class="recharge_pg" >
-    {% if amount %}
+    {% comment %} {% if amount %}
     
     <div class="paypage">
         <div class="sbc_child">
@@ -22,7 +22,7 @@
         </div>
     </div>
 
-    {% else %}
+    {% else %} {% endcomment %}
 
         <form action="" method="POST">
             {% csrf_token %}

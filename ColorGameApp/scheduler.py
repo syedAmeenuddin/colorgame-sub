@@ -133,6 +133,10 @@ def calculateResult():
                                )  
         createResult.save()
         gameDetails.objects.filter(group = _group,period=currentperiod).update(resultId=createResult)
+    
+    # in Scheduler page need to implement this Logic --> after updating the result in gamedetails filter the gamedetails with current result 
+    # and get the user who has won add x10 (10 is configurable) to the total contract amount eg (12 x 10) 120 plus in wallet 
+    
     print("Full Map")
     print(bet_map)
     now = datetime.now(Intz)
