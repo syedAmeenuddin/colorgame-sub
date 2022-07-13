@@ -26,10 +26,10 @@ mode = payu_config.get('mode')
 # The given arguments are mandatory
 payu = Payu(merchant_key, merchant_salt, surl, furl, mode)
 
-from .scheduler import countdown, period, GameTime, ResultTime
+from .scheduler import countdown, period, GameTime, ResultTime, generate_taxnid
 
 # client = razorpay.Client(auth=(config.API_KEY, config._SECRET_KEY))
-
+min_withraw =config.WITHDRAWAMOUNT
 def register(request):
     if request.method == "POST":
         
@@ -338,10 +338,7 @@ def bankcard(request):
                 except:
                     messages.success(request,'something went wrong while saving your information. try again')
                     return redirect('bankcard')  
-                ## # check for anyone things UPI or Bank Details both are NOT Mandatory 
-                ## # check and insert which is provided with null
-                # validate UPI with regex in client Side (search in internet to validate UPI ID)
-                # change the UI to fill anyone bank details or UPI or create a seprate page for both
+            
             else: 
                 try:
                     getbankdetails  = bankDetails.objects.filter(user =authUser )
@@ -374,9 +371,11 @@ def mybet(request):
     if isloged:
         try:
             authUser = user.objects.get(username=request.user)
+            print(authUser)
+            print(user.objects.get(username=request.user))
             userWallet = wallet.objects.get(user = authUser)
             try:
-                _gd = gameDetails.objects.filter(user = user.objects.get(username=request.user)).order_by('-group_id').reverse()
+                _gd = gameDetails.objects.all().filter(user = user.objects.get(username=request.user)).order_by('-date')
                 # _gd = gameDetails.objects.all().reverse()
                 return render(request, 'lib/mybet.html'
                             ,{'playedgame':_gd
@@ -452,14 +451,15 @@ def recharge(request):
             'udf4': '', 
             'udf5': ''        
             } 
-            # need to generate and add tanx id as date time now (eg:20220712093056)
             # need to create method for widthraw money (payout with payu gateway)
             # need to razor recharge and withdraw method 
             # in Scheduler page need to implement this Logic --> after updating the result in gamedetails filter the gamedetails with current result 
             # and get the user who has won add x10 (10 is configurable) to the total contract amount eg (12 x 10) 120 plus in wallet 
             # and add withdraw with minum amount to withdraw logic (configurable) eg(user should have min 1000 rupees to withdraw in wallet) 
             # and initiate the trigger withdraw with payu and razor (for backup) 
-            data.update({"txnid": "20220712093056"})
+            request.session['txnid'] = generate_taxnid()
+            txnid = request.session.get('txnid','0')
+            data.update({"txnid":txnid})
             payu_data = payu.transaction(**data)
             return render(request, 'lib/payment_processing.html',{"posted":payu_data})
         else:
@@ -470,14 +470,31 @@ def recharge(request):
         return render(request, 'lib/signin.html',{"apptype":"android"})
 @csrf_exempt
 def recharge_success(request):
-    # allow only post method else redirect to win page 
-    # 20220712093056 cross check the tranx id and redirect to success html page with recharged amount 
-    # and add the rechargesd amount in the user wallet
-    # else if transx id didnt match redirect to win page 
+    if request.method == "POST":
+        print(request.session.get('isloged',False))
+        data = {k: v[0] for k, v in dict(request.POST).items()}
+        response = payu.verify_transaction(data)
+        print(response['return_data']['txnid'])
+        print(response['return_data']['phone'])
+        print(response['return_data']['amount'])
+        return JsonResponse(response)
+    else:
+        print('no')
+    # print(request.session.get('isloged',False))
+    # # allow only post method else redirect to win page 
+    # # 20220712093056 cross check the tranx id and redirect to success html page with recharged amount 
+    # # and add the rechargesd amount in the user wallet
+    # # else if transx id didnt match redirect to win page 
 
-    data = {k: v[0] for k, v in dict(request.POST).items()}
-    response = payu.verify_transaction(data)
-    return JsonResponse(response)
+    # data = {k: v[0] for k, v in dict(request.POST).items()}
+    # response = payu.verify_transaction(data)
+    # _txnid = request.session.get('taxnid','0')
+    # print(_txnid)
+    
+    # print(response['return_data']['phone'])
+    # print(response['return_data']['txnid'])
+    # print(response['return_data']['amount'])
+    # return JsonResponse(response)
 @csrf_exempt
 def recharge_failure(request):
 
@@ -538,18 +555,24 @@ def withdraw(request):
             amount = request.POST['amount']
             if amount!='':
                 if int(amount) > int(userWallet.walletBalance):
-                    messages.success(request,'enter valid wallet amount to withdraw !')
+                    messages.success(request,'enter amount is more than wallet amount! -Failed-')
                     return redirect('withdraw')
                 else:
-                    userWallet.walletBalance=int(userWallet.walletBalance)-int(amount)
-                    userWallet.save()
-                    messages.success(request,'Amount has *withdrew successfully*')
-                    return redirect('withdraw')
+                    if int(userWallet.walletBalance)>min_withraw:
+                        userWallet.walletBalance=int(userWallet.walletBalance)-int(amount)
+                        userWallet.save()
+                        messages.success(request,'Amount has *withdrew successfully*')
+                        return redirect('withdraw')
+                    else:
+                        msg = 'wallet need to reach minimum balance rs:'+str(min_withraw)+'! to withdraw'
+                        messages.success(request,msg)
+                        return redirect('withdraw')
             else:
                 messages.success(request,'enter amount to withdraw!')
                 return redirect('withdraw')
         return render(request, 'lib/withdraw.html',{
             'wallet':userWallet.walletBalance
+            ,'withrawminimum':min_withraw
             })
     else:
         messages.success(request,'First Login to access game !')

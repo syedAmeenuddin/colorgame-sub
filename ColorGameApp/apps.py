@@ -6,3 +6,4 @@ class ColorgameappConfig(AppConfig):
     def ready(self):
         from ColorGameApp import scheduler
         scheduler.start()
+        scheduler.playgame()

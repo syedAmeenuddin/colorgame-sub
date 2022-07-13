@@ -49,16 +49,27 @@ def countdown():
     else:
         print(True)
         return True
+def generate_taxnid():
+    Intz = pytz.timezone('Asia/Kolkata')
+    now = datetime.now(Intz)
+    fullDate = now.strftime('%Y/%m/%d/%I/%M/%S')
+    taxid = fullDate.replace('/','')
+    print('from generate')
+    print(taxid)
+    return taxid
+
 def pri():
     contract_money=[12,120]
     ticket=[1,2,3]
+    users = ['1111111111','2222222222','3333333333']
     number = random.randint(0,9)
     _group = random.randint(1,4)
     ficontractmoney = random.choice(contract_money)
     fiticket = random.choice(ticket)
     ficontractamt = int(fiticket)*int(ficontractmoney)
     joingroup = group.objects.get(groupId=_group)
-    gUser = User.objects.get(username='1111111111')
+    gUser = User.objects.get(username=random.choice(users))
+    print(gUser)
     authUser = user.objects.get(username = gUser)
     
     try:
@@ -133,7 +144,7 @@ def calculateResult():
                                )  
         createResult.save()
         gameDetails.objects.filter(group = _group,period=currentperiod).update(resultId=createResult)
-    
+        getwinner = gameDetails.filter(group=_group,number=res[0],totalcontractMoney=res[1])
     # in Scheduler page need to implement this Logic --> after updating the result in gamedetails filter the gamedetails with current result 
     # and get the user who has won add x10 (10 is configurable) to the total contract amount eg (12 x 10) 120 plus in wallet 
     
@@ -168,3 +179,7 @@ def start():
     # calculateResult()
     scheduler.add_job(calculateResult, 'interval',seconds = gameTimeInSeconds ,start_date=startJobMin(), end_date='2040-08-05 23:47:05')
     scheduler.start()
+def playgame():
+    scheduler = BackgroundScheduler()
+    # scheduler.add_job(pri,'interval',seconds=10)
+    # scheduler.start()

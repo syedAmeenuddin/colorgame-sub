@@ -6,6 +6,25 @@
     function showloader(){
         $('.loader').show();
     }
+    minimum_withdraw_amount = {{ withrawminimum }}+'';
+    walletamt = {{ wallet }}+'';
+    $('#withdrawbtn').on('click',function(){
+        if($('#amount').val()!=''){
+            if(parseInt(walletamt)>parseInt(minimum_withdraw_amount)){
+                if($('#amount').val()<=parseInt(minimum_withdraw_amount)){
+                    alert('processing ur withdraw amount request');
+                }else{
+                    alert('enter vaild wallet amount');
+                }
+                
+            }else{
+                alert('minimum withdraw amount is '+minimum_withdraw_amount+'');
+            }
+        }else{
+            alert('enter amount');
+        }
+    })
+    
 </script>
 <div class="recharge_pg">
     
@@ -15,12 +34,12 @@
             <div class="flex_Column jc alic" >
                 <div class="sbc_child">
                     <span class="rechtitle">Enter Amount To Withdraw</span>
-                    <span class="rechlabel"><input type="text" name="amount" id=""></span>
+                    <span class="rechlabel"><input type="tel" name="amount" id="amount" class="DigitsOnly"></span>
                 </div>
                 
             </div>
             <div class="submitbankdetails flex_row jc alic">
-                <input type="submit" value="Submit" onclick="showloader()">
+                <input type="submit" value="Submit" onclick="showloader()" id="withdrawbtn">
             </div>
         
         </form>
