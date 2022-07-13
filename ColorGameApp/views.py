@@ -57,7 +57,7 @@ def register(request):
                     adduserwallet.save()
                     
                     # end
-                    return render(request, 'lib/signin.html',{"apptype":"android"})
+                    return redirect('/?apptype=android')
                 except:
                     messages.success(request,'entered mobile number is already registered !')
                     return redirect('register')
@@ -138,7 +138,7 @@ def forgotpassword(request):
                     changepass.save()
                     messages.success(request,'password updated successfully')
                     # end
-                    return render(request, 'lib/signin.html',{"apptype":"android"})
+                    return redirect('/?apptype=android')
                 except:
                     messages.success(request,'Something went wrong try again!!')
                     return redirect('forgotpassword')
@@ -200,7 +200,7 @@ def win(request):
                                 totalcontractMoney = int(totalcontractmoney))
                         else:
                             messages.success(request,'Session Expired')
-                            return render(request, 'lib/signin.html',{"apptype":"android"})
+                            return redirect('/?apptype=android')
                     except Exception as e:
                         print(request,e)
                         messages.success(request,e)
@@ -291,10 +291,10 @@ def win(request):
                 })
         except Exception as e:
             messages.success(request,e)
-            return render(request, 'lib/signin.html',{"apptype":"android"})    
+            return redirect('/?apptype=android')   
     else:
         messages.success(request,'First Login to access game !')
-        return render(request, 'lib/signin.html',{"apptype":"android"})
+        return redirect('/?apptype=android')
     
     
 def bankcard(request):
@@ -361,21 +361,19 @@ def bankcard(request):
                 })  
         except Exception as e:
             messages.success(request,'something went wrong please login again!')
-            return render(request, 'lib/signin.html',{"apptype":"android"})
+            return redirect('/?apptype=android')
     else:
         messages.success(request,'First Login to access game !')
-        return render(request, 'lib/signin.html',{"apptype":"android"})
+        return redirect('/?apptype=android')
        
 def mybet(request):
     isloged = request.session.get('isloged',False)
     if isloged:
         try:
             authUser = user.objects.get(username=request.user)
-            print(authUser)
-            print(user.objects.get(username=request.user))
             userWallet = wallet.objects.get(user = authUser)
             try:
-                _gd = gameDetails.objects.all().filter(user = user.objects.get(username=request.user)).order_by('-date')
+                _gd = gameDetails.objects.all().filter(user = user.objects.get(username=request.user)).order_by('-gameId')
                 # _gd = gameDetails.objects.all().reverse()
                 return render(request, 'lib/mybet.html'
                             ,{'playedgame':_gd
@@ -388,11 +386,11 @@ def mybet(request):
                 return render(request, 'lib/mybet.html',{'wallet':userWallet.walletBalance})
         except:
             messages.success(request,'something went wrong. please login!')
-            return render(request, 'lib/signin.html',{"apptype":"android"})
+            return redirect('/?apptype=android')
         
     else:
         messages.success(request,'First Login to access game !')
-        return render(request, 'lib/signin.html',{"apptype":"android"})
+        return redirect('/?apptype=android')
     
     
     
@@ -430,44 +428,49 @@ def recharge(request):
     if isloged:
         authUser = user.objects.get(username=request.user)
         userWallet = wallet.objects.get(user = user.objects.get(username=request.user))
+        
         if request.method == "POST":
             amount = request.POST['amount']
-            data = {
-            'amount': amount, 
-            'firstname': 'ColorGame',
-            'email': 'ColorGame@gmail.com',
-            'phone': request.user,
-            'productinfo': 'ColorGame', 
-            'lastname': 'ColorGame',
-            'address1': 'ColorGame',
-            'address2': 'ColorGame',
-            'city': 'ColorGame',  
-            'state': 'ColorGame', 
-            'country': 'ColorGame',
-            'zipcode': 'ColorGame', 
-            'udf1': '', 
-            'udf2': '', 
-            'udf3': '', 
-            'udf4': '', 
-            'udf5': ''        
-            } 
-            # need to create method for widthraw money (payout with payu gateway)
-            # need to razor recharge and withdraw method 
-            # in Scheduler page need to implement this Logic --> after updating the result in gamedetails filter the gamedetails with current result 
-            # and get the user who has won add x10 (10 is configurable) to the total contract amount eg (12 x 10) 120 plus in wallet 
-            # and add withdraw with minum amount to withdraw logic (configurable) eg(user should have min 1000 rupees to withdraw in wallet) 
-            # and initiate the trigger withdraw with payu and razor (for backup) 
-            request.session['txnid'] = generate_taxnid()
-            txnid = request.session.get('txnid','0')
-            data.update({"txnid":txnid})
-            payu_data = payu.transaction(**data)
-            return render(request, 'lib/payment_processing.html',{"posted":payu_data})
+            if amount != None and amount != '':
+                data = {
+                'amount': amount, 
+                'firstname': 'ColorGame',
+                'email': 'ColorGame@gmail.com',
+                'phone': request.user,
+                'productinfo': 'ColorGame', 
+                'lastname': 'ColorGame',
+                'address1': 'ColorGame',
+                'address2': 'ColorGame',
+                'city': 'ColorGame',  
+                'state': 'ColorGame', 
+                'country': 'ColorGame',
+                'zipcode': 'ColorGame', 
+                'udf1': '', 
+                'udf2': '', 
+                'udf3': '', 
+                'udf4': '', 
+                'udf5': ''        
+                } 
+                # need to create method for widthraw money (payout with payu gateway)
+                # need to razor recharge and withdraw method 
+                # in Scheduler page need to implement this Logic --> after updating the result in gamedetails filter the gamedetails with current result 
+                # and get the user who has won add x10 (10 is configurable) to the total contract amount eg (12 x 10) 120 plus in wallet 
+                # and add withdraw with minum amount to withdraw logic (configurable) eg(user should have min 1000 rupees to withdraw in wallet) 
+                # and initiate the trigger withdraw with payu and razor (for backup) 
+                request.session['txnid'] = generate_taxnid()
+                txnid = request.session.get('txnid','0')
+                data.update({"txnid":txnid})
+                payu_data = payu.transaction(**data)
+                return render(request, 'lib/payment_processing.html',{"posted":payu_data})
+            else:
+                messages.success(request,'Enter the Amount')
+                return render(request, 'lib/recharge.html',{'wallet':userWallet.walletBalance})
         else:
             return render(request, 'lib/recharge.html',{'wallet':userWallet.walletBalance})
 
     else:
         messages.success(request,'First Login to access game !')
-        return render(request, 'lib/signin.html',{"apptype":"android"})
+        return redirect('/?apptype=android')
 @csrf_exempt
 def recharge_success(request):
     if request.method == "POST":
@@ -576,7 +579,7 @@ def withdraw(request):
             })
     else:
         messages.success(request,'First Login to access game !')
-        return render(request, 'lib/signin.html',{"apptype":"android"})
+        return redirect('/?apptype=android')
 
 
 

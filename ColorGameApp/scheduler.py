@@ -61,14 +61,14 @@ def generate_taxnid():
 def pri():
     contract_money=[12,120]
     ticket=[1,2,3]
-    users = ['1111111111','2222222222','3333333333']
+    users = '3333333333'
     number = random.randint(0,9)
     _group = random.randint(1,4)
     ficontractmoney = random.choice(contract_money)
     fiticket = random.choice(ticket)
     ficontractamt = int(fiticket)*int(ficontractmoney)
     joingroup = group.objects.get(groupId=_group)
-    gUser = User.objects.get(username=random.choice(users))
+    gUser = User.objects.get(username=users)
     print(gUser)
     authUser = user.objects.get(username = gUser)
     
@@ -91,9 +91,12 @@ def pri():
                 )
             createGD.save()
             print('game created')
+            _gd = gameDetails.objects.all().filter(user = authUser)
+            print(_gd.count())
         else:
             print('game Stoped! calculating Result')
-    except:
+    except Exception as e:
+        print(e)
         print('went wrong')
 def calculateResult():
     print('job started')
@@ -144,7 +147,14 @@ def calculateResult():
                                )  
         createResult.save()
         gameDetails.objects.filter(group = _group,period=currentperiod).update(resultId=createResult)
-        getwinner = gameDetails.filter(group=_group,number=res[0],totalcontractMoney=res[1])
+        # getwinner = gameDetails.objects.filter(
+        #     group=_group
+        #     ,number=res[0]
+        #     ,totalcontractMoney=res[1]
+        #     )
+        # print('get winner')
+        # print(getwinner)
+        # print(f'getwinner end of group : {_group}')
     # in Scheduler page need to implement this Logic --> after updating the result in gamedetails filter the gamedetails with current result 
     # and get the user who has won add x10 (10 is configurable) to the total contract amount eg (12 x 10) 120 plus in wallet 
     
@@ -181,5 +191,5 @@ def start():
     scheduler.start()
 def playgame():
     scheduler = BackgroundScheduler()
-    # scheduler.add_job(pri,'interval',seconds=10)
-    # scheduler.start()
+    scheduler.add_job(pri,'interval',seconds=10)
+    scheduler.start()
