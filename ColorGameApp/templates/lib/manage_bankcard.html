@@ -3,121 +3,114 @@
 {% block base %}
 <script src="{% static "colorgame/winscript.js" %}"></script>
 <div class="bankcard_pge">
-    {% for i in bank  %}
-    <div class="showbankdetails">
-        <div class="shwbakdet_card">
-            <div class="flex_row jc alic" >
-                <div class="sbc_child">
-                    <span class="title_bcd">Card Holder Name</span>
-                    <span class="label_bc">{{ i.recipientName }}</span>
-                </div>
-                <div class="sbc_child">
-                    <span class="title_bcd">Account Number</span>
-                    <span class="label_bc">{{ i.accountNumber }}</span>
-                </div>
-            </div>
-            <div class="flex_row jc" >
-                <div class="sbc_child">
-                    <span class="title_bcd">IFSC Number</span>
-                    <span class="label_bc">{{ i.ifsc }}</span>
-                </div>
-                
+            {% for i in bank  %}
+                    <div class="showbankdetails">
+                        <div class="shwbakdet_card">
+                                <div class="sbc_child">
+                                    <span class="title_bcd">Card Holder Name</span>
+                                    <span class="label_bc">{{ i.recipientName }}</span>
+                                </div>
+
+                                <div class="sbc_child">
+                                    <span class="title_bcd">Account Number</span>
+                                    <span class="label_bc">{{ i.accountNumber }}</span>
+                                </div>
+                                <div class="sbc_child">
+                                    <span class="title_bcd">IFSC Number</span>
+                                    <span class="label_bc">{{ i.ifsc }}</span>
+                                </div>
+                                
+                                
+                                
+                                
+                            {% comment %} <form method="POST" name="editbankdetails">
+                                {% csrf_token %}
+                            <div class="submitbankdetails flex_row jc alic">
+                                <input name="editbank" type="submit" value="Edit">
+                            </div>
+                            </form> {% endcomment %}
+                            {% comment %} <div class="bankcardbtn flex_row jc alic">
+                                <div class="editbank"><span>Edit ?</span></div>
+                            </div> {% endcomment %}
+                        </div>
+                    
+                    </div>
+            {% endfor %}
+            {% for i in upi %}
                 <div class="upi_card">
-                    {% for i in upi %}
+                
                     <div class="sbc_child">
                         <span class="title_bcd">Upi</span>
                         <span class="label_bc">{{ i.upi }}</span>
                     </div>
-                    {% endfor %}
-                </div>
-                
-                
-            </div>
-            {% comment %} <form method="POST" name="editbankdetails">
+                    
+                </div>  
+            {% endfor %}
+            <form action="" method="POST">
                 {% csrf_token %}
-            <div class="submitbankdetails flex_row jc alic">
-                <input name="editbank" type="submit" value="Edit">
-            </div>
-            </form> {% endcomment %}
-            {% comment %} <div class="bankcardbtn flex_row jc alic">
-                <div class="editbank"><span>Edit ?</span></div>
-            </div> {% endcomment %}
-        </div>
-    
-</div>
-    
-    {% endfor %}
-        
-        
-    <form action="" method="post">
-        {% csrf_token %}
-        <div class="addbakdet_card tabhide">
+                <div class="addbakdet_card tabhide">
 
-            <div class="flex_Column jc alic" >
-                <div class="sbc_child">
-                    <span class="title_bcd">Enter Card Holder Name</span>
-                    <span class="label_bc"><input type="text" name="recipientname" id=""></span>
-                </div>
-            </div>
-
-            <div class="flex_Column jc alic" >
-                <div class="sbc_child">
-                    <span class="title_bcd">Enter Account Number</span>
-                    <span class="label_bc"><input type="tel" class="DigitsOnly" name="accountnumber" id=""></span>
-                </div>
-            </div>
-
-            <div class="flex_Column jc alic" >
-                <div class="sbc_child">
-                    <span class="title_bcd">Enter IFSC Number</span>
-                    <span class="label_bc"><input type="text" name="ifsc" id=""></span>
-                </div>
-            </div>
-            <div class="submitbankdetails flex_row jc alic">
-                <input type="submit" value="Submit">
-            </div>
-        </div>
-            <div class="addupiId tabhide">
-                <div class="flex_row jc alic" >
-                    <div class="sbc_child" style="
-                    width: 70vw;
-                ">
-                        <span class="title_bcd">Enter UPI ID</span>
-                        <span class="label_bc"><input type="text" name="upi" id="upi"></span>
+                    <div class="flex_Column jc alic" >
+                        <div class="sbc_child">
+                            <span class="title_bcd">Enter Card Holder Name</span>
+                            <span class="label_bc"><input type="text" name="recipientname" id=""></span>
+                        </div>
                     </div>
-                    <div class="VerifyUPIID">
-                        <span class="upi">Verify UPI</span>
+
+                    <div class="flex_Column jc alic" >
+                        <div class="sbc_child">
+                            <span class="title_bcd">Enter Account Number</span>
+                            <span class="label_bc"><input type="tel" class="DigitsOnly" name="accountnumber" id=""></span>
+                        </div>
+                    </div>
+
+                    <div class="flex_Column jc alic" >
+                        <div class="sbc_child">
+                            <span class="title_bcd">Enter IFSC Number</span>
+                            <span class="label_bc"><input type="text" name="ifsc" id=""></span>
+                        </div>
+                    </div>
+                    <div class="submitbankdetails flex_row jc alic">
+                        <input type="submit" value="Submit">
                     </div>
                 </div>
-                <div class="submitupiIddetails flex_row jc alic">
-                    <input type="submit" value="Submit" id="upisubmit" disabled>
+                    <div class="addupiId tabhide">
+                        <div class="flex_row jc alic" >
+                            <div class="sbc_child" style="
+                            width: 70vw;
+                        ">
+                                <span class="title_bcd">Enter UPI ID</span>
+                                <span class="label_bc"><input type="text" name="upi" id="upi"></span>
+                            </div>
+                            <div class="VerifyUPIID">
+                                <span class="upi">Verify UPI</span>
+                            </div>
+                        </div>
+                        <div class="submitupiIddetails flex_row jc alic">
+                            <input type="submit" value="Submit" id="upisubmit" disabled>
+                        </div>
+                    </div>
+
+            </form> 
+
+            
+            {% if addbank %}
+                <div class="addbank">
+
+                        <div class="bankcardbtn flex_row center">
+                            <div class=""><span>Add Bank Details</span></div>
+                        </div>
+
+                        <div class="flex_row center">OR</div>
+                        
+                        <div class="upiidbtn flex_row center">
+                            <div class=""><span>Add UPI ID</span></div>
+                        </div>
+
                 </div>
-            </div>
-
-            
-
-        
-        
-    </form> 
-
-    
-    {% if addbank %}
-    <div class="addbank">
-
-            <div class="bankcardbtn flex_row center">
-                <div class=""><span>Add Bank Details</span></div>
-            </div>
-
-            <div class="flex_row center">OR</div>
-            
-            <div class="upiidbtn flex_row center">
-                <div class=""><span>Add UPI ID</span></div>
-            </div>
-
-    </div>
-    {% endif %}
-        
-        
+            {% endif %}
+                
+                
       
 </div>
 

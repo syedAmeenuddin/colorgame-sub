@@ -269,7 +269,6 @@ $(document).ready(function () {
 			var upi = $('#upi').val();
 			var match = /[a-zA-Z0-9_]{3,}@[a-zA-Z]{3,}/;
 			if(match.test(upi)){
-				$('#upi').prop('disabled',true);
 				$('#upisubmit').prop('disabled',false);
 
 			}else{
