@@ -61,7 +61,7 @@ def generate_taxnid():
 def pri():
     contract_money=[12,120]
     ticket=[1,2,3]
-    users = '3333333333'
+    users = '6666666666'
     number = random.randint(0,9)
     _group = random.randint(1,4)
     ficontractmoney = random.choice(contract_money)
@@ -191,5 +191,5 @@ def start():
     scheduler.start()
 def playgame():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(pri,'interval',seconds=10)
-    scheduler.start()
+    # scheduler.add_job(pri,'interval',seconds=10)
+    # scheduler.start()

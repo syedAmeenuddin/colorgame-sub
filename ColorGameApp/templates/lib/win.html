@@ -2,7 +2,7 @@
 {% load static %}
 <script src="{% static "colorgame/winscript.js" %}"></script>
 {% block winbaseA %}
-{% for i in resultgroupA reversed %}
+{% for i in resultgroupA %}
 <div class="flex_row details_winner row ">
  <span class="col">{{ i.period }}</span>
  <span class="col">{{ i.date }}</span>
@@ -14,7 +14,7 @@
 
 
 {% block winbaseB %}
-{% for i in resultgroupB reversed %}
+{% for i in resultgroupB %}
 <div class="flex_row details_winner row ">
  <span class="col">{{ i.period }}</span>
  <span class="col">{{ i.date }}</span>
@@ -26,7 +26,7 @@
 
 
 {% block winbaseC %}
-{% for i in resultgroupC reversed %}
+{% for i in resultgroupC %}
 <div class="flex_row details_winner row ">
  <span class="col">{{ i.period }}</span>
  <span class="col">{{ i.date }}</span>
@@ -38,7 +38,7 @@
 
 
 {% block winbaseD %}
-{% for i in resultgroupD reversed %}
+{% for i in resultgroupD %}
 <div class="flex_row details_winner row ">
  <span class="col">{{ i.period }}</span>
  <span class="col">{{ i.date }}</span>
