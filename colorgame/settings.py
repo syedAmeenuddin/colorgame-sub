@@ -158,3 +158,5 @@ PAYU_CONFIG = {
     "success_url": "http://127.0.0.1:8000/win/recharge/success",
     "failure_url": "http://127.0.0.1:8000/win/recharge/failure"
 }
+SESSION_EXPIRE_AT_BROWSER_CLOSE = TRUE
+SESSION_COOKIE_AGE = 15 * 60 
