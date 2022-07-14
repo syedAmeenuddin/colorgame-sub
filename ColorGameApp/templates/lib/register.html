@@ -73,7 +73,7 @@
                                     <div class="input_icon_textB">
                                         <i class="fa fa-mobile" aria-hidden="true" ></i>
                                         <input class="inputformbox DigitsOnly"  type="tel" name="mobilenumber" id="mobilenumber" value="{{ userid }}"placeholder="Mobile Number" maxlength="10">
-                                        <div class="sendotp_btn" >
+                                        <div class="sendotp_btn showLoader" >
                                             <input  type="submit" name="sendotp" id="btnSendOTP" value="SendOTP" >
                                         </div>
                                      
@@ -87,7 +87,7 @@
                                     <div class="input_icon_textB">
                                         <i class="fa fa-key" aria-hidden="true"></i>
                                         <input type="tel"  id="otp" name="otp" class="inputformbox DigitsOnly"  maxlength="6"  placeholder="OTP"  >
-                                        <div class="login_button btnOTP btnVerifyOTP disablediv" >
+                                        <div class="login_button  btnOTP btnVerifyOTP disablediv" >
                                                 Verify OTP
                                         </div>
                                     
@@ -100,7 +100,7 @@
 
                                     <div class="loginButtonForm">
                                         <div class="" onclick="RH_number()">
-                                            <input class="login_button" type="submit" id="btnRegister" value="Register" disabled>
+                                            <input class="login_button showLoader" type="submit" id="btnRegister" value="Register" disabled>
                                         </div>
                                     </div>
                             </form>

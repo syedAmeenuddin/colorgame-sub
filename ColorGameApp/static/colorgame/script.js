@@ -6,7 +6,7 @@ $(document).ready(function () {
 			$('#mobilenumber').val(parseInt(mobilenumber));
 		}
 
-		$('.login_button').on('click',function(){
+		$('.showLoader').on('click',function(){
 			$('.loader').show();
 		})
 
@@ -75,7 +75,8 @@ $(document).ready(function () {
 
 		$('.btnVerifyOTP').on('click',function(){
 			if($("#otp").val() != "" && $("#otp").val().length == 6)
-			{
+			{   
+				$('.loader').show();
 				otpcount=2;
 				$('.btnSendOTP').addClass('disablediv');
 				$('.btnVerifyOTP').addClass('disablediv');
@@ -97,9 +98,9 @@ function goBack() {
 	window.history.back();
   }
 function isVerified(val){
+	$('.loader').hide();
 	if(val)
 	{
-		$('.loader').hide();
 		otpcount=2;
 		$('#txtpassword').prop('disabled',false);
 		$('#btnRegister').prop('disabled',false);
@@ -108,7 +109,6 @@ function isVerified(val){
 	}
 	else
 	{
-		$('.loader').hide();
 		$('.btnVerifyOTP').removeClass('disablediv');
 		$('#txtpassword').prop('disabled',true);
 		$('#btnRegister').prop('disabled',true);
