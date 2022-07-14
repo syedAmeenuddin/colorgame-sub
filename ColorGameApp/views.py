@@ -170,7 +170,7 @@ def forgotpassword(request):
 
 def win(request):
     isloged = request.session.get('isloged',False)
-    if isloged:
+    if isloged and request.user.is_authenticated:
         try:
             Intz = pytz.timezone('Asia/Kolkata')
             now = datetime.now(Intz)
@@ -276,7 +276,7 @@ def win(request):
     
 def bankcard(request):
     isloged = request.session.get('isloged',False)
-    if isloged:
+    if isloged and request.user.is_authenticated:
         try:
             authUser = user.objects.get(username=request.user)
             userWallet = wallet.objects.get(user = authUser)
@@ -352,7 +352,7 @@ def bankcard(request):
        
 def mybet(request):
     isloged = request.session.get('isloged',False)
-    if isloged:
+    if isloged and request.user.is_authenticated:
         try:
             authUser = user.objects.get(username=request.user)
             userWallet = wallet.objects.get(user = authUser)
@@ -409,7 +409,7 @@ def mybet(request):
     #     return render(request, 'lib/signin.html',{"apptype":"android"})
 def recharge(request):
     isloged = request.session.get('isloged',False)
-    if isloged:
+    if isloged and request.user.is_authenticated:
         authUser = user.objects.get(username=request.user)
         userWallet = wallet.objects.get(user = user.objects.get(username=request.user))
         
@@ -457,7 +457,7 @@ def recharge(request):
         return redirect('/?apptype=android')
 @csrf_exempt
 def recharge_success(request):
-    if request.method == "POST":
+    if request.method == "POST" and request.user.is_authenticated:
         print(request.session.get('isloged',False))
         data = {k: v[0] for k, v in dict(request.POST).items()}
         response = payu.verify_transaction(data)
@@ -535,7 +535,7 @@ def recharge_failure(request):
 
 def withdraw(request):
     isloged = request.session.get('isloged',False)
-    if isloged:
+    if isloged and request.user.is_authenticated:
         authUser = user.objects.get(username=request.user)
         userWallet = wallet.objects.get(user = authUser)
         if request.method =="POST":

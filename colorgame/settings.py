@@ -34,6 +34,8 @@ RECHARGEAMOUNT = 100 # MINIMUM RECHARGE AMOUNT
 API_KEY = "rzp_live_61nCSVZchF7ZBQ"
 _SECRET_KEY = "2Mt9oIbhCdfnbDs5Ap5U0Jod"
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_COOKIE_AGE = 15 * 60 
 
 CSRF_TRUSTED_ORIGINS = ['https://djangocolorwiz.azurewebsites.net']
 # CSRF_TRUSTED_ORIGINS = ['*']
@@ -158,5 +160,3 @@ PAYU_CONFIG = {
     "success_url": "http://127.0.0.1:8000/win/recharge/success",
     "failure_url": "http://127.0.0.1:8000/win/recharge/failure"
 }
-SESSION_EXPIRE_AT_BROWSER_CLOSE = TRUE
-SESSION_COOKIE_AGE = 15 * 60 
