@@ -47,6 +47,9 @@
         let mintsInSecs = m * 60;
         let total_secs = mintsInSecs + parseInt(s);
         if (total_secs < {{ ResultTime }}){
+            $('.playimage').removeClass('bannerimage');
+		    $('.playimagegif').addClass('bannerimage');
+	
             $('.numberbtn').addClass('hidenumberbtn');
         }else{
 			$('.numberbtn').removeClass('hidenumberbtn');
@@ -98,18 +101,17 @@
                                         <span>Count Down:</span>
                                         <span id="periodcountdown"></span>
                                     </div>
+                                </div>
+                                <div class="playimage bannerimage">
+                                    <img src="{% static "images/Acoupon.gif" %}" alt="not found">
+                                    <img src="{% static "images/Bcoupon.gif" %}" alt="not found">
+
                                     
                                 </div>
-                                {% for lotteryimages in lotteryimages %}
-                                <div class="playimage bannerimage">
-                                    <img src="/media/{{ lotteryimages.lotteryimagegif1 }}" alt="not found">
-                                    <img src="/media/{{ lotteryimages.lotteryimagegif2 }}" alt="not found">
-                                </div>
-                                {% comment %} <div class="playimage playimagegif">
-                                    <img src="/media/{{ lotteryimages.lotteryimage1 }}" alt="not found">
-                                    <img src="/media/{{ lotteryimages.lotteryimage2 }}" alt="not found">
-                                </div> {% endcomment %}
-                                {% endfor %}
+                                <div class="playimage playimagegif">
+                                    <img src="{% static "images/Abanner.jpg" %}" alt="not found">
+                                    <img src="{% static "images/Bbanner.jpg" %}" alt="not found">
+                                </div> 
                                 <div class="selectgame_main">
                                     <div class="numberjoin_main">
                                         <form action="" name="numberform" class="numberform row col-md-12">
@@ -162,16 +164,16 @@
                                         <span class="realtime"></span>
                                     </div>
                                 </div>
-                                {% for lotteryimages in lotteryimages %}
                                 <div class="playimage bannerimage">
-                                    <img src="/media/{{ lotteryimages.lotteryimagegif3 }}" alt="not found">
-                                    <img src="/media/{{ lotteryimages.lotteryimagegif4 }}" alt="not found">
+                                    <img src="{% static "images/Ccoupon.gif" %}" alt="not found">
+                                    <img src="{% static "images/Dcoupon.gif" %}" alt="not found">
+
+                                   
                                 </div>
-                                {% comment %} <div class="playimage playimagegif">
-                                    <img src="/media/{{ lotteryimages.lotteryimage3 }}" alt="not found">
-                                    <img src="/media/{{ lotteryimages.lotteryimage4 }}" alt="not found">
-                                </div> {% endcomment %}
-                                {% endfor %}
+                                <div class="playimage playimagegif">
+                                    <img src="{% static "images/Cbanner.jpg" %}" alt="not found">
+                                    <img src="{% static "images/Dbanner.jpg" %}" alt="not found">
+                                </div> 
                                 <div class="selectgame_main flex_column">
                                     
                                    

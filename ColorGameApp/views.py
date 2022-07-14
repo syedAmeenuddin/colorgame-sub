@@ -170,8 +170,11 @@ def forgotpassword(request):
 
 def win(request):
     isloged = request.session.get('isloged',False)
+    print('isloged')
+    print(isloged)
     if isloged and request.user.is_authenticated:
         try:
+            print('geting now date')
             Intz = pytz.timezone('Asia/Kolkata')
             now = datetime.now(Intz)
             nowTime = now.strftime('%I:%M:%S %p')
@@ -179,7 +182,10 @@ def win(request):
             fullDate = now.strftime('%d/%m/%Y %I:%M:%S %p')
             authUser = user.objects.get(username=request.user)
             userWallet = wallet.objects.get(user = authUser)
+            print(now)
             if request.method == "POST":   
+                print('entered post meth')
+                print(now)
                 joingroup = request.POST['joingroup']
                 joinnumber = request.POST['joinnumber']
                 contractmoney = request.POST['contractmoney']
@@ -211,12 +217,16 @@ def win(request):
                     userWallet.save()
                     sucessbetmessage = 'Successfully bet on number:'+' '+joinnumber
                     messages.success(request,sucessbetmessage)
+                    print(' post meth over')
+                    print(now)
                     return redirect('win')   
 
                 else:
                     messages.success(request,'Bet failed')
                     return redirect('win')
             try:
+                print(' else ==try meth start')
+                print(now)
                 rA = results.objects.all().filter(group='1',date = nowDate).order_by('-resultId')
                 rB = results.objects.all().filter(group='2',date = nowDate).order_by('-resultId')
                 rC = results.objects.all().filter(group='3',date = nowDate).order_by('-resultId')
@@ -226,10 +236,11 @@ def win(request):
                 listC  = rC[0]
                 listD  = rD[0]
                 groupname = group.objects.all()
-                Lotteryimages = lotteryimages.objects.all()
+                print(' else ==try meth over')
+                print(now)
                 return render(request
                 , 'lib/win.html'
-                ,{'lotteryimages':Lotteryimages,'userid':request.user
+                ,{'userid':request.user
                 ,'resultgroupA':rA
                 ,'resultgroupB':rB
                 ,'resultgroupC':rC
@@ -247,22 +258,20 @@ def win(request):
                 ,'ResultTime':ResultTime
                 })
             except:
-                tabAwinner = 0
-                tabBwinner = 0
-                tabCwinner = 0
-                tabDwinner = 0
+                print(' else ==ecxept meth start')
+                print(now)
                 groupname = group.objects.all()
-                Lotteryimages = lotteryimages.objects.all()
-                return render(request, 'lib/win.html',{'lotteryimages':Lotteryimages,'userid':request.user
+               
+                return render(request, 'lib/win.html',{'userid':request.user
                 ,'tab0name':groupname[0]
                 ,'tab1name':groupname[1]
                 ,'tab2name':groupname[2]
                 ,'tab3name':groupname[3]
                 ,'wallet':userWallet.walletBalance
-                ,'tabA':tabAwinner
-                ,'tabB':tabBwinner
-                ,'tabC':tabCwinner
-                ,'tabD':tabDwinner
+                ,'tabA':0
+                ,'tabB':0
+                ,'tabC':0
+                ,'tabD':0
                 ,'GameTime':GameTime
                 ,'ResultTime':ResultTime
                 })
