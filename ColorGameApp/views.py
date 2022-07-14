@@ -8,6 +8,7 @@ from datetime import datetime
 from django.conf import settings as config
 # import razorpay
 import pytz
+
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
@@ -279,38 +280,50 @@ def bankcard(request):
         try:
             authUser = user.objects.get(username=request.user)
             userWallet = wallet.objects.get(user = authUser)
+            getbankdetails  = bankDetails.objects.filter(user =authUser )
+            getupidetails = upiDetails.objects.filter(user = authUser )
             if request.method == "POST":
+                check = False
                 try:
                     _ifsc = request.POST['ifsc']
                     _actnum = request.POST['accountnumber']
                     _recipientname = request.POST['recipientname']
                     _upi = request.POST['upi']
-                    if(_upi !=''):
+                    print(_ifsc)
+                    print(_actnum)
+                    print(_recipientname)
+                    print(_upi)
+                    if(_ifsc != '' and _actnum != '' and _recipientname !=''):
                         try:
-                            print(_upi)
-                            upiDetails.objects.create(user = authUser,upi=_upi)
-                            messages.success(request,'saved successfully')
-                            return redirect('bankcard')
-                        except:
-                            messages.success(request,'something went wrong while saving your information. try again')
-                            return redirect('bankcard')
-                    else:
-                        if(_ifsc != '' and _actnum != '' and _recipientname !=''):
-                            try:
+
+
+                            
+                            if len(getbankdetails)==0:
                                 bankDetails.objects.create(
                                 user=authUser
                                 ,ifsc=_ifsc 
                                 ,accountNumber=_actnum
                                 ,recipientName=_recipientname
                                 )
-                                messages.success(request,'saved successfully')
+                                upiDetails.objects.create(user = authUser,upi=_upi)
+                                messages.success(request,'bank details are saved successfully')
+                                check=True
                                 return redirect('bankcard')
-                            except:
-                                messages.success(request,'something went wrong while saving your information. try again')
-                                return redirect('bankcard')
-                        else:
-                            messages.success(request,'enter all field correctly')
+                        except:
+                            messages.success(request,'something went wrong while saving your information. try again')
                             return redirect('bankcard')
+                    elif(_upi!='' and check==False):
+                        
+                        try:
+                            upiDetails.objects.create(user = authUser,upi=_upi)
+                            messages.success(request,'Upi details are saved successfully')
+                            return redirect('bankcard')
+                        except:
+                            messages.success(request,'something went wrong while saving your information. try again')
+                            return redirect('bankcard')
+                    else:
+                        messages.success(request,'enter all bank field or upi field correctly')
+                        return redirect('bankcard') 
                 except:
                     messages.success(request,'something went wrong while saving your information. try again')
                     return redirect('bankcard')  
@@ -319,21 +332,16 @@ def bankcard(request):
                 try:
                     getbankdetails  = bankDetails.objects.filter(user =authUser )
                     getupidetails = upiDetails.objects.filter(user = authUser )
-                    if len(getbankdetails)!=0:
-                        return render(request, 'lib/manage_bankcard.html',
-                            {
-                                'wallet':userWallet.walletBalance
-                                ,'bank':getbankdetails
-                                ,'addbank':True if len(getbankdetails)==0 else False
-                                })
-                    else:
-                        return render(request, 'lib/manage_bankcard.html',{'wallet':userWallet.walletBalance
-                        ,'upi':getupidetails
-                        ,'addbank':True if len(getupidetails)==0 else False
-                        }) 
-                except:
                     return render(request, 'lib/manage_bankcard.html',{'wallet':userWallet.walletBalance
-                        ,'addbank':True
+                    , 'bankholdername':'' if len(getbankdetails)==0 else getbankdetails[0].recipientName
+                    , 'bankholdernumber':'' if len(getbankdetails)==0 else getbankdetails[0].accountNumber
+                    , 'bankholderifsc':'' if len(getbankdetails)==0 else getbankdetails[0].ifsc
+                    , 'upi':'' if len(getupidetails)==0 else getupidetails[0].upi
+                    }) 
+                except:
+                    print('bank except')
+                    return render(request, 'lib/manage_bankcard.html',{'wallet':userWallet.walletBalance
+                
                 })  
         except Exception as e:
             messages.success(request,'something went wrong please login again!')

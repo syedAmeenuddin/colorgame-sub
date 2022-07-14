@@ -6,35 +6,37 @@
             <form action="" method="POST">
                 {% csrf_token %}
                 <div class="addbakdet_card ">
-
-                    <div class="flex_Column jc alic" >
-                        <div class="sbc_child">
-                            <span class="title_bcd">Enter Account Holder Name</span>
-                            <span class="label_bc"><input type="text" name="recipientname" id=""></span>
+                        <span>Enter Bank Details or Upi - not Both -</span>
+                        <div class="flex_Column jc alic" >
+                            <div class="sbc_child">
+                                <span class="title_bcd">Enter Account Holder Name</span>
+                                <span class="label_bc"><input type="text" name="recipientname" id="" value="{{ bankholdername }}"></span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="flex_Column jc alic" >
-                        <div class="sbc_child" >
-                            <span class="title_bcd">Enter Account Number</span>
-                            <span class="label_bc"><input type="tel" class="DigitsOnly" name="accountnumber" id=""></span>
+                        <div class="flex_Column jc alic" >
+                            <div class="sbc_child" >
+                                <span class="title_bcd">Enter Account Number</span>
+                                <span class="label_bc"><input type="tel" class="DigitsOnly" name="accountnumber" id="" value="{{ bankholdernumber }}"></span>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="flex_Column jc alic" >
-                        <div class="sbc_child">
-                            <span class="title_bcd">Enter IFSC Number</span>
-                            <span class="label_bc"><input type="text" name="ifsc" id=""></span>
+                        <div class="flex_Column jc alic" >
+                            <div class="sbc_child">
+                                <span class="title_bcd">Enter IFSC Number</span>
+                                <span class="label_bc"><input type="text" name="ifsc" id="" value="{{ bankholderifsc }}"></span>
+                            </div>
                         </div>
-                    </div>
                 </div>
                 <div class="flex_Column jc alic" >
-                    <div class="sbc_child">
-                        <span class="title_bcd">Enter UPI</span>
-                        <span class="label_bc"><input type="text" name="upi" id=""></span>
-                    </div>
+
+                        <div class="sbc_child">
+                            <span class="title_bcd">Enter UPI</span>
+                            <span class="label_bc"><input type="text" name="upi" id="" value="{{ upi }}"></span>
+                        </div>
+
                         <div class="submitupiIddetails flex_row jc alic">
-                            <input type="submit" value="Submit" id="upisubmit">
+                            <input type="submit" value="Update" id="upisubmit">
                         </div>
                    
 

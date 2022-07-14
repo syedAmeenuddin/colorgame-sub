@@ -104,9 +104,9 @@ $(document).ready(function () {
 	function fnClear() {
 		$('#joinpopup').removeClass('popvis')
 		$('.ctbtn').removeClass('ct_box_selected');
-		contractmoney = 10;
+		contractmoney = 12;
 		contractcount = 1;
-		finalcontractmoney = 10;
+		finalcontractmoney = 12;
 	}
 	// tabbar query
 	$('.tab').on('click', function () {
