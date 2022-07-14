@@ -80,16 +80,16 @@
                        <input class="inputformbox" type="password" name="password" id="password" placeholder="Password">
                         </div>
                    <div class="loginButtonForm">
-                       <div class="">
+                       <div class=" showLoader">
                            <input class="login_button" type="submit" value="Login" >
                        </div>
                    </div>
                    <div class="flex_row register_forgot">
                      <div >
-                      <a href="{% url 'register' %}"> <input class="registerbtn"  type="button" value="Register ?"></a>
+                      <a href="{% url 'register' %}"> <input class="registerbtn showLoader"  type="button" value="Register ?"></a>
                     </div> 
                     <div class=" ">
-                       <a href="{% url 'forgotpassword' %}"><input name="register" class="forgotbtn" type="button" value="Forgot Password ?" ></a>
+                       <a href="{% url 'forgotpassword' %}"><input name="register showLoader" class="forgotbtn" type="button" value="Forgot Password ?" ></a>
                        
                     </div>
                    </div>
