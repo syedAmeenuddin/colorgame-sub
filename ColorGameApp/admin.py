@@ -1,10 +1,10 @@
 from django.contrib import admin
 # from .models import lotteryimages
-from .models import lotteryimages, user, bankDetails, upiDetails, gameDetails, group, results, wallet
+from .models import user, bankDetails, upiDetails, gameDetails, group, results, wallet
 
 # Register your models here.
 
-admin.site.register(lotteryimages)
+# admin.site.register(lotteryimages)
 # Register your models here.
 admin.site.register(gameDetails)
 admin.site.register(user)

@@ -4,15 +4,15 @@ from django.db import models
 from django.contrib.auth.models import User
 
 # Create your models here.
-class lotteryimages(models.Model):
-    lotteryimage1 = models.ImageField(upload_to='ColorGameApp/images/', blank=True)
-    lotteryimage2 = models.ImageField(upload_to='ColorGameApp/images/', blank=True)
-    lotteryimage3 = models.ImageField(upload_to='ColorGameApp/images/', blank=True)
-    lotteryimage4 = models.ImageField(upload_to='ColorGameApp/images/', blank=True)
-    lotteryimagegif1 = models.ImageField(upload_to='ColorGameApp/images/', blank=True)
-    lotteryimagegif2 = models.ImageField(upload_to='ColorGameApp/images/', blank=True)
-    lotteryimagegif3 = models.ImageField(upload_to='ColorGameApp/images/', blank=True)
-    lotteryimagegif4 = models.ImageField(upload_to='ColorGameApp/images/', blank=True)
+# class lotteryimages(models.Model):
+#     lotteryimage1 = models.ImageField(upload_to='ColorGameApp/images/', blank=True)
+#     lotteryimage2 = models.ImageField(upload_to='ColorGameApp/images/', blank=True)
+#     lotteryimage3 = models.ImageField(upload_to='ColorGameApp/images/', blank=True)
+#     lotteryimage4 = models.ImageField(upload_to='ColorGameApp/images/', blank=True)
+#     lotteryimagegif1 = models.ImageField(upload_to='ColorGameApp/images/', blank=True)
+#     lotteryimagegif2 = models.ImageField(upload_to='ColorGameApp/images/', blank=True)
+#     lotteryimagegif3 = models.ImageField(upload_to='ColorGameApp/images/', blank=True)
+#     lotteryimagegif4 = models.ImageField(upload_to='ColorGameApp/images/', blank=True)
 
 
 class user(models.Model):

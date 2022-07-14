@@ -1,6 +1,6 @@
 from xml.dom.minidom import parseString
 from django.shortcuts import redirect, render
-from .models import lotteryimages, user, bankDetails, upiDetails, gameDetails, group, results, wallet
+from .models import user, bankDetails, upiDetails, gameDetails, group, results, wallet
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib import messages

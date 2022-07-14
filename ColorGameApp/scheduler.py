@@ -3,7 +3,7 @@ import random
 from django.conf import settings as config
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from .models import lotteryimages, user, bankDetails, upiDetails, gameDetails, group, results
+from .models import user, bankDetails, upiDetails, gameDetails, group, results
 from django.contrib.auth.models import User
 
 import pytz
