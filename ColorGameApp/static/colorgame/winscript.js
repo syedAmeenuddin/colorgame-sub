@@ -196,11 +196,11 @@ $(document).ready(function () {
 
 
 
-	setTimeout(turnoffgifimage, 2000);
-	function turnoffgifimage(){
-		$('.playimage').removeClass('bannerimage');
-		$('.playimagegif').addClass('bannerimage');
-	}
+	// setTimeout(turnoffgifimage, 2000);
+	// function turnoffgifimage(){
+	// 	$('.playimage').removeClass('bannerimage');
+	// 	$('.playimagegif').addClass('bannerimage');
+	// }
 
     // $('.btnSendOTP').on('click',function(){
 	// 	if($("#PhoneNumber").val() != "" && $("#PhoneNumber").val().length == 10)
